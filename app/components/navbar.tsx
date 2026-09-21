@@ -11,7 +11,6 @@ const links = [
   { href: "/events", label: "Events" },
   { href: "/team", label: "Team" },
   { href: "/news", label: "News" },
-  { href: "/jobs", label: "ICT Jobs" },
   { href: "/contact", label: "Contact" },
   { href: "/register", label: "Register" },
   { href: "/join", label: "Join NCS" },

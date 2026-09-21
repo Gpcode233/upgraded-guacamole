@@ -38,7 +38,7 @@ export const slides: Slide[] = [
     },
     facts: [
       { label: "Theme", value: "Engineering the SouthEast's Digital Future" },
-      { label: "Date", value: "14–16 May 2027" },
+      { label: "Date", value: "13–15 November 2026" },
       {
         label: "Venue",
         value: "International Conference Centre, Awka",
@@ -53,7 +53,7 @@ export const slides: Slide[] = [
     title: "Featured speakers",
     summary:
       "Zonal leadership, researchers and industry partners taking the stage in Awka.",
-    meta: "14–16 May 2027 · Awka",
+    meta: "13–15 November 2026 · Awka",
     href: "/events/innovation-summit",
     cta: "See the full agenda",
     tone: "green",
@@ -245,18 +245,58 @@ export const chapters = [
 ];
 
 export const team = [
-  { name: "Chidiebere Ugwuegbulam", role: "Zonal Coordinator" },
+  {
+    name: "Chidiebere Ugwuegbulam",
+    role: "Zonal Coordinator",
+    photo: "/images/team/chidiebere-ugwuegbulam.jpeg",
+  },
   { name: "Dr. Silas Ori", role: "Secretary" },
-  { name: "Dr. Ijeoma Emeagi", role: "Director of Education" },
-  { name: "Dr. Ogbaga", role: "Zonal Working Committee" },
-  { name: "Mrs. Nneka Agu", role: "Enugu Representative" },
-  { name: "Mr. Nathaniel Nwamuo", role: "Abia Representative" },
+  {
+    name: "Dr. Ijeoma Emeagi",
+    role: "Director of Education",
+    photo: "/images/team/ijeoma-emeagi.png",
+  },
+  {
+    name: "Dr. Ogbaga",
+    role: "Zonal Working Committee",
+    photo: "/images/team/ogbaga.png",
+  },
+  {
+    name: "Mrs. Nneka Agu",
+    role: "Enugu Representative",
+    photo: "/images/team/nneka-agu.png",
+  },
+  {
+    name: "Mr. Nathaniel Nwamuo",
+    role: "Abia Representative",
+    photo: "/images/team/nathaniel-nwamuo.png",
+  },
   { name: "Dr. Ifeyinwa", role: "Anambra Representative" },
-  { name: "Engr. David Okeya", role: "Chairman, Anambra State" },
-  { name: "Dr. Oladimeji Saheed", role: "Chairman, Imo State" },
-  { name: "Dr. Emmanuel Ololo", role: "Member" },
-  { name: "Dr. Blessing Iduh", role: "Member" },
-  { name: "Mr. Sunny Onu", role: "Member" },
+  {
+    name: "Engr. David Okeya",
+    role: "Chairman, Anambra State",
+    photo: "/images/team/david-okeya.png",
+  },
+  {
+    name: "Dr. Oladimeji Saheed",
+    role: "Chairman, Imo State",
+    photo: "/images/team/oladimeji-saheed.png",
+  },
+  {
+    name: "Dr. Emmanuel Ololo",
+    role: "Member",
+    photo: "/images/team/emmanuel-ololo.png",
+  },
+  {
+    name: "Dr. Blessing Iduh",
+    role: "Member",
+    photo: "/images/team/blessing-iduh.jpeg",
+  },
+  {
+    name: "Mr. Sunny Onu",
+    role: "Member",
+    photo: "/images/team/sunny-onu.png",
+  },
   { name: "Dr. Adaora O.", role: "Member" },
 ];
 

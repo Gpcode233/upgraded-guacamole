@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import { PageShell } from "../components/page-shell";
 import { team } from "../lib/content";
 
@@ -17,6 +18,50 @@ function initials(name: string) {
     .join("");
 }
 
+function Portrait({ name, photo }: { name: string; photo?: string }) {
+  if (photo) {
+    return (
+      <div className="relative aspect-[4/5] w-full overflow-hidden rounded-xl bg-brand-soft">
+        <Image
+          src={photo}
+          alt={name}
+          fill
+          sizes="(min-width: 1024px) 320px, (min-width: 640px) 45vw, 90vw"
+          className="object-cover"
+        />
+      </div>
+    );
+  }
+
+  return (
+    <div className="grid aspect-[4/5] w-full place-items-center rounded-xl bg-brand-soft">
+      <span className="text-4xl font-semibold text-brand">
+        {initials(name)}
+      </span>
+    </div>
+  );
+}
+
+function MemberCard({
+  name,
+  role,
+  photo,
+}: {
+  name: string;
+  role: string;
+  photo?: string;
+}) {
+  return (
+    <div className="overflow-hidden rounded-xl border border-line p-4">
+      <Portrait name={name} photo={photo} />
+      <div className="mt-4 min-w-0">
+        <p className="truncate text-base font-semibold">{name}</p>
+        <p className="truncate text-sm text-muted">{role}</p>
+      </div>
+    </div>
+  );
+}
+
 export default function TeamPage() {
   const [coordinator, ...rest] = team;
 
@@ -26,39 +71,22 @@ export default function TeamPage() {
       title="Zonal Working Committee"
       intro="The people running the zone, chapter by chapter."
     >
-      <div className="rounded-xl border border-line bg-surface p-6 sm:p-8">
-        <div className="flex flex-wrap items-center gap-5">
-          <span
-            aria-hidden
-            className="grid h-16 w-16 place-items-center rounded-full bg-brand text-lg font-semibold text-white"
-          >
-            {initials(coordinator.name)}
-          </span>
-          <div>
-            <h2 className="text-xl font-semibold tracking-tight">
-              {coordinator.name}
-            </h2>
-            <p className="text-sm font-medium text-brand">{coordinator.role}</p>
-          </div>
-        </div>
+      <div className="mx-auto w-full max-w-[220px]">
+        <MemberCard
+          name={coordinator.name}
+          role={coordinator.role}
+          photo={coordinator.photo}
+        />
       </div>
 
-      <ul className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      <ul className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
         {rest.map((member) => (
-          <li
-            key={member.name}
-            className="flex items-center gap-4 rounded-xl border border-line p-5"
-          >
-            <span
-              aria-hidden
-              className="grid h-11 w-11 shrink-0 place-items-center rounded-full bg-brand-soft text-sm font-semibold text-brand"
-            >
-              {initials(member.name)}
-            </span>
-            <div className="min-w-0">
-              <p className="truncate text-sm font-semibold">{member.name}</p>
-              <p className="truncate text-sm text-muted">{member.role}</p>
-            </div>
+          <li key={member.name}>
+            <MemberCard
+              name={member.name}
+              role={member.role}
+              photo={member.photo}
+            />
           </li>
         ))}
       </ul>
