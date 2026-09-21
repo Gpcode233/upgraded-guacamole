@@ -140,7 +140,7 @@ export const slides: Slide[] = [
     summary:
       "A standing council of professors advising the zone on research direction, curriculum and industry partnership.",
     meta: "Now seated",
-    href: "/news/elders-forum",
+    href: "/news",
     cta: "Read the announcement",
     tone: "green",
     image: {
@@ -158,6 +158,7 @@ export type EventItem = {
   status: "Registration open" | "Waitlist" | "Save the date" | "Concluded";
   blurb: string;
   details: string[];
+  image?: { src: string; alt: string };
 };
 
 export const events: EventItem[] = [
@@ -174,6 +175,10 @@ export const events: EventItem[] = [
       "Chapter delegate accreditation on day one",
       "Awards for outstanding chapters and student branches",
     ],
+    image: {
+      src: "/images/zonal-assembly.jpg",
+      alt: "Delegates at a Greater SouthEast zonal assembly",
+    },
   },
   {
     slug: "rise-conference",
@@ -188,6 +193,10 @@ export const events: EventItem[] = [
       "Zonal delegation represented the SouthEast",
       "Recap available in the news feed",
     ],
+    image: {
+      src: "/images/summit-speakers.jpg",
+      alt: "Speakers at the NCS RISE Conference",
+    },
   },
   {
     slug: "innovation-summit",
@@ -203,6 +212,10 @@ export const events: EventItem[] = [
       "Startup showcase and investor roundtable",
       "State ICT commissioners' panel",
     ],
+    image: {
+      src: "/images/icc-awka-venue.jpg",
+      alt: "The International Conference Centre, Awka",
+    },
   },
 ];
 

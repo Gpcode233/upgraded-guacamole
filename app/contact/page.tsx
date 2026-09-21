@@ -9,7 +9,16 @@ export const metadata: Metadata = {
 
 export default function ContactPage() {
   return (
-    <PageShell eyebrow="Contact" title="Get in touch">
+    <PageShell
+      eyebrow="Contact"
+      title="Get in"
+      titleAccent="touch"
+      intro="The zonal secretariat, and the five chapters behind it."
+      image={{
+        src: "/images/zonal-assembly.jpg",
+        alt: "Delegates at a Greater SouthEast zonal assembly",
+      }}
+    >
       <div className="grid gap-6 lg:grid-cols-2">
         <Card>
           <h2 className="font-semibold">Zonal secretariat</h2>

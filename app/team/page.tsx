@@ -52,11 +52,11 @@ function MemberCard({
   photo?: string;
 }) {
   return (
-    <div className="overflow-hidden rounded-xl border border-line p-4">
+    <div className="group h-full overflow-hidden rounded-2xl border border-line p-4 transition-all hover:-translate-y-0.5 hover:border-brand/40 hover:shadow-lg hover:shadow-brand/5">
       <Portrait name={name} photo={photo} />
       <div className="mt-4 min-w-0">
-        <p className="truncate text-base font-semibold">{name}</p>
-        <p className="truncate text-sm text-muted">{role}</p>
+        <p className="text-base font-semibold leading-snug">{name}</p>
+        <p className="mt-0.5 text-sm leading-snug text-muted">{role}</p>
       </div>
     </div>
   );
@@ -68,18 +68,34 @@ export default function TeamPage() {
   return (
     <PageShell
       eyebrow="Team"
-      title="Zonal Working Committee"
+      title="Zonal Working"
+      titleAccent="Committee"
       intro="The people running the zone, chapter by chapter."
+      image={{
+        src: "/images/summit-speakers.jpg",
+        alt: "Speakers at a Greater SouthEast zone summit",
+      }}
     >
-      <div className="mx-auto w-full max-w-[220px]">
-        <MemberCard
-          name={coordinator.name}
-          role={coordinator.role}
-          photo={coordinator.photo}
-        />
+      <div className="grid gap-6 rounded-2xl border border-line bg-surface p-6 sm:grid-cols-[200px_1fr] sm:items-center sm:gap-8 sm:p-8">
+        <Portrait name={coordinator.name} photo={coordinator.photo} />
+        <div>
+          <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-brand">
+            {coordinator.role}
+          </p>
+          <p className="mt-2 text-2xl font-semibold tracking-tight sm:text-3xl">
+            {coordinator.name}
+          </p>
+          <blockquote className="mt-4 max-w-xl text-[15px] leading-7 text-muted">
+            &ldquo;The future will not be given to us — we will build it
+            together.&rdquo;
+          </blockquote>
+        </div>
       </div>
 
-      <ul className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+      <h2 className="mt-14 text-[11px] font-semibold uppercase tracking-[0.14em] text-muted">
+        The committee
+      </h2>
+      <ul className="mt-5 grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
         {rest.map((member) => (
           <li key={member.name}>
             <MemberCard

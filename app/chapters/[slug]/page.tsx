@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { PageShell } from "../../components/page-shell";
+import { CtaLink, PageShell } from "../../components/page-shell";
 import { chapters, contact } from "../../lib/content";
 
 export function generateStaticParams() {
@@ -30,11 +30,21 @@ export default async function ChapterPage(
   return (
     <PageShell
       eyebrow="Chapter"
-      title={chapter.name}
+      title={chapter.name.replace(/ Chapter$/, "")}
+      titleAccent="Chapter"
       intro={`Based in ${chapter.base}, serving members and student branches across the state.`}
+      image={{
+        src: "/images/zonal-assembly.jpg",
+        alt: "Delegates at a Greater SouthEast zonal assembly",
+      }}
+      facts={[
+        { label: "Base", value: chapter.base },
+        { label: "Lead", value: chapter.lead },
+        { label: "Role", value: chapter.role },
+      ]}
     >
       <div className="grid gap-6 lg:grid-cols-3">
-        <div className="rounded-xl border border-line bg-surface p-6 lg:col-span-2">
+        <div className="rounded-2xl border border-line bg-surface p-6 lg:col-span-2">
           <h2 className="text-sm font-semibold uppercase tracking-[0.12em] text-muted">
             Chapter leadership
           </h2>
@@ -47,21 +57,15 @@ export default async function ChapterPage(
           </p>
         </div>
 
-        <aside className="h-fit rounded-xl border border-line p-6">
+        <aside className="h-fit rounded-2xl border border-line p-6">
           <h2 className="text-sm font-semibold">Get involved</h2>
           <div className="mt-4 flex flex-col gap-3">
-            <Link
-              href="/join"
-              className="rounded-lg bg-brand px-4 py-2.5 text-center text-sm font-semibold text-white hover:opacity-90"
-            >
+            <CtaLink href="/join" className="w-full">
               Join this chapter
-            </Link>
-            <Link
-              href="/register"
-              className="rounded-lg border border-line px-4 py-2.5 text-center text-sm font-medium hover:bg-surface"
-            >
+            </CtaLink>
+            <CtaLink href="/register" variant="secondary" className="w-full">
               Register for an event
-            </Link>
+            </CtaLink>
             <a
               href={`mailto:${contact.email}`}
               className="text-center text-sm text-muted hover:text-foreground"

@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
-import Link from "next/link";
-import { PageShell } from "../components/page-shell";
+import { EventCard } from "../components/cards";
+import { CtaLink, PageShell } from "../components/page-shell";
 import { events } from "../lib/content";
 
 export const metadata: Metadata = {
@@ -10,57 +10,46 @@ export const metadata: Metadata = {
 };
 
 export default function EventsPage() {
+  const upcoming = events.filter((event) => event.status !== "Concluded");
+  const past = events.filter((event) => event.status === "Concluded");
+
   return (
     <PageShell
       eyebrow="Events"
-      title="Events and assemblies"
+      title="Events and"
+      titleAccent="assemblies"
       intro="Every zonal and national date on the calendar. Registration runs through one form."
+      image={{
+        src: "/images/icc-awka-venue.jpg",
+        alt: "The International Conference Centre, Awka",
+      }}
+      actions={<CtaLink href="/register">Register for an event</CtaLink>}
     >
-      <ul className="grid gap-5 md:grid-cols-2">
-        {events.map((event) => (
-          <li
-            key={event.slug}
-            className="flex flex-col rounded-xl border border-line bg-surface p-6"
-          >
-            <span
-              className={`inline-flex w-fit rounded-full px-2.5 py-1 text-[11px] font-semibold uppercase tracking-[0.1em] ${
-                event.status === "Concluded"
-                  ? "bg-line text-muted"
-                  : "bg-brand-soft text-brand"
-              }`}
-            >
-              {event.status}
-            </span>
-            <h2 className="mt-4 text-xl font-semibold tracking-tight">
-              <Link href={`/events/${event.slug}`} className="hover:text-brand">
-                {event.title}
-              </Link>
-            </h2>
-            <p className="mt-1.5 text-sm font-medium text-muted">
-              {event.date} · {event.location}
-            </p>
-            <p className="mt-3 flex-1 text-sm leading-6 text-muted">
-              {event.blurb}
-            </p>
-            <div className="mt-5 flex gap-3">
-              {event.status !== "Concluded" ? (
-                <Link
-                  href={`/register?event=${event.slug}`}
-                  className="rounded-lg bg-brand px-4 py-2.5 text-sm font-semibold text-white hover:opacity-90"
-                >
-                  Register
-                </Link>
-              ) : null}
-              <Link
-                href={`/events/${event.slug}`}
-                className="rounded-lg border border-line px-4 py-2.5 text-sm font-medium hover:bg-background"
-              >
-                Details
-              </Link>
-            </div>
+      <h2 className="text-[11px] font-semibold uppercase tracking-[0.14em] text-brand">
+        Coming up
+      </h2>
+      <ul className="mt-5 grid gap-5 md:grid-cols-2">
+        {upcoming.map((event) => (
+          <li key={event.slug}>
+            <EventCard event={event} />
           </li>
         ))}
       </ul>
+
+      {past.length ? (
+        <section className="mt-14 border-t border-line pt-10">
+          <h2 className="text-[11px] font-semibold uppercase tracking-[0.14em] text-muted">
+            Already held
+          </h2>
+          <ul className="mt-5 grid gap-5 md:grid-cols-2">
+            {past.map((event) => (
+              <li key={event.slug}>
+                <EventCard event={event} />
+              </li>
+            ))}
+          </ul>
+        </section>
+      ) : null}
     </PageShell>
   );
 }
