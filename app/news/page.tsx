@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import { NewsCard } from "../components/cards";
 import { PageShell } from "../components/page-shell";
 import { news } from "../lib/content";
 
@@ -10,21 +9,27 @@ export const metadata: Metadata = {
 
 export default function NewsPage() {
   return (
-    <PageShell
-      eyebrow="News"
-      title="Zonal"
-      titleAccent="announcements"
-      intro="What the zone has shipped, hosted and decided, newest first."
-      image={{
-        src: "/images/call-for-papers.jpg",
-        alt: "Call for papers artwork for the SouthEast Innovation Summit",
-      }}
-    >
-      <div className="max-w-3xl space-y-8">
+    <PageShell eyebrow="News" title="Zonal announcements">
+      <ul className="divide-y divide-line rounded-xl border border-line">
         {news.map((item) => (
-          <NewsCard key={item.slug} item={item} />
+          <li key={item.slug} className="p-6">
+            <time
+              dateTime={item.date}
+              className="text-xs font-medium uppercase tracking-[0.08em] text-muted"
+            >
+              {new Date(item.date).toLocaleDateString("en-NG", {
+                year: "numeric",
+                month: "long",
+                day: "numeric",
+              })}
+            </time>
+            <h2 className="mt-2 text-lg font-semibold tracking-tight">
+              {item.title}
+            </h2>
+            <p className="mt-2 text-sm leading-6 text-muted">{item.excerpt}</p>
+          </li>
         ))}
-      </div>
+      </ul>
     </PageShell>
   );
 }

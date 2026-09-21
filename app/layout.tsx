@@ -1,24 +1,6 @@
 import type { Metadata } from "next";
-import { Baloo_2 } from "next/font/google";
-import localFont from "next/font/local";
 import "./globals.css";
-import { Footer } from "./components/footer";
 import { Navbar } from "./components/navbar";
-
-const baloo = Baloo_2({
-  subsets: ["latin"],
-  weight: ["500", "700", "800"],
-  display: "swap",
-  variable: "--font-baloo",
-});
-
-const rotifera = localFont({
-  src: "../public/fonts/rotifera-font/RotiferaDEMO-BlackItalic-BF67eb4c233bf52.ttf",
-  weight: "900",
-  style: "italic",
-  display: "swap",
-  variable: "--font-rotifera",
-});
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://southeastzone.org.ng"),
@@ -39,10 +21,20 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html
-      lang="en"
-      className={`h-full antialiased ${baloo.variable} ${rotifera.variable}`}
-    >
+    <html lang="en" className="h-full antialiased">
+      <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link
+          rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossOrigin="anonymous"
+        />
+        <link
+          rel="stylesheet"
+          href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&display=swap"
+          precedence="default"
+        />
+      </head>
       <body className="min-h-full font-sans flex flex-col">
         <a
           href="#main"
@@ -54,7 +46,6 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         <main id="main" className="flex-1">
           {children}
         </main>
-        <Footer />
       </body>
     </html>
   );

@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { CtaLink, PageShell } from "../../components/page-shell";
+import { PageShell } from "../../components/page-shell";
 import { events } from "../../lib/content";
 
 export function generateStaticParams() {
@@ -27,19 +27,6 @@ export default async function EventPage(props: PageProps<"/events/[slug]">) {
       eyebrow={`${event.date} · ${event.location}`}
       title={event.title}
       intro={event.blurb}
-      image={event.image}
-      facts={[
-        { label: "Date", value: event.date },
-        { label: "Location", value: event.location },
-        { label: "Status", value: event.status },
-      ]}
-      actions={
-        event.status !== "Concluded" ? (
-          <CtaLink href={`/register?event=${event.slug}`} variant="onPhoto">
-            Register for this event
-          </CtaLink>
-        ) : null
-      }
     >
       <div className="grid gap-8 lg:grid-cols-3">
         <div className="lg:col-span-2">
@@ -59,7 +46,7 @@ export default async function EventPage(props: PageProps<"/events/[slug]">) {
           </ul>
         </div>
 
-        <aside className="h-fit rounded-2xl border border-line bg-surface p-6">
+        <aside className="h-fit rounded-xl border border-line bg-surface p-6">
           <p className="text-sm font-semibold">{event.status}</p>
           <p className="mt-2 text-sm leading-6 text-muted">
             {event.status === "Concluded"
@@ -67,16 +54,19 @@ export default async function EventPage(props: PageProps<"/events/[slug]">) {
               : "Places are confirmed by email after registration."}
           </p>
           {event.status !== "Concluded" ? (
-            <CtaLink
+            <Link
               href={`/register?event=${event.slug}`}
-              className="mt-5 w-full"
+              className="mt-5 block rounded-lg bg-brand px-4 py-3 text-center text-sm font-semibold text-white hover:opacity-90"
             >
               Register for this event
-            </CtaLink>
+            </Link>
           ) : (
-            <CtaLink href="/news" variant="secondary" className="mt-5 w-full">
+            <Link
+              href="/news"
+              className="mt-5 block rounded-lg border border-line px-4 py-3 text-center text-sm font-medium hover:bg-background"
+            >
               Read the recap
-            </CtaLink>
+            </Link>
           )}
           <Link
             href="/events"

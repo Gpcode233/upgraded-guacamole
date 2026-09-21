@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Card, CtaLink, PageShell, SectionHeading } from "../components/page-shell";
+import { Card, PageShell } from "../components/page-shell";
 import { contact } from "../lib/content";
 
 export const metadata: Metadata = {
@@ -27,18 +27,8 @@ export default function JoinPage() {
   return (
     <PageShell
       eyebrow="Membership"
-      title="Join the Nigeria Computer"
-      titleAccent="Society"
+      title="Join the Nigeria Computer Society"
       intro="500 new members is the target for the zone by July 2026, across Abia, Anambra, Ebonyi, Enugu and Imo."
-      image={{
-        src: "/images/membership-drive.jpg",
-        alt: "Members at a Greater SouthEast zone membership drive",
-      }}
-      actions={
-        <CtaLink href={`mailto:${contact.email}`} variant="onPhoto">
-          Talk to the secretariat
-        </CtaLink>
-      }
     >
       <div className="grid gap-4 sm:grid-cols-3">
         {grades.map((grade) => (
@@ -50,7 +40,9 @@ export default function JoinPage() {
       </div>
 
       <Card className="mt-8">
-        <SectionHeading>How to sign up</SectionHeading>
+        <h2 className="text-lg font-semibold tracking-tight">
+          How to sign up
+        </h2>
         <ol className="mt-4 list-decimal space-y-2 pl-5 text-sm leading-6 text-muted">
           <li>Complete the national NCS membership application.</li>
           <li>Select the Greater SouthEast zone and your state chapter.</li>

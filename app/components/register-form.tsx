@@ -2,11 +2,6 @@
 
 import { useState } from "react";
 import { events } from "../lib/content";
-import { Arrow } from "./page-shell";
-
-const controlClass =
-  "rounded-lg border border-line bg-background px-3.5 py-3 text-[15px] transition-colors aria-[invalid=true]:border-brand-red";
-const labelClass = "text-sm font-medium";
 
 type Errors = Partial<Record<"name" | "email" | "event", string>>;
 
@@ -47,24 +42,9 @@ export function RegisterForm({ defaultEvent }: { defaultEvent?: string }) {
     return (
       <div
         role="status"
-        className="rounded-2xl border border-line bg-surface p-8 text-center sm:p-10"
+        className="rounded-xl border border-line bg-surface p-8 text-center"
       >
-        <span
-          aria-hidden
-          className="mx-auto grid h-12 w-12 place-items-center rounded-full bg-brand-soft text-brand"
-        >
-          <svg viewBox="0 0 16 16" className="h-5 w-5">
-            <path
-              d="m3.5 8.5 3 3 6-7"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="1.8"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-          </svg>
-        </span>
-        <h2 className="mt-5 text-2xl font-semibold tracking-tight">
+        <h2 className="text-xl font-semibold tracking-tight">
           Registration recorded
         </h2>
         <p className="mx-auto mt-3 max-w-md text-sm leading-6 text-muted">
@@ -92,7 +72,7 @@ export function RegisterForm({ defaultEvent }: { defaultEvent?: string }) {
     <form
       onSubmit={onSubmit}
       noValidate
-      className="rounded-2xl border border-line bg-surface p-6 sm:p-8"
+      className="rounded-xl border border-line bg-surface p-6 sm:p-8"
     >
       <div className="grid gap-5 sm:grid-cols-2">
         <Field
@@ -127,7 +107,7 @@ export function RegisterForm({ defaultEvent }: { defaultEvent?: string }) {
         />
 
         <div className="flex flex-col gap-1.5">
-          <label htmlFor="event" className={labelClass}>
+          <label htmlFor="event" className="text-sm font-medium">
             Event <span className="text-muted">*</span>
           </label>
           <select
@@ -135,7 +115,7 @@ export function RegisterForm({ defaultEvent }: { defaultEvent?: string }) {
             value={values.event}
             aria-invalid={Boolean(errors.event)}
             onChange={(element) => set("event")(element.target.value)}
-            className={controlClass}
+            className="rounded-lg border border-line bg-background px-3 py-2.5 text-sm"
           >
             <option value="">Select an event</option>
             {openEvents.map((event) => (
@@ -145,21 +125,21 @@ export function RegisterForm({ defaultEvent }: { defaultEvent?: string }) {
             ))}
           </select>
           {errors.event ? (
-            <p className="text-xs font-medium text-brand-red">
+            <p className="text-xs text-[#d00000] dark:text-[#ff9c9c]">
               {errors.event}
             </p>
           ) : null}
         </div>
 
         <div className="flex flex-col gap-1.5">
-          <label htmlFor="grade" className={labelClass}>
+          <label htmlFor="grade" className="text-sm font-medium">
             Membership grade
           </label>
           <select
             id="grade"
             value={values.grade}
             onChange={(element) => set("grade")(element.target.value)}
-            className={controlClass}
+            className="rounded-lg border border-line bg-background px-3 py-2.5 text-sm"
           >
             {[
               "Professional member",
@@ -173,7 +153,7 @@ export function RegisterForm({ defaultEvent }: { defaultEvent?: string }) {
         </div>
 
         <div className="flex flex-col gap-1.5 sm:col-span-2">
-          <label htmlFor="notes" className={labelClass}>
+          <label htmlFor="notes" className="text-sm font-medium">
             Anything we should know?
           </label>
           <textarea
@@ -181,23 +161,17 @@ export function RegisterForm({ defaultEvent }: { defaultEvent?: string }) {
             rows={4}
             value={values.notes}
             onChange={(element) => set("notes")(element.target.value)}
-            className={controlClass}
+            className="rounded-lg border border-line bg-background px-3 py-2.5 text-sm"
           />
         </div>
       </div>
 
-      <div className="mt-7 flex flex-col gap-3 border-t border-line pt-6 sm:flex-row sm:items-center sm:justify-between">
-        <p className="text-xs text-muted">
-          Fields marked <span className="font-semibold">*</span> are required.
-        </p>
-        <button
-          type="submit"
-          className="inline-flex w-full items-center justify-center gap-2 rounded-lg bg-brand px-5 py-3 text-sm font-semibold text-white transition-all hover:opacity-90 sm:w-auto"
-        >
-          Submit registration
-          <Arrow />
-        </button>
-      </div>
+      <button
+        type="submit"
+        className="mt-7 w-full rounded-lg bg-brand px-5 py-3 text-sm font-semibold text-white hover:opacity-90 sm:w-auto"
+      >
+        Submit registration
+      </button>
     </form>
   );
 }
@@ -221,7 +195,7 @@ function Field({
 }) {
   return (
     <div className="flex flex-col gap-1.5">
-      <label htmlFor={id} className={labelClass}>
+      <label htmlFor={id} className="text-sm font-medium">
         {label} {required ? <span className="text-muted">*</span> : null}
       </label>
       <input
@@ -231,10 +205,10 @@ function Field({
         aria-invalid={Boolean(error)}
         aria-describedby={error ? `${id}-error` : undefined}
         onChange={(element) => onChange(element.target.value)}
-        className={controlClass}
+        className="rounded-lg border border-line bg-background px-3 py-2.5 text-sm"
       />
       {error ? (
-        <p id={`${id}-error`} className="text-xs font-medium text-brand-red">
+        <p id={`${id}-error`} className="text-xs text-[#d00000] dark:text-[#ff9c9c]">
           {error}
         </p>
       ) : null}

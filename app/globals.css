@@ -1,7 +1,13 @@
 @import "tailwindcss";
 
-/* Both faces are loaded and self-hosted by next/font in app/layout.tsx, which
-   exposes them as --font-baloo and --font-rotifera. */
+@font-face {
+  font-family: "Rotifera Black";
+  src: url("/fonts/rotifera-font/RotiferaDEMO-BlackItalic-BF67eb4c233bf52.ttf")
+    format("truetype");
+  font-weight: 900;
+  font-style: italic;
+  font-display: swap;
+}
 
 :root {
   --background: #ffffff;
@@ -54,12 +60,8 @@
     -apple-system, "Segoe UI", Roboto, sans-serif;
   --font-mono: ui-monospace, "SFMono-Regular", "Cascadia Code", Consolas,
     "Liberation Mono", monospace;
-  --font-display: var(--font-baloo), ui-rounded, "Segoe UI", sans-serif;
-  --font-script: var(--font-rotifera), Georgia, "Times New Roman", serif;
-}
-
-html {
-  scroll-behavior: smooth;
+  --font-display: "Baloo 2", ui-rounded, "Segoe UI", sans-serif;
+  --font-script: "Rotifera Black", Georgia, "Times New Roman", serif;
 }
 
 body {
@@ -69,13 +71,8 @@ body {
 
 h1,
 h2,
-h3,
-h4 {
+h3 {
   font-family: var(--font-display);
-}
-
-p {
-  text-wrap: pretty;
 }
 
 .font-script {

@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { CtaLink, Pill } from "./page-shell";
+import Link from "next/link";
 import { useCallback, useEffect, useRef, useState } from "react";
 import type { Slide } from "../lib/content";
 
@@ -274,7 +274,9 @@ function SlideBody({
         />
 
         <div className="relative z-10 mx-auto max-w-2xl">
-          <Pill onPhoto>{slide.eyebrow}</Pill>
+          <span className="inline-flex rounded-full bg-white/15 px-2.5 py-1 text-[11px] font-semibold uppercase tracking-[0.1em] text-white ring-1 ring-white/25 backdrop-blur-sm">
+            {slide.eyebrow}
+          </span>
           <h2 className="mt-5 text-3xl font-semibold leading-[1.15] tracking-tight text-balance text-white sm:text-4xl md:text-5xl">
             {slide.title}
             {slide.titleAccent ? (
@@ -304,7 +306,7 @@ function SlideBody({
         ) : null}
 
         <div className="relative z-10 flex flex-wrap items-center justify-center gap-x-5 gap-y-3">
-          <CtaLink href={slide.href}>{slide.cta}</CtaLink>
+          <SlideCta href={slide.href} label={slide.cta} />
         </div>
       </>
     );
@@ -408,7 +410,7 @@ function SlideBody({
         ) : null}
 
         <div className="relative z-10 flex flex-wrap items-center justify-center gap-x-5 gap-y-3">
-          <CtaLink href={slide.href}>{slide.cta}</CtaLink>
+          <SlideCta href={slide.href} label={slide.cta} />
           <p
             className={`text-sm font-medium ${
               hasImage ? "text-white/80" : "text-muted"
@@ -474,7 +476,7 @@ function SlideBody({
       </div>
 
       <div className="relative z-10 flex flex-wrap items-center justify-center gap-x-5 gap-y-3">
-        <CtaLink href={slide.href}>{slide.cta}</CtaLink>
+        <SlideCta href={slide.href} label={slide.cta} />
         {slide.meta ? (
           <p
             className={`text-sm font-medium ${
@@ -497,6 +499,44 @@ function initials(name: string) {
     .slice(0, 2)
     .map((part) => part[0])
     .join("");
+}
+
+function SlideCta({ href, label }: { href: string; label: string }) {
+  const className =
+    "inline-flex items-center gap-2 rounded-lg bg-brand px-5 py-3 text-sm font-semibold text-white transition-opacity hover:opacity-90";
+  const arrow = (
+    <svg aria-hidden viewBox="0 0 16 16" className="h-3.5 w-3.5">
+      <path
+        d="M3 8h9M8.5 4.5 12 8l-3.5 3.5"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.6"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+
+  if (href.startsWith("http")) {
+    return (
+      <a
+        href={href}
+        target="_blank"
+        rel="noreferrer noopener"
+        className={className}
+      >
+        {label}
+        {arrow}
+      </a>
+    );
+  }
+
+  return (
+    <Link href={href} className={className}>
+      {label}
+      {arrow}
+    </Link>
+  );
 }
 
 function ArrowButton({

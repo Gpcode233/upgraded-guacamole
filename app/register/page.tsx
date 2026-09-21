@@ -15,13 +15,8 @@ export default async function RegisterPage(props: PageProps<"/register">) {
   return (
     <PageShell
       eyebrow="Registration"
-      title="Register for an"
-      titleAccent="event"
+      title="Register for an event"
       intro="One form for every zonal and national date. Confirmation arrives by email."
-      image={{
-        src: "/images/icc-awka-venue.jpg",
-        alt: "The International Conference Centre, Awka",
-      }}
     >
       <div className="max-w-3xl">
         <RegisterForm defaultEvent={defaultEvent} />

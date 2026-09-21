@@ -1,32 +1,23 @@
-import { CtaLink, PageShell } from "./components/page-shell";
+import Link from "next/link";
 
 export default function NotFound() {
   return (
-    <PageShell
-      eyebrow="404"
-      title="Page not"
-      titleAccent="found"
-      intro="That page doesn't exist. Try the home page, or use the menu above."
-      actions={
-        <CtaLink href="/" variant="onPhoto">
-          Back to home
-        </CtaLink>
-      }
-    >
-      <nav aria-label="Popular pages" className="flex flex-wrap gap-3">
-        <CtaLink href="/events" variant="secondary">
-          Events
-        </CtaLink>
-        <CtaLink href="/chapters" variant="secondary">
-          Chapters
-        </CtaLink>
-        <CtaLink href="/news" variant="secondary">
-          News
-        </CtaLink>
-        <CtaLink href="/join" variant="secondary">
-          Join NCS
-        </CtaLink>
-      </nav>
-    </PageShell>
+    <div className="mx-auto flex w-full max-w-6xl flex-col items-center px-4 py-24 text-center sm:px-6">
+      <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-brand">
+        404
+      </p>
+      <h1 className="mt-2 text-3xl font-semibold tracking-tight">
+        Page not found
+      </h1>
+      <p className="mt-3 max-w-md text-sm leading-6 text-muted">
+        That page doesn&apos;t exist. Try the home page, or use the menu above.
+      </p>
+      <Link
+        href="/"
+        className="mt-7 rounded-lg bg-brand px-5 py-3 text-sm font-semibold text-white hover:opacity-90"
+      >
+        Back to home
+      </Link>
+    </div>
   );
 }
