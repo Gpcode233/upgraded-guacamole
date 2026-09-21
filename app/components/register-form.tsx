@@ -125,7 +125,7 @@ export function RegisterForm({ defaultEvent }: { defaultEvent?: string }) {
             ))}
           </select>
           {errors.event ? (
-            <p className="text-xs text-[#be123c] dark:text-[#fda4af]">
+            <p className="text-xs text-[#d00000] dark:text-[#ff9c9c]">
               {errors.event}
             </p>
           ) : null}
@@ -208,7 +208,7 @@ function Field({
         className="rounded-lg border border-line bg-background px-3 py-2.5 text-sm"
       />
       {error ? (
-        <p id={`${id}-error`} className="text-xs text-[#be123c] dark:text-[#fda4af]">
+        <p id={`${id}-error`} className="text-xs text-[#d00000] dark:text-[#ff9c9c]">
           {error}
         </p>
       ) : null}

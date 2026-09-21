@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { useCallback, useEffect, useRef, useState } from "react";
 import type { Slide } from "../lib/content";
@@ -7,21 +8,25 @@ import type { Slide } from "../lib/content";
 const AUTOPLAY_MS = 7000;
 
 const tones: Record<Slide["tone"], { chip: string; glow: string }> = {
-  indigo: {
-    chip: "bg-[#1b3fa0]/10 text-[#1b3fa0] dark:bg-[#7f9cff]/15 dark:text-[#9db4ff]",
-    glow: "from-[#1b3fa0]/25 via-[#1b3fa0]/5 to-transparent",
+  green: {
+    chip: "bg-[#005417]/10 text-[#005417] dark:bg-[#2f8f5b]/20 dark:text-[#8fd6ac]",
+    glow: "from-[#005417]/25 via-[#005417]/5 to-transparent",
   },
-  emerald: {
-    chip: "bg-[#0f766e]/10 text-[#0f766e] dark:bg-[#2dd4bf]/15 dark:text-[#5eead4]",
-    glow: "from-[#0f766e]/25 via-[#0f766e]/5 to-transparent",
+  lime: {
+    chip: "bg-[#a5d014]/20 text-[#5a7a0a] dark:bg-[#a5d014]/20 dark:text-[#c8e878]",
+    glow: "from-[#a5d014]/30 via-[#a5d014]/5 to-transparent",
   },
-  amber: {
-    chip: "bg-[#b45309]/10 text-[#b45309] dark:bg-[#fbbf24]/15 dark:text-[#fcd34d]",
-    glow: "from-[#b45309]/25 via-[#b45309]/5 to-transparent",
+  red: {
+    chip: "bg-[#d00000]/10 text-[#d00000] dark:bg-[#d00000]/20 dark:text-[#ff9c9c]",
+    glow: "from-[#d00000]/25 via-[#d00000]/5 to-transparent",
   },
-  rose: {
-    chip: "bg-[#be123c]/10 text-[#be123c] dark:bg-[#fb7185]/15 dark:text-[#fda4af]",
-    glow: "from-[#be123c]/25 via-[#be123c]/5 to-transparent",
+  blue: {
+    chip: "bg-[#0851b1]/10 text-[#0851b1] dark:bg-[#0851b1]/20 dark:text-[#9dc0f0]",
+    glow: "from-[#0851b1]/25 via-[#0851b1]/5 to-transparent",
+  },
+  yellow: {
+    chip: "bg-[#ffcc00]/20 text-[#7a5d00] dark:bg-[#ffcc00]/20 dark:text-[#ffcc00]",
+    glow: "from-[#ffcc00]/25 via-[#ffcc00]/5 to-transparent",
   },
 };
 
@@ -106,23 +111,19 @@ export function Carousel({
           role="group"
           aria-roledescription="slide"
           aria-label={`${index + 1} of ${count}`}
-          className={`relative flex h-full flex-col items-center justify-center gap-8 overflow-hidden p-6 py-20 text-center motion-safe:animate-[slide-in_0.4s_ease-out] sm:px-16 sm:py-20 ${
+          className={`relative isolate flex h-full flex-col items-center justify-center gap-8 overflow-hidden p-6 py-20 text-center motion-safe:animate-[slide-in_0.4s_ease-out] sm:px-16 sm:py-20 ${
             fullBleed ? "" : "min-h-[340px] sm:min-h-[360px]"
           }`}
         >
-          <SlideBody
-            slide={current}
-            active
-            tone={tones[current.tone]}
-          />
+          <SlideBody slide={current} tone={tones[current.tone]} />
         </article>
 
         {count > 1 ? (
           <>
-            <div className="absolute inset-y-0 left-2 z-10 flex items-center sm:left-4">
+            <div className="absolute inset-y-0 left-2 z-20 flex items-center sm:left-4">
               <ArrowButton label="Previous slide" onClick={() => go(index - 1)} />
             </div>
-            <div className="absolute inset-y-0 right-2 z-10 flex items-center sm:right-4">
+            <div className="absolute inset-y-0 right-2 z-20 flex items-center sm:right-4">
               <ArrowButton
                 label="Next slide"
                 flipped
@@ -130,7 +131,7 @@ export function Carousel({
               />
             </div>
 
-            <div className="absolute inset-x-0 bottom-4 z-10 flex flex-col items-center gap-2 sm:bottom-5">
+            <div className="absolute inset-x-0 bottom-4 z-20 flex flex-col items-center gap-2 sm:bottom-5">
               <div className="flex items-center gap-3 rounded-full bg-black/45 px-3 py-2 shadow-md ring-1 ring-white/20 backdrop-blur-sm">
                 <div
                   className="flex items-center gap-2"
@@ -165,62 +166,44 @@ export function Carousel({
   );
 }
 
-function HeroVideo({
-  video,
-}: {
-  video: NonNullable<Slide["video"]>;
-}) {
-  const ref = useRef<HTMLVideoElement>(null);
-
-  useEffect(() => {
-    ref.current?.play().catch(() => {});
-  }, []);
-
-  return (
-    <video
-      ref={ref}
-      className="absolute inset-0 -z-10 h-full w-full object-cover"
-      src={video.src}
-      poster={video.poster}
-      autoPlay
-      muted
-      loop
-      playsInline
-      preload="auto"
-      onEnded={(event) => {
-        const element = event.currentTarget;
-        element.currentTime = 0;
-        element.play().catch(() => {});
-      }}
-      aria-hidden
-    />
-  );
-}
-
 function SlideBody({
   slide,
-  active,
   tone,
 }: {
   slide: Slide;
-  active: boolean;
   tone: { chip: string; glow: string };
 }) {
-  if (slide.layout === "video-hero") {
+  const hasImage = Boolean(slide.image);
+
+  if (slide.layout === "image-hero") {
     return (
       <>
-        {slide.video && active ? <HeroVideo video={slide.video} /> : null}
+        {slide.image ? (
+          <Image
+            src={slide.image.src}
+            alt={slide.image.alt}
+            fill
+            priority
+            sizes="100vw"
+            className="absolute inset-0 z-0 object-cover"
+          />
+        ) : null}
         <div
           aria-hidden
-          className="absolute inset-0 -z-10 bg-gradient-to-t from-black/85 via-black/55 to-black/30"
+          className="absolute inset-0 z-0 bg-gradient-to-t from-black/90 via-black/60 to-black/35"
         />
 
-        <div className="mx-auto max-w-2xl">
-          <span className="inline-flex rounded-full bg-white/15 px-2.5 py-1 text-[11px] font-semibold uppercase tracking-[0.1em] text-white ring-1 ring-white/25">
+        <div className="relative z-10 mx-auto max-w-2xl">
+          <span className="inline-flex rounded-full bg-white/15 px-2.5 py-1 text-[11px] font-semibold uppercase tracking-[0.1em] text-white ring-1 ring-white/25 backdrop-blur-sm">
             {slide.eyebrow}
           </span>
           <h2 className="mt-5 text-3xl font-semibold leading-[1.15] tracking-tight text-balance text-white sm:text-4xl md:text-5xl">
             {slide.title}
+            {slide.titleAccent ? (
+              <span className="font-script ml-2 text-accent">
+                {slide.titleAccent}
+              </span>
+            ) : null}
           </h2>
           <p className="mx-auto mt-4 max-w-xl text-base leading-7 text-white/80 sm:text-lg sm:leading-8">
             {slide.summary}
@@ -228,7 +211,7 @@ function SlideBody({
         </div>
 
         {slide.facts?.length ? (
-          <dl className="mx-auto grid max-w-2xl gap-4 border-t border-white/20 pt-5 sm:grid-cols-3">
+          <dl className="relative z-10 mx-auto grid max-w-2xl gap-4 border-t border-white/20 pt-5 sm:grid-cols-3">
             {slide.facts.map((fact) => (
               <div key={fact.label}>
                 <dt className="text-[11px] font-semibold uppercase tracking-[0.1em] text-white/60">
@@ -242,7 +225,7 @@ function SlideBody({
           </dl>
         ) : null}
 
-        <div className="flex flex-wrap items-center justify-center gap-x-5 gap-y-3">
+        <div className="relative z-10 flex flex-wrap items-center justify-center gap-x-5 gap-y-3">
           <SlideCta href={slide.href} label={slide.cta} />
         </div>
       </>
@@ -252,39 +235,92 @@ function SlideBody({
   if (slide.layout === "speakers") {
     return (
       <>
-        <div className="mx-auto max-w-2xl">
+        {slide.image ? (
+          <Image
+            src={slide.image.src}
+            alt={slide.image.alt}
+            fill
+            priority
+            sizes="100vw"
+            className="absolute inset-0 z-0 object-cover"
+          />
+        ) : null}
+        <div
+          aria-hidden
+          className={`absolute inset-0 z-0 ${
+            hasImage
+              ? "bg-gradient-to-t from-black/92 via-black/80 to-black/60"
+              : ""
+          }`}
+        />
+
+        <div className="relative z-10 mx-auto max-w-2xl">
           <span
-            className={`inline-flex rounded-full px-2.5 py-1 text-[11px] font-semibold uppercase tracking-[0.1em] ${tone.chip}`}
+            className={`inline-flex rounded-full px-2.5 py-1 text-[11px] font-semibold uppercase tracking-[0.1em] ${
+              hasImage
+                ? "bg-white/15 text-white ring-1 ring-white/25 backdrop-blur-sm"
+                : tone.chip
+            }`}
           >
             {slide.eyebrow}
           </span>
-          <h2 className="mt-5 text-3xl font-semibold leading-[1.15] tracking-tight text-balance sm:text-4xl">
+          <h2
+            className={`mt-5 text-3xl font-semibold leading-[1.15] tracking-tight text-balance sm:text-4xl ${
+              hasImage ? "text-white" : ""
+            }`}
+          >
             {slide.title}
           </h2>
-          <p className="mt-3 text-base leading-7 text-muted">
+          <p
+            className={`mt-3 text-base leading-7 ${
+              hasImage ? "text-white/80" : "text-muted"
+            }`}
+          >
             {slide.summary}
           </p>
         </div>
 
         {slide.speakers?.length ? (
-          <ul className="mx-auto grid max-w-2xl gap-3 text-left sm:grid-cols-2">
+          <ul className="relative z-10 mx-auto grid max-w-2xl gap-3 text-left sm:grid-cols-2">
             {slide.speakers.map((speaker) => (
               <li
                 key={speaker.name}
-                className="flex items-center gap-3 rounded-xl border border-line bg-background/60 p-3"
+                className={`flex items-center gap-3 rounded-xl border p-3 ${
+                  hasImage
+                    ? "border-white/15 bg-black/50 backdrop-blur-md shadow-sm"
+                    : "border-line bg-background/60"
+                }`}
               >
                 <span
                   aria-hidden
-                  className="grid h-11 w-11 shrink-0 place-items-center rounded-full bg-brand-soft text-sm font-semibold text-brand"
+                  className={`grid h-11 w-11 shrink-0 place-items-center rounded-full text-sm font-semibold ${
+                    hasImage
+                      ? "bg-brand text-white ring-1 ring-white/20"
+                      : "bg-brand-soft text-brand"
+                  }`}
                 >
                   {initials(speaker.name)}
                 </span>
                 <div className="min-w-0">
-                  <p className="truncate text-sm font-semibold">
+                  <p
+                    className={`truncate text-sm font-semibold ${
+                      hasImage ? "text-white" : ""
+                    }`}
+                  >
                     {speaker.name}
                   </p>
-                  <p className="truncate text-xs text-muted">{speaker.role}</p>
-                  <p className="truncate text-xs font-medium text-brand">
+                  <p
+                    className={`truncate text-xs ${
+                      hasImage ? "text-white/70" : "text-muted"
+                    }`}
+                  >
+                    {speaker.role}
+                  </p>
+                  <p
+                    className={`truncate text-xs font-medium ${
+                      hasImage ? "text-accent" : "text-brand"
+                    }`}
+                  >
                     {speaker.topic}
                   </p>
                 </div>
@@ -293,9 +329,15 @@ function SlideBody({
           </ul>
         ) : null}
 
-        <div className="flex flex-wrap items-center justify-center gap-x-5 gap-y-3">
+        <div className="relative z-10 flex flex-wrap items-center justify-center gap-x-5 gap-y-3">
           <SlideCta href={slide.href} label={slide.cta} />
-          <p className="text-sm font-medium text-muted">{slide.meta}</p>
+          <p
+            className={`text-sm font-medium ${
+              hasImage ? "text-white/80" : "text-muted"
+            }`}
+          >
+            {slide.meta}
+          </p>
         </div>
       </>
     );
@@ -303,23 +345,67 @@ function SlideBody({
 
   return (
     <>
-      <div className="mx-auto max-w-2xl">
+      {slide.image ? (
+        <Image
+          src={slide.image.src}
+          alt={slide.image.alt}
+          fill
+          priority
+          sizes="100vw"
+          className="absolute inset-0 z-0 object-cover"
+        />
+      ) : null}
+      <div
+        aria-hidden
+        className={`absolute inset-0 z-0 ${
+          hasImage
+            ? "bg-gradient-to-t from-black/90 via-black/65 to-black/40"
+            : ""
+        }`}
+      />
+
+      <div className="relative z-10 mx-auto max-w-2xl">
         <span
-          className={`inline-flex rounded-full px-2.5 py-1 text-[11px] font-semibold uppercase tracking-[0.1em] ${tone.chip}`}
+          className={`inline-flex rounded-full px-2.5 py-1 text-[11px] font-semibold uppercase tracking-[0.1em] ${
+            hasImage
+              ? "bg-white/15 text-white ring-1 ring-white/25 backdrop-blur-sm"
+              : tone.chip
+          }`}
         >
           {slide.eyebrow}
         </span>
-        <h2 className="mt-5 text-3xl font-semibold leading-[1.15] tracking-tight text-balance sm:text-4xl md:text-5xl">
+        <h2
+          className={`mt-5 text-3xl font-semibold leading-[1.15] tracking-tight text-balance sm:text-4xl md:text-5xl ${
+            hasImage ? "text-white" : ""
+          }`}
+        >
           {slide.title}
+          {slide.titleAccent ? (
+            <span className="font-script ml-2 text-accent">
+              {slide.titleAccent}
+            </span>
+          ) : null}
         </h2>
-        <p className="mx-auto mt-4 max-w-xl text-base leading-7 text-muted sm:text-lg sm:leading-8">
+        <p
+          className={`mx-auto mt-4 max-w-xl text-base leading-7 sm:text-lg sm:leading-8 ${
+            hasImage ? "text-white/85" : "text-muted"
+          }`}
+        >
           {slide.summary}
         </p>
       </div>
 
-      <div className="flex flex-wrap items-center justify-center gap-x-5 gap-y-3">
+      <div className="relative z-10 flex flex-wrap items-center justify-center gap-x-5 gap-y-3">
         <SlideCta href={slide.href} label={slide.cta} />
-        <p className="text-sm font-medium text-muted">{slide.meta}</p>
+        {slide.meta ? (
+          <p
+            className={`text-sm font-medium ${
+              hasImage ? "text-white/80" : "text-muted"
+            }`}
+          >
+            {slide.meta}
+          </p>
+        ) : null}
       </div>
     </>
   );

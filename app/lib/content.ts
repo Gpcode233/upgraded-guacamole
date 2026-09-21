@@ -1,17 +1,18 @@
 export type Slide = {
   id: string;
   kind: "event" | "announcement" | "deadline" | "membership";
-  layout?: "default" | "video-hero" | "speakers";
+  layout?: "default" | "image-hero" | "speakers";
   eyebrow: string;
   title: string;
+  titleAccent?: string;
   summary: string;
   meta: string;
   href: string;
   cta: string;
-  tone: "indigo" | "emerald" | "amber" | "rose";
-  video?: {
+  tone: "green" | "lime" | "red" | "blue" | "yellow";
+  image?: {
     src: string;
-    poster?: string;
+    alt: string;
   };
   facts?: { label: string; value: string }[];
   speakers?: { name: string; role: string; topic: string }[];
@@ -21,24 +22,26 @@ export const slides: Slide[] = [
   {
     id: "innovation-summit-hero",
     kind: "event",
-    layout: "video-hero",
+    layout: "image-hero",
     eyebrow: "Zonal summit · Registration open",
-    title: "SouthEast Innovation Summit 2026",
+    title: "SouthEast Innovation",
+    titleAccent: "Summit",
     summary:
       "Founders, researchers and state ICT leadership on what the zone ships next.",
     meta: "14–16 May 2027",
     href: "/events/innovation-summit",
     cta: "Register your interest",
-    tone: "rose",
-    video: {
-      src: "/videos/innovation-summit-hero.mp4",
+    tone: "lime",
+    image: {
+      src: "/images/icc-awka-venue.jpg",
+      alt: "The main hall at the International Conference Centre, Awka, set up for a large event",
     },
     facts: [
       { label: "Theme", value: "Engineering the SouthEast's Digital Future" },
       { label: "Date", value: "14–16 May 2027" },
       {
-        label: "Location",
-        value: "NAU Convention Centre, Awka, Anambra State",
+        label: "Venue",
+        value: "International Conference Centre, Awka",
       },
     ],
   },
@@ -53,7 +56,11 @@ export const slides: Slide[] = [
     meta: "14–16 May 2027 · Awka",
     href: "/events/innovation-summit",
     cta: "See the full agenda",
-    tone: "rose",
+    tone: "green",
+    image: {
+      src: "/images/summit-speakers.jpg",
+      alt: "Keynote speaker presenting on stage at the tech innovation conference in Awka",
+    },
     speakers: [
       {
         name: "Chidiebere Ugwuegbulam",
@@ -87,7 +94,11 @@ export const slides: Slide[] = [
     meta: "Submissions close 30 April 2027",
     href: "https://bit.ly/SEpapers",
     cta: "Submit a paper",
-    tone: "amber",
+    tone: "red",
+    image: {
+      src: "/images/call-for-papers.jpg",
+      alt: "High-tech computing and cybersecurity research workstation with neural network visualizations",
+    },
   },
   {
     id: "zonal-it-assembly",
@@ -99,7 +110,11 @@ export const slides: Slide[] = [
     meta: "November 2026 · Enugu",
     href: "/events/zonal-it-assembly",
     cta: "View event",
-    tone: "indigo",
+    tone: "blue",
+    image: {
+      src: "/images/zonal-assembly.jpg",
+      alt: "Delegates and tech leaders attending the Nigeria Computer Society Zonal IT Assembly in Enugu",
+    },
   },
   {
     id: "membership-drive",
@@ -111,7 +126,11 @@ export const slides: Slide[] = [
     meta: "Ongoing · all five chapters",
     href: "/join",
     cta: "Join NCS",
-    tone: "indigo",
+    tone: "yellow",
+    image: {
+      src: "/images/membership-drive.jpg",
+      alt: "Young Nigerian software engineers and computer science students collaborating at a tech hub",
+    },
   },
   {
     id: "elders-forum",
@@ -123,7 +142,11 @@ export const slides: Slide[] = [
     meta: "Now seated",
     href: "/news/elders-forum",
     cta: "Read the announcement",
-    tone: "emerald",
+    tone: "green",
+    image: {
+      src: "/images/elders-forum.jpg",
+      alt: "Distinguished council of professors and senior tech advisors meeting in an executive boardroom",
+    },
   },
 ];
 
@@ -170,7 +193,7 @@ export const events: EventItem[] = [
     slug: "innovation-summit",
     title: "SouthEast Innovation Summit 2026",
     date: "14–16 May 2027",
-    location: "NAU Convention Centre, Awka, Anambra State",
+    location: "International Conference Centre, Awka, Anambra State",
     status: "Registration open",
     blurb:
       "Theme: Engineering the SouthEast's Digital Future. Research meets industry — AI adoption, cybersecurity, IoT for smart governance and blockchain in public records.",
