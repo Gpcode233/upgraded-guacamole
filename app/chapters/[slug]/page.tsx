@@ -52,7 +52,7 @@ export default async function ChapterPage(
           <div className="mt-4 flex flex-col gap-3">
             <Link
               href="/join"
-              className="rounded-lg bg-brand px-4 py-2.5 text-center text-sm font-semibold text-white hover:opacity-90"
+              className="rounded-lg bg-brand-deep px-4 py-2.5 text-center text-sm font-semibold text-white hover:opacity-90"
             >
               Join this chapter
             </Link>

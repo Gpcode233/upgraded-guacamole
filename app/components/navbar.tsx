@@ -7,10 +7,7 @@ import { Logo } from "./logo";
 
 const links = [
   { href: "/about", label: "About" },
-  { href: "/chapters", label: "Chapters" },
-  { href: "/events", label: "Events" },
-  { href: "/team", label: "Team" },
-  { href: "/news", label: "News" },
+  { href: "/sponsorship", label: "Sponsorship" },
   { href: "/contact", label: "Contact" },
   { href: "/register", label: "Register" },
   { href: "/join", label: "Join NCS" },

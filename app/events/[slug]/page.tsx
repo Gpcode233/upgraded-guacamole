@@ -56,7 +56,7 @@ export default async function EventPage(props: PageProps<"/events/[slug]">) {
           {event.status !== "Concluded" ? (
             <Link
               href={`/register?event=${event.slug}`}
-              className="mt-5 block rounded-lg bg-brand px-4 py-3 text-center text-sm font-semibold text-white hover:opacity-90"
+              className="mt-5 block rounded-lg bg-brand-deep px-4 py-3 text-center text-sm font-semibold text-white hover:opacity-90"
             >
               Register for this event
             </Link>

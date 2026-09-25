@@ -115,7 +115,7 @@ export function Carousel({
             fullBleed ? "" : "min-h-[340px] sm:min-h-[360px]"
           }`}
         >
-          <SlideBody slide={current} tone={tones[current.tone]} />
+          <SlideBody slide={current} />
         </article>
 
         {count > 1 ? (
@@ -166,14 +166,8 @@ export function Carousel({
   );
 }
 
-function SlideBody({
-  slide,
-  tone,
-}: {
-  slide: Slide;
-  tone: { chip: string; glow: string };
-}) {
-  const hasImage = Boolean(slide.image);
+function SlideBody({ slide }: { slide: Slide }) {
+  const hasImage = Boolean(slide.image) || Boolean(slide.video);
 
   if (slide.layout === "image-hero") {
     return (
@@ -194,10 +188,7 @@ function SlideBody({
         />
 
         <div className="relative z-10 mx-auto max-w-2xl">
-          <span className="inline-flex rounded-full bg-white/15 px-2.5 py-1 text-[11px] font-semibold uppercase tracking-[0.1em] text-white ring-1 ring-white/25 backdrop-blur-sm">
-            {slide.eyebrow}
-          </span>
-          <h2 className="mt-5 text-3xl font-semibold leading-[1.15] tracking-tight text-balance text-white sm:text-4xl md:text-5xl">
+          <h2 className="text-3xl font-semibold leading-[1.15] tracking-tight text-balance text-white sm:text-4xl md:text-5xl">
             {slide.title}
             {slide.titleAccent ? (
               <span className="font-script ml-2 text-accent">
@@ -255,17 +246,8 @@ function SlideBody({
         />
 
         <div className="relative z-10 mx-auto max-w-2xl">
-          <span
-            className={`inline-flex rounded-full px-2.5 py-1 text-[11px] font-semibold uppercase tracking-[0.1em] ${
-              hasImage
-                ? "bg-white/15 text-white ring-1 ring-white/25 backdrop-blur-sm"
-                : tone.chip
-            }`}
-          >
-            {slide.eyebrow}
-          </span>
           <h2
-            className={`mt-5 text-3xl font-semibold leading-[1.15] tracking-tight text-balance sm:text-4xl ${
+            className={`text-3xl font-semibold leading-[1.15] tracking-tight text-balance sm:text-4xl ${
               hasImage ? "text-white" : ""
             }`}
           >
@@ -345,7 +327,16 @@ function SlideBody({
 
   return (
     <>
-      {slide.image ? (
+      {slide.video ? (
+        <div aria-hidden className="absolute inset-0 z-0 overflow-hidden">
+          <iframe
+            src={slide.video.embedSrc}
+            title={slide.video.title}
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            className="pointer-events-none absolute left-1/2 top-1/2 h-[56.25vw] min-h-full w-[177.78vh] min-w-full -translate-x-1/2 -translate-y-1/2"
+          />
+        </div>
+      ) : slide.image ? (
         <Image
           src={slide.image.src}
           alt={slide.image.alt}
@@ -365,17 +356,8 @@ function SlideBody({
       />
 
       <div className="relative z-10 mx-auto max-w-2xl">
-        <span
-          className={`inline-flex rounded-full px-2.5 py-1 text-[11px] font-semibold uppercase tracking-[0.1em] ${
-            hasImage
-              ? "bg-white/15 text-white ring-1 ring-white/25 backdrop-blur-sm"
-              : tone.chip
-          }`}
-        >
-          {slide.eyebrow}
-        </span>
         <h2
-          className={`mt-5 text-3xl font-semibold leading-[1.15] tracking-tight text-balance sm:text-4xl md:text-5xl ${
+          className={`text-3xl font-semibold leading-[1.15] tracking-tight text-balance sm:text-4xl md:text-5xl ${
             hasImage ? "text-white" : ""
           }`}
         >
@@ -423,7 +405,7 @@ function initials(name: string) {
 
 function SlideCta({ href, label }: { href: string; label: string }) {
   const className =
-    "inline-flex items-center gap-2 rounded-lg bg-brand px-5 py-3 text-sm font-semibold text-white transition-opacity hover:opacity-90";
+    "inline-flex items-center gap-2 rounded-lg bg-brand-deep px-5 py-3 text-sm font-semibold text-white transition-opacity hover:opacity-90";
   const arrow = (
     <svg aria-hidden viewBox="0 0 16 16" className="h-3.5 w-3.5">
       <path

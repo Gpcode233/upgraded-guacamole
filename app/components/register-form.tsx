@@ -168,7 +168,7 @@ export function RegisterForm({ defaultEvent }: { defaultEvent?: string }) {
 
       <button
         type="submit"
-        className="mt-7 w-full rounded-lg bg-brand px-5 py-3 text-sm font-semibold text-white hover:opacity-90 sm:w-auto"
+        className="mt-7 w-full rounded-lg bg-brand-deep px-5 py-3 text-sm font-semibold text-white hover:opacity-90 sm:w-auto"
       >
         Submit registration
       </button>

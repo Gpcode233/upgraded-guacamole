@@ -10,37 +10,21 @@
 }
 
 :root {
-  --background: #ffffff;
-  --foreground: #0b1220;
-  --muted: #5a6478;
-  --line: #e3e7ef;
-  --surface: #f6f8fc;
+  --background: #000000;
+  --foreground: #ede9ed;
+  --muted: #a9b3ab;
+  --line: #2a2e2b;
+  --surface: #121412;
 
   /* NCS SouthEast Innovation Summit brand palette */
-  --brand: #005417; /* primary green */
-  --brand-soft: #e7f0e9;
+  --brand: #2f8f5b; /* primary green, lifted for contrast on black */
+  --brand-deep: #005417; /* deep green — buttons, footer */
+  --brand-soft: #10241a;
   --accent: #a5d014; /* lime green */
   --brand-red: #d00000;
   --brand-blue: #0851b1;
   --brand-yellow: #ffcc00;
   --brand-cream: #ede9ed;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #070b14;
-    --foreground: #e9edf6;
-    --muted: #9aa5bb;
-    --line: #1d2637;
-    --surface: #0d1422;
-    --brand: #2f8f5b;
-    --brand-soft: #10241a;
-    --accent: #a5d014;
-    --brand-red: #ef4a4a;
-    --brand-blue: #5b93e0;
-    --brand-yellow: #ffcc00;
-    --brand-cream: #d8d5d8;
-  }
 }
 
 @theme inline {
@@ -50,6 +34,7 @@
   --color-line: var(--line);
   --color-surface: var(--surface);
   --color-brand: var(--brand);
+  --color-brand-deep: var(--brand-deep);
   --color-brand-soft: var(--brand-soft);
   --color-accent: var(--accent);
   --color-brand-red: var(--brand-red);

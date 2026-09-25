@@ -46,7 +46,7 @@ export default function EventsPage() {
               {event.status !== "Concluded" ? (
                 <Link
                   href={`/register?event=${event.slug}`}
-                  className="rounded-lg bg-brand px-4 py-2.5 text-sm font-semibold text-white hover:opacity-90"
+                  className="rounded-lg bg-brand-deep px-4 py-2.5 text-sm font-semibold text-white hover:opacity-90"
                 >
                   Register
                 </Link>

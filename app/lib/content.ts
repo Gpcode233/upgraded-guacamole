@@ -14,6 +14,10 @@ export type Slide = {
     src: string;
     alt: string;
   };
+  video?: {
+    embedSrc: string;
+    title: string;
+  };
   facts?: { label: string; value: string }[];
   speakers?: { name: string; role: string; topic: string }[];
 };
@@ -23,12 +27,12 @@ export const slides: Slide[] = [
     id: "innovation-summit-hero",
     kind: "event",
     layout: "image-hero",
-    eyebrow: "Zonal summit · Registration open",
-    title: "SouthEast Innovation",
-    titleAccent: "Summit",
+    eyebrow: "Registration open · 12–14 November 2026",
+    title: "NCS SouthEast",
+    titleAccent: "Innovation Summit & Awards",
     summary:
-      "Founders, researchers and state ICT leadership on what the zone ships next.",
-    meta: "14–16 May 2027",
+      "Connecting research, innovation, enterprise and technology for regional development.",
+    meta: "12–14 November 2026",
     href: "/events/innovation-summit",
     cta: "Register your interest",
     tone: "lime",
@@ -37,11 +41,15 @@ export const slides: Slide[] = [
       alt: "The main hall at the International Conference Centre, Awka, set up for a large event",
     },
     facts: [
-      { label: "Theme", value: "Engineering the SouthEast's Digital Future" },
-      { label: "Date", value: "13–15 November 2026" },
+      {
+        label: "Theme",
+        value:
+          "Technology-Enhanced Development in the Era of Artificial Intelligence: The Pros and the Cons",
+      },
+      { label: "Date", value: "12–14 November 2026" },
       {
         label: "Venue",
-        value: "International Conference Centre, Awka",
+        value: "International Conference Centre, Awka, Anambra State",
       },
     ],
   },
@@ -49,11 +57,11 @@ export const slides: Slide[] = [
     id: "innovation-summit-speakers",
     kind: "event",
     layout: "speakers",
-    eyebrow: "SouthEast Innovation Summit 2026",
+    eyebrow: "NCS SouthEast Innovation Summit & Awards 2026",
     title: "Featured speakers",
     summary:
-      "Zonal leadership, researchers and industry partners taking the stage in Awka.",
-    meta: "13–15 November 2026 · Awka",
+      "Government, academia, industry, researchers and innovators taking the stage in Awka.",
+    meta: "12–14 November 2026 · Awka",
     href: "/events/innovation-summit",
     cta: "See the full agenda",
     tone: "green",
@@ -85,67 +93,68 @@ export const slides: Slide[] = [
     ],
   },
   {
-    id: "se-papers",
-    kind: "deadline",
-    eyebrow: "Call for papers",
-    title: "SouthEast Innovation Summit — papers open",
+    id: "summit-experience",
+    kind: "event",
+    eyebrow: "Summit Experience",
+    title: "What to expect at the Summit",
     summary:
-      "Submit research on AI, cybersecurity, smart governance and digital identity. Reviewed with IEEE Nigeria SouthEast Sub Section.",
-    meta: "Submissions close 30 April 2027",
-    href: "https://bit.ly/SEpapers",
-    cta: "Submit a paper",
+      "Opening keynotes, AI and digital transformation sessions, the Innovation Hackathon, government–industry–academia engagement, research presentations, a technology showcase and the Leadership & Innovation Awards — over three days in Awka.",
+    meta: "12–14 November 2026 · Awka",
+    href: "/about",
+    cta: "See the full experience",
     tone: "red",
-    image: {
-      src: "/images/call-for-papers.jpg",
-      alt: "High-tech computing and cybersecurity research workstation with neural network visualizations",
+    video: {
+      embedSrc:
+        "https://www.youtube.com/embed/gYa-2BaCG44?autoplay=1&mute=1&loop=1&playlist=gYa-2BaCG44&controls=0&showinfo=0&modestbranding=1&rel=0&playsinline=1",
+      title: "NCS SouthEast Innovation Summit & Awards",
     },
   },
   {
-    id: "zonal-it-assembly",
+    id: "innovation-hackathon",
     kind: "event",
-    eyebrow: "Flagship event",
-    title: "Zonal IT Assembly 2026",
+    eyebrow: "Innovation Hackathon",
+    title: "Build real solutions to real challenges",
     summary:
-      "Every chapter in the zone under one roof: policy, practice and the people building SouthEast tech.",
-    meta: "November 2026 · Enugu",
-    href: "/events/zonal-it-assembly",
-    cta: "View event",
+      "Young innovators, developers, researchers and entrepreneurs create technology solutions for challenges facing people, businesses, communities and government.",
+    meta: "12–14 November 2026 · Awka",
+    href: "/events/innovation-summit",
+    cta: "Take part in the hackathon",
     tone: "blue",
     image: {
       src: "/images/zonal-assembly.jpg",
-      alt: "Delegates and tech leaders attending the Nigeria Computer Society Zonal IT Assembly in Enugu",
+      alt: "Delegates and tech leaders attending the Innovation Hackathon in Awka",
     },
   },
   {
-    id: "membership-drive",
-    kind: "membership",
-    eyebrow: "Announcement",
-    title: "500 new members by July 2026",
+    id: "leadership-innovation-awards",
+    kind: "event",
+    eyebrow: "Leadership & Innovation Recognition",
+    title: "Leadership & Innovation Awards",
     summary:
-      "Zonal membership drive is live across Abia, Anambra, Ebonyi, Enugu and Imo. Student and professional grades available.",
-    meta: "Ongoing · all five chapters",
-    href: "/join",
-    cta: "Join NCS",
+      "Recognizing government officials, industry leaders, researchers, entrepreneurs and innovators who have advanced technology, governance, enterprise and economic development.",
+    meta: "12–14 November 2026 · Awka",
+    href: "/events/innovation-summit",
+    cta: "Nominate a leader",
     tone: "yellow",
     image: {
       src: "/images/membership-drive.jpg",
-      alt: "Young Nigerian software engineers and computer science students collaborating at a tech hub",
+      alt: "Distinguished leaders being recognized on stage at the Innovation Summit & Awards",
     },
   },
   {
-    id: "elders-forum",
+    id: "solution-innovation-district",
     kind: "announcement",
-    eyebrow: "Announcement",
-    title: "Zonal Elders Forum inaugurated",
+    eyebrow: "Strategic Partnership",
+    title: "Anambra State Government joins as strategic partner",
     summary:
-      "A standing council of professors advising the zone on research direction, curriculum and industry partnership.",
-    meta: "Now seated",
-    href: "/news/elders-forum",
-    cta: "Read the announcement",
+      "Through the Solution Innovation District (SID), Anambra State Government is supporting the Summit as a key strategic partner.",
+    meta: "Strategic partner",
+    href: "/sponsorship",
+    cta: "See partnership opportunities",
     tone: "green",
     image: {
       src: "/images/elders-forum.jpg",
-      alt: "Distinguished council of professors and senior tech advisors meeting in an executive boardroom",
+      alt: "Government, academia and industry leaders meeting ahead of the Innovation Summit",
     },
   },
 ];
@@ -191,17 +200,17 @@ export const events: EventItem[] = [
   },
   {
     slug: "innovation-summit",
-    title: "SouthEast Innovation Summit 2026",
-    date: "14–16 May 2027",
+    title: "NCS SouthEast Innovation Summit & Awards",
+    date: "12–14 November 2026",
     location: "International Conference Centre, Awka, Anambra State",
     status: "Registration open",
     blurb:
-      "Theme: Engineering the SouthEast's Digital Future. Research meets industry — AI adoption, cybersecurity, IoT for smart governance and blockchain in public records.",
+      "Theme: Technology-Enhanced Development in the Era of Artificial Intelligence: The Pros and the Cons. A high-impact regional platform connecting research, innovation, enterprise and technology for regional development.",
     details: [
-      "Peer-reviewed papers with IEEE Nigeria SouthEast Sub Section",
-      "Featured speakers from across the zone and industry partners",
-      "Startup showcase and investor roundtable",
-      "State ICT commissioners' panel",
+      "Pillar I — Research Consortium: collaborative research with universities, industry and government",
+      "Pillar II — Innovation Hackathon: practical technology solutions from young innovators and entrepreneurs",
+      "Pillar III — Technology & Economic Development Dialogue: high-level conversations on productivity, investment and growth",
+      "Pillar IV — Leadership & Innovation Recognition: awards for outstanding contributors to technology and development",
     ],
   },
 ];
@@ -352,17 +361,65 @@ export const jobs = [
 ];
 
 export const focusAreas = [
-  "Artificial intelligence adoption",
-  "Cybersecurity",
-  "Smart governance and IoT",
-  "Blockchain in public records",
-  "Digital identity systems",
-  "Responsible AI",
-  "Cloud-native infrastructure",
+  "Artificial intelligence and digital transformation",
+  "Research and the Research Consortium",
+  "Innovation and entrepreneurship",
+  "Technology and economic development",
+  "Government, industry and academia partnership",
+  "Leadership and innovation recognition",
 ];
+
+export const objectives = [
+  "Promote technology and Artificial Intelligence as drivers of regional economic development.",
+  "Connect researchers, universities, industry and government around strategic regional challenges.",
+  "Support innovators, developers and entrepreneurs to develop practical technology solutions.",
+  "Facilitate partnerships, investment opportunities and collaboration across the technology ecosystem.",
+  "Strengthen the connection between research, innovation and enterprise.",
+  "Recognize individuals whose contributions have advanced technology, governance, entrepreneurship and economic development.",
+  "Establish a lasting regional platform that contributes to the SouthEast's technology and innovation ecosystem.",
+];
+
+export const pillars = [
+  {
+    name: "Research Consortium",
+    numeral: "I",
+    detail:
+      "A platform connecting researchers, universities, industry and government to undertake collaborative research addressing strategic challenges in the SouthEast.",
+  },
+  {
+    name: "Innovation Hackathon",
+    numeral: "II",
+    detail:
+      "A practical innovation program challenging young innovators, developers, researchers and entrepreneurs to create technology solutions addressing real challenges faced by individuals, businesses, communities and government.",
+  },
+  {
+    name: "Technology & Economic Development Dialogue",
+    numeral: "III",
+    detail:
+      "High-level conversations examining how technology can strengthen productivity, entrepreneurship, businesses, public services and government, while creating opportunities for investment and economic growth.",
+  },
+  {
+    name: "Leadership & Innovation Recognition",
+    numeral: "IV",
+    detail:
+      "The Summit & Awards will recognize outstanding government officials, industry leaders, researchers, entrepreneurs and innovators whose contributions have advanced technology, governance, enterprise and economic development.",
+  },
+];
+
+export const summitDetails = {
+  event: "NCS SouthEast Innovation Summit & Awards",
+  tagline:
+    "Connecting Research, Innovation, Enterprise and Technology for Regional Development.",
+  theme:
+    "Technology-Enhanced Development in the Era of Artificial Intelligence: The Pros and the Cons",
+  date: "12–14 November 2026",
+  venue: "International Conference Centre, Awka, Anambra State",
+  organizer: "Nigeria Computer Society (NCS), SouthEast Zone",
+};
 
 export const contact = {
   email: "info@southeastzone.org.ng",
   phones: ["+234 806 474 7096", "+234 903 617 5625"],
   address: "SouthEast Zone, Nigeria Computer Society, Nigeria",
+  website: "www.southeastncs.org.ng",
 };

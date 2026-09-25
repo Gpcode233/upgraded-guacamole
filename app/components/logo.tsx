@@ -13,10 +13,10 @@ export function Logo({ className = "" }: { className?: string }) {
       />
       <span className="hidden flex-col leading-none sm:flex">
         <span className="text-[13px] font-bold uppercase tracking-wide text-white">
-          Greater SouthEast
+          Nigeria Computer Society
         </span>
         <span className="mt-0.5 text-[10px] font-medium uppercase tracking-[0.12em] text-white/70">
-          Nigeria Computer Society
+          SouthEast Region
         </span>
       </span>
     </span>
