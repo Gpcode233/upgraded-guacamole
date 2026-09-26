@@ -10,7 +10,7 @@ const links = [
   { href: "/sponsorship", label: "Sponsorship" },
   { href: "/contact", label: "Contact" },
   { href: "/register", label: "Register" },
-  { href: "/join", label: "Join NCS" },
+  { href: "/join", label: "Join Hackathon" },
 ];
 
 export function Navbar() {

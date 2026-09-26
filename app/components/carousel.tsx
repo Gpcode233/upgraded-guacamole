@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useCallback, useEffect, useRef, useState } from "react";
 import type { Slide } from "../lib/content";
 
-const AUTOPLAY_MS = 7000;
+const AUTOPLAY_MS = 15000;
 
 const tones: Record<Slide["tone"], { chip: string; glow: string }> = {
   green: {
@@ -338,12 +338,15 @@ function SlideBody({ slide }: { slide: Slide }) {
   return (
     <>
       {slide.video ? (
-        <div aria-hidden className="absolute inset-0 z-0 overflow-hidden">
+        <div
+          aria-hidden
+          className="absolute inset-0 z-0 overflow-hidden blur-sm brightness-75"
+        >
           <iframe
             src={slide.video.embedSrc}
             title={slide.video.title}
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-            className="pointer-events-none absolute left-1/2 top-1/2 h-[56.25vw] min-h-full w-[177.78vh] min-w-full -translate-x-1/2 -translate-y-1/2"
+            className="pointer-events-none absolute left-1/2 top-1/2 h-[56.25vw] min-h-full w-[177.78vh] min-w-full -translate-x-1/2 -translate-y-1/2 scale-105"
           />
         </div>
       ) : slide.image ? (
