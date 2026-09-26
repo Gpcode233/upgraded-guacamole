@@ -172,7 +172,19 @@ function SlideBody({ slide }: { slide: Slide }) {
   if (slide.layout === "image-hero") {
     return (
       <>
-        {slide.image ? (
+        {slide.video ? (
+          <div
+            aria-hidden
+            className="absolute inset-0 z-0 overflow-hidden blur-sm brightness-75"
+          >
+            <iframe
+              src={slide.video.embedSrc}
+              title={slide.video.title}
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              className="pointer-events-none absolute left-1/2 top-1/2 h-[56.25vw] min-h-full w-[177.78vh] min-w-full -translate-x-1/2 -translate-y-1/2 scale-105"
+            />
+          </div>
+        ) : slide.image ? (
           <Image
             src={slide.image.src}
             alt={slide.image.alt}
@@ -340,7 +352,7 @@ function SlideBody({ slide }: { slide: Slide }) {
       {slide.video ? (
         <div
           aria-hidden
-          className="absolute inset-0 z-0 overflow-hidden blur-sm brightness-75"
+          className="absolute inset-0 z-0 overflow-hidden blur-xs brightness-75"
         >
           <iframe
             src={slide.video.embedSrc}

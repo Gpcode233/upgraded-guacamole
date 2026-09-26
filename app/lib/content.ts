@@ -25,23 +25,6 @@ export type Slide = {
 
 export const slides: Slide[] = [
   {
-    id: "summit-experience",
-    kind: "event",
-    eyebrow: "Summit Experience",
-    title: "What to expect at the Summit",
-    summary:
-      "Opening keynotes, AI and digital transformation sessions, the Innovation Hackathon, government–industry–academia engagement, research presentations, a technology showcase and the Leadership & Innovation Awards — over three days in Awka.",
-    meta: "12–14 November 2026 · Awka",
-    href: "/about",
-    cta: "See the full experience",
-    tone: "red",
-    video: {
-      embedSrc:
-        "https://www.youtube.com/embed/gYa-2BaCG44?autoplay=1&mute=1&loop=1&playlist=gYa-2BaCG44&controls=0&showinfo=0&modestbranding=1&rel=0&playsinline=1",
-      title: "NCS SouthEast Innovation Summit & Awards",
-    },
-  },
-  {
     id: "innovation-summit-hero",
     kind: "event",
     layout: "image-hero",
@@ -63,6 +46,11 @@ export const slides: Slide[] = [
     image: {
       src: "/images/icc-awka-venue.jpg",
       alt: "The main hall at the International Conference Centre, Awka, set up for a large event",
+    },
+    video: {
+      embedSrc:
+        "https://www.youtube.com/embed/gYa-2BaCG44?autoplay=1&mute=1&loop=1&playlist=gYa-2BaCG44&controls=0&showinfo=0&modestbranding=1&rel=0&playsinline=1",
+      title: "NCS SouthEast Innovation Summit & Awards",
     },
     facts: [
       {
@@ -115,6 +103,22 @@ export const slides: Slide[] = [
         topic: "Peer review and research standards",
       },
     ],
+  },
+  {
+    id: "summit-experience",
+    kind: "event",
+    eyebrow: "Summit Experience",
+    title: "What to expect at the Summit",
+    summary:
+      "Opening keynotes, AI and digital transformation sessions, the Innovation Hackathon, government–industry–academia engagement, research presentations, a technology showcase and the Leadership & Innovation Awards — over three days in Awka.",
+    meta: "12–14 November 2026 · Awka",
+    href: "/about",
+    cta: "See the full experience",
+    tone: "red",
+    image: {
+      src: "/images/summit-experience.jpg",
+      alt: "Large crowd at a packed hall for the NCS SouthEast Innovation Summit experience",
+    },
   },
   {
     id: "innovation-hackathon",
