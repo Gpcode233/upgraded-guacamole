@@ -188,14 +188,24 @@ function SlideBody({ slide }: { slide: Slide }) {
         />
 
         <div className="relative z-10 mx-auto max-w-2xl">
-          <h2 className="text-3xl font-semibold leading-[1.15] tracking-tight text-balance text-white sm:text-4xl md:text-5xl">
-            {slide.title}
-            {slide.titleAccent ? (
-              <span className="font-script ml-2 text-accent">
-                {slide.titleAccent}
-              </span>
-            ) : null}
-          </h2>
+          {slide.titleImage ? (
+            <Image
+              src={slide.titleImage.src}
+              alt={slide.titleImage.alt}
+              width={slide.titleImage.width}
+              height={slide.titleImage.height}
+              className="mx-auto h-auto w-full max-w-lg"
+            />
+          ) : (
+            <h2 className="text-3xl font-semibold leading-[1.15] tracking-tight text-balance text-white sm:text-4xl md:text-5xl">
+              {slide.title}
+              {slide.titleAccent ? (
+                <span className="font-script ml-2 text-accent">
+                  {slide.titleAccent}
+                </span>
+              ) : null}
+            </h2>
+          )}
           <p className="mx-auto mt-4 max-w-xl text-base leading-7 text-white/80 sm:text-lg sm:leading-8">
             {slide.summary}
           </p>
