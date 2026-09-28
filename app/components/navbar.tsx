@@ -9,9 +9,45 @@ const links = [
   { href: "/about", label: "About" },
   { href: "/sponsorship", label: "Sponsorship" },
   { href: "/contact", label: "Contact" },
-  { href: "/register", label: "Register" },
-  { href: "/join", label: "Join Hackathon" },
 ];
+
+const actions: { href: string; label: string; external?: boolean }[] = [
+  { href: "/register", label: "Register" },
+  {
+    href: "https://forms.gle/TWBUjnNynFT8KojN9",
+    label: "Join Hackathon",
+    external: true,
+  },
+];
+
+const actionClass =
+  "inline-flex items-center justify-center rounded-lg bg-brand-deep px-4 py-2.5 text-sm font-semibold text-white transition-opacity hover:opacity-90";
+
+function ActionLink({
+  action,
+  className,
+}: {
+  action: { href: string; label: string; external?: boolean };
+  className: string;
+}) {
+  if (action.external) {
+    return (
+      <a
+        href={action.href}
+        target="_blank"
+        rel="noreferrer noopener"
+        className={className}
+      >
+        {action.label}
+      </a>
+    );
+  }
+  return (
+    <Link href={action.href} className={className}>
+      {action.label}
+    </Link>
+  );
+}
 
 export function Navbar() {
   const pathname = usePathname();
@@ -36,76 +72,23 @@ export function Navbar() {
 
   return (
     <header
-      className={`z-50 bg-transparent ${
-        isHome ? "fixed inset-x-0 top-0" : "sticky top-0 bg-brand"
+      className={`z-50 px-2 sm:px-4 ${
+        isHome ? "fixed inset-x-0 top-0" : "sticky top-0"
       }`}
     >
-      <nav
-        aria-label="Main"
-        className="mx-auto flex h-16 w-full max-w-6xl items-center justify-between gap-4 px-4 sm:px-6"
-      >
-        <Link href="/" aria-label="Home" className="shrink-0">
-          <Logo />
-        </Link>
-
-        <ul className="hidden items-center gap-5 lg:flex">
-          {links.map((link) => (
-            <li key={link.href}>
-              <Link
-                href={link.href}
-                aria-current={isActive(link.href) ? "page" : undefined}
-                className={`text-[13px] font-semibold uppercase tracking-wide text-white/85 transition-colors hover:text-white ${
-                  isActive(link.href) ? "text-white" : ""
-                }`}
-              >
-                {link.label}
-              </Link>
-            </li>
-          ))}
-        </ul>
-
-        <button
-          type="button"
-          aria-expanded={open}
-          aria-controls="mobile-menu"
-          aria-label="Toggle menu"
-          onClick={() => setOpen((value) => !value)}
-          className="grid h-9 w-9 place-items-center rounded-md text-white lg:hidden"
+      <div className="mx-auto w-full max-w-5xl rounded-b-3xl bg-white text-[#10241a] shadow-lg">
+        <nav
+          aria-label="Main"
+          className="flex h-16 items-center justify-between gap-4 px-4 sm:px-8 lg:grid lg:grid-cols-[1fr_auto_1fr]"
         >
-          <svg aria-hidden viewBox="0 0 16 16" className="h-4 w-4">
-            {open ? (
-              <path
-                d="M3.5 3.5 12.5 12.5M12.5 3.5 3.5 12.5"
-                stroke="currentColor"
-                strokeWidth="1.6"
-                strokeLinecap="round"
-              />
-            ) : (
-              <path
-                d="M2.5 4.5h11M2.5 8h11M2.5 11.5h11"
-                stroke="currentColor"
-                strokeWidth="1.6"
-                strokeLinecap="round"
-              />
-            )}
-          </svg>
-        </button>
-      </nav>
-
-      {open ? (
-        <div
-          id="mobile-menu"
-          className={`border-t border-white/15 px-4 py-2 lg:hidden ${
-            isHome ? "bg-black/70 backdrop-blur-sm" : "bg-brand"
-          }`}
-        >
-          <ul className="flex flex-col">
+          <ul className="hidden items-center gap-6 lg:flex">
             {links.map((link) => (
               <li key={link.href}>
                 <Link
                   href={link.href}
-                  className={`block py-2.5 text-sm font-semibold uppercase tracking-wide text-white/85 ${
-                    isActive(link.href) ? "text-white" : ""
+                  aria-current={isActive(link.href) ? "page" : undefined}
+                  className={`text-sm font-medium transition-colors hover:text-brand-deep ${
+                    isActive(link.href) ? "text-brand-deep" : ""
                   }`}
                 >
                   {link.label}
@@ -113,8 +96,79 @@ export function Navbar() {
               </li>
             ))}
           </ul>
-        </div>
-      ) : null}
+
+          <Link href="/" aria-label="Home" className="shrink-0 lg:justify-self-center">
+            <Logo tone="dark" />
+          </Link>
+
+          <ul className="hidden items-center justify-end gap-3 lg:flex">
+            {actions.map((action) => (
+              <li key={action.href}>
+                <ActionLink action={action} className={actionClass} />
+              </li>
+            ))}
+          </ul>
+
+          <button
+            type="button"
+            aria-expanded={open}
+            aria-controls="mobile-menu"
+            aria-label="Toggle menu"
+            onClick={() => setOpen((value) => !value)}
+            className="grid h-9 w-9 place-items-center rounded-md lg:hidden"
+          >
+            <svg aria-hidden viewBox="0 0 16 16" className="h-4 w-4">
+              {open ? (
+                <path
+                  d="M3.5 3.5 12.5 12.5M12.5 3.5 3.5 12.5"
+                  stroke="currentColor"
+                  strokeWidth="1.6"
+                  strokeLinecap="round"
+                />
+              ) : (
+                <path
+                  d="M2.5 4.5h11M2.5 8h11M2.5 11.5h11"
+                  stroke="currentColor"
+                  strokeWidth="1.6"
+                  strokeLinecap="round"
+                />
+              )}
+            </svg>
+          </button>
+        </nav>
+
+        {open ? (
+          <div
+            id="mobile-menu"
+            className="border-t border-black/10 px-4 pb-4 pt-2 lg:hidden"
+          >
+            <ul className="flex flex-col">
+              {links.map((link) => (
+                <li key={link.href}>
+                  <Link
+                    href={link.href}
+                    className={`block py-2.5 text-sm font-medium ${
+                      isActive(link.href) ? "text-brand-deep" : ""
+                    }`}
+                  >
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+            <ul className="mt-2 grid gap-2">
+              {actions.map((action) => (
+                <li key={action.href}>
+                  <ActionLink
+                    action={action}
+                    className={`${actionClass} w-full`}
+                  />
+                </li>
+              ))}
+            </ul>
+          </div>
+        ) : null}
+      </div>
     </header>
   );
 }

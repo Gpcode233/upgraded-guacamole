@@ -20,7 +20,15 @@ export type Slide = {
     title: string;
   };
   facts?: { label: string; value: string }[];
-  speakers?: { name: string; role: string; topic: string }[];
+  speakers?: {
+    name: string;
+    role: string;
+    topic: string;
+    photo?: string;
+    photoFit?: "cover" | "contain";
+    note?: string;
+    photoCredit?: string;
+  }[];
 };
 
 export const slides: Slide[] = [
@@ -94,26 +102,34 @@ export const slides: Slide[] = [
         name: "Chidiebere Ugwuegbulam",
         role: "Zonal Coordinator, NCS SouthEast",
         topic: "Opening keynote",
+        photo: "/images/team/chidiebere-ugwuegbulam.jpeg",
       },
       {
         name: "Dr. Ijeoma Emeagi",
         role: "Director of Education, NCS SouthEast",
         topic: "AI adoption in public education",
+        photo: "/images/team/ijeoma-emeagi.png",
       },
       {
         name: "Dr. Emmanuel Ololo",
         role: "Zonal Working Committee",
         topic: "Cybersecurity for state government systems",
+        photo: "/images/team/emmanuel-ololo.png",
       },
       {
         name: "IEEE Nigeria SouthEast",
         role: "Sub Section representative",
         topic: "Peer review and research standards",
+        photo: "/images/IEEE.jpg",
+        photoFit: "contain",
       },
       {
         name: "Gov. Charles Soludo",
         role: "Governor, Anambra State",
         topic: "Special guest",
+        photo: "/images/team/charles-soludo.jpg",
+        note: "Special Guest of Honor",
+        photoCredit: "Photo of Charles Soludo by Chinedueri, CC BY 4.0, via Wikimedia Commons",
       },
     ],
   },

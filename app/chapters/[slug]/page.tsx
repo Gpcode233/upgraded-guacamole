@@ -51,7 +51,7 @@ export default async function ChapterPage(
           <h2 className="text-sm font-semibold">Get involved</h2>
           <div className="mt-4 flex flex-col gap-3">
             <Link
-              href="/join"
+              href="/contact"
               className="rounded-lg bg-brand-deep px-4 py-2.5 text-center text-sm font-semibold text-white hover:opacity-90"
             >
               Join this chapter

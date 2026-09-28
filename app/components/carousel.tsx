@@ -295,20 +295,46 @@ function SlideBody({ slide }: { slide: Slide }) {
                 className="flex flex-col items-center gap-3"
               >
                 <span
-                  aria-hidden
-                  className="grid aspect-square w-full max-w-[9rem] place-items-center overflow-hidden rounded-full bg-white/15 text-white/60 ring-2 ring-white/30 backdrop-blur-md sm:max-w-[10.5rem]"
+                  aria-hidden={speaker.photo ? undefined : true}
+                  className="relative grid aspect-square w-full max-w-[9rem] place-items-center overflow-hidden rounded-full bg-white/15 text-white/60 ring-2 ring-white/30 backdrop-blur-md sm:max-w-[10.5rem]"
                 >
-                  <svg viewBox="0 0 24 24" className="h-3/5 w-3/5" fill="currentColor">
-                    <circle cx="12" cy="8.5" r="4" />
-                    <path d="M4 21c0-4.4 3.6-7.5 8-7.5s8 3.1 8 7.5H4Z" />
-                  </svg>
+                  {speaker.photo ? (
+                    <Image
+                      src={speaker.photo}
+                      alt={speaker.name}
+                      fill
+                      sizes="168px"
+                      className={
+                        speaker.photoFit === "contain"
+                          ? "bg-white object-contain p-2"
+                          : "object-cover object-top"
+                      }
+                    />
+                  ) : (
+                    <svg viewBox="0 0 24 24" className="h-3/5 w-3/5" fill="currentColor">
+                      <circle cx="12" cy="8.5" r="4" />
+                      <path d="M4 21c0-4.4 3.6-7.5 8-7.5s8 3.1 8 7.5H4Z" />
+                    </svg>
+                  )}
                 </span>
-                <p className="text-sm font-semibold leading-tight text-white sm:text-base">
-                  {speaker.name}
-                </p>
+                <div>
+                  <p className="text-sm font-semibold leading-tight text-white sm:text-base">
+                    {speaker.name}
+                  </p>
+                  {speaker.note ? (
+                    <p className="mt-1 text-xs font-semibold uppercase tracking-wide text-accent">
+                      {speaker.note}
+                    </p>
+                  ) : null}
+                </div>
               </li>
             ))}
           </ul>
+        ) : null}
+        {slide.speakers?.find((speaker) => speaker.photoCredit) ? (
+          <p className="relative z-10 -mt-4 text-[10px] text-white/40">
+            {slide.speakers.find((speaker) => speaker.photoCredit)?.photoCredit}
+          </p>
         ) : null}
 
         <div className="relative z-10 flex flex-wrap items-center justify-center gap-x-5 gap-y-3">
