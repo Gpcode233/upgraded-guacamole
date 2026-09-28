@@ -21,7 +21,7 @@ const actions: { href: string; label: string; external?: boolean }[] = [
 ];
 
 const actionClass =
-  "inline-flex items-center justify-center rounded-lg bg-brand-deep px-4 py-2.5 text-sm font-semibold text-white transition-opacity hover:opacity-90";
+  "inline-flex items-center justify-center rounded-lg bg-brand-deep px-3.5 py-1.5 text-[13px] font-semibold text-white transition-opacity hover:opacity-90";
 
 function ActionLink({
   action,
@@ -76,10 +76,10 @@ export function Navbar() {
         isHome ? "fixed inset-x-0 top-0" : "sticky top-0"
       }`}
     >
-      <div className="mx-auto w-full max-w-5xl rounded-b-3xl bg-white text-[#10241a] shadow-lg">
+      <div className="mx-auto w-full max-w-4xl rounded-b-2xl bg-white text-[#10241a] shadow-lg">
         <nav
           aria-label="Main"
-          className="flex h-16 items-center justify-between gap-4 px-4 sm:px-8 lg:grid lg:grid-cols-[1fr_auto_1fr]"
+          className="flex h-12 items-center justify-between gap-4 px-4 sm:px-8 lg:grid lg:grid-cols-[1fr_auto_1fr]"
         >
           <ul className="hidden items-center gap-6 lg:flex">
             {links.map((link) => (
@@ -87,7 +87,7 @@ export function Navbar() {
                 <Link
                   href={link.href}
                   aria-current={isActive(link.href) ? "page" : undefined}
-                  className={`text-sm font-medium transition-colors hover:text-brand-deep ${
+                  className={`text-[13px] font-medium transition-colors hover:text-brand-deep ${
                     isActive(link.href) ? "text-brand-deep" : ""
                   }`}
                 >

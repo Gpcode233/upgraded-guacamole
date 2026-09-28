@@ -1,6 +1,22 @@
 @import "tailwindcss";
 
 @font-face {
+  font-family: "Goxina";
+  src: url("/fonts/Goxina-Regular.ttf") format("truetype");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Goxina";
+  src: url("/fonts/Goxina-Italic.ttf") format("truetype");
+  font-weight: 100 900;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
   font-family: "Rotifera Black";
   src: url("/fonts/rotifera-font/RotiferaDEMO-BlackItalic-BF67eb4c233bf52.ttf")
     format("truetype");
@@ -41,11 +57,11 @@
   --color-brand-blue: var(--brand-blue);
   --color-brand-yellow: var(--brand-yellow);
   --color-brand-cream: var(--brand-cream);
-  --font-sans: "Helvetica Neue", Helvetica, Arial, ui-sans-serif, system-ui,
-    -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-sans: "Goxina", "Helvetica Neue", Helvetica, Arial, ui-sans-serif,
+    system-ui, sans-serif;
   --font-mono: ui-monospace, "SFMono-Regular", "Cascadia Code", Consolas,
     "Liberation Mono", monospace;
-  --font-display: "Baloo 2", ui-rounded, "Segoe UI", sans-serif;
+  --font-display: "Goxina", "Baloo 2", ui-rounded, "Segoe UI", sans-serif;
   --font-script: "Rotifera Black", Georgia, "Times New Roman", serif;
 }
 

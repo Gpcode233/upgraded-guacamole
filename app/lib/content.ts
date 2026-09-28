@@ -27,7 +27,7 @@ export type Slide = {
     photo?: string;
     photoFit?: "cover" | "contain";
     note?: string;
-    photoCredit?: string;
+    photoAlt?: string;
   }[];
 };
 
@@ -129,7 +129,8 @@ export const slides: Slide[] = [
         topic: "Special guest",
         photo: "/images/team/charles-soludo.jpg",
         note: "Special Guest of Honor",
-        photoCredit: "Photo of Charles Soludo by Chinedueri, CC BY 4.0, via Wikimedia Commons",
+        photoAlt:
+          "Gov. Charles Soludo. Photo by Chinedueri, CC BY 4.0, via Wikimedia Commons",
       },
     ],
   },

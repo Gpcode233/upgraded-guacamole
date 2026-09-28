@@ -112,7 +112,7 @@ export function Carousel({
           aria-roledescription="slide"
           aria-label={`${index + 1} of ${count}`}
           className={`relative isolate flex h-full flex-col items-center justify-center gap-8 overflow-hidden p-6 py-20 text-center motion-safe:animate-[slide-in_0.4s_ease-out] sm:px-16 sm:py-20 ${
-            fullBleed ? "pb-40 sm:pb-44" : "min-h-[340px] sm:min-h-[360px]"
+            fullBleed ? "pb-28 sm:pb-32" : "min-h-[340px] sm:min-h-[360px]"
           }`}
         >
           <SlideBody slide={current} />
@@ -133,7 +133,7 @@ export function Carousel({
 
             <div
               className={`absolute inset-x-0 z-20 flex flex-col items-center gap-2 ${
-                fullBleed ? "bottom-24 sm:bottom-28" : "bottom-4 sm:bottom-5"
+                fullBleed ? "bottom-16 sm:bottom-20" : "bottom-4 sm:bottom-5"
               }`}
             >
               <div className="flex items-center gap-3 rounded-full bg-black/45 px-3 py-2 shadow-md ring-1 ring-white/20 backdrop-blur-sm">
@@ -301,7 +301,7 @@ function SlideBody({ slide }: { slide: Slide }) {
                   {speaker.photo ? (
                     <Image
                       src={speaker.photo}
-                      alt={speaker.name}
+                      alt={speaker.photoAlt ?? speaker.name}
                       fill
                       sizes="168px"
                       className={
@@ -331,12 +331,6 @@ function SlideBody({ slide }: { slide: Slide }) {
             ))}
           </ul>
         ) : null}
-        {slide.speakers?.find((speaker) => speaker.photoCredit) ? (
-          <p className="relative z-10 -mt-4 text-[10px] text-white/40">
-            {slide.speakers.find((speaker) => speaker.photoCredit)?.photoCredit}
-          </p>
-        ) : null}
-
         <div className="relative z-10 flex flex-wrap items-center justify-center gap-x-5 gap-y-3">
           <SlideCta href={slide.href} label={slide.cta} />
           <p
