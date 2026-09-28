@@ -46,7 +46,7 @@ export const slides: Slide[] = [
       height: 528,
     },
     summary:
-      "Theme: Technology-Enhanced Development in the Era of Artificial Intelligence: The Pros and the Cons. Connecting research, innovation, enterprise and technology for regional development.",
+      "Connecting Research, Innovation, Enterprise and Technology for Regional Development",
     meta: "12–14 November 2026",
     href: "https://forms.gle/TWBUjnNynFT8KojN9",
     cta: "Register for the Hackathon",
