@@ -57,11 +57,11 @@
   --color-brand-blue: var(--brand-blue);
   --color-brand-yellow: var(--brand-yellow);
   --color-brand-cream: var(--brand-cream);
-  --font-sans: "Goxina", "Helvetica Neue", Helvetica, Arial, ui-sans-serif,
+  --font-sans: "Inter", "Helvetica Neue", Helvetica, Arial, ui-sans-serif,
     system-ui, sans-serif;
   --font-mono: ui-monospace, "SFMono-Regular", "Cascadia Code", Consolas,
     "Liberation Mono", monospace;
-  --font-display: "Goxina", "Baloo 2", ui-rounded, "Segoe UI", sans-serif;
+  --font-display: "Goxina", "Helvetica Neue", Helvetica, Arial, sans-serif;
   --font-script: "Rotifera Black", Georgia, "Times New Roman", serif;
 }
 
