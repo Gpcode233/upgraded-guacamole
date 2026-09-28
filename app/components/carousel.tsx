@@ -112,7 +112,7 @@ export function Carousel({
           aria-roledescription="slide"
           aria-label={`${index + 1} of ${count}`}
           className={`relative isolate flex h-full flex-col items-center justify-center gap-8 overflow-hidden p-6 py-20 text-center motion-safe:animate-[slide-in_0.4s_ease-out] sm:px-16 sm:py-20 ${
-            fullBleed ? "" : "min-h-[340px] sm:min-h-[360px]"
+            fullBleed ? "pb-40 sm:pb-44" : "min-h-[340px] sm:min-h-[360px]"
           }`}
         >
           <SlideBody slide={current} />
@@ -131,7 +131,11 @@ export function Carousel({
               />
             </div>
 
-            <div className="absolute inset-x-0 bottom-4 z-20 flex flex-col items-center gap-2 sm:bottom-5">
+            <div
+              className={`absolute inset-x-0 z-20 flex flex-col items-center gap-2 ${
+                fullBleed ? "bottom-24 sm:bottom-28" : "bottom-4 sm:bottom-5"
+              }`}
+            >
               <div className="flex items-center gap-3 rounded-full bg-black/45 px-3 py-2 shadow-md ring-1 ring-white/20 backdrop-blur-sm">
                 <div
                   className="flex items-center gap-2"
@@ -175,7 +179,7 @@ function SlideBody({ slide }: { slide: Slide }) {
         {slide.video ? (
           <div
             aria-hidden
-            className="absolute inset-0 z-0 overflow-hidden blur-sm brightness-75"
+            className="absolute inset-0 z-0 overflow-hidden blur-[2px] brightness-75"
           >
             <iframe
               src={slide.video.embedSrc}
@@ -199,14 +203,14 @@ function SlideBody({ slide }: { slide: Slide }) {
           className="absolute inset-0 z-0 bg-gradient-to-t from-black/90 via-black/60 to-black/35"
         />
 
-        <div className="relative z-10 mx-auto max-w-2xl">
+        <div className="relative z-10 mx-auto flex max-w-4xl flex-col items-center gap-6">
           {slide.titleImage ? (
             <Image
               src={slide.titleImage.src}
               alt={slide.titleImage.alt}
               width={slide.titleImage.width}
               height={slide.titleImage.height}
-              className="mx-auto h-auto w-full max-w-lg"
+              className="mx-auto h-auto w-full max-w-2xl"
             />
           ) : (
             <h2 className="text-3xl font-semibold leading-[1.15] tracking-tight text-balance text-white sm:text-4xl md:text-5xl">
@@ -218,28 +222,27 @@ function SlideBody({ slide }: { slide: Slide }) {
               ) : null}
             </h2>
           )}
-          <p className="mx-auto mt-4 max-w-xl text-base leading-7 text-white/80 sm:text-lg sm:leading-8">
+
+          {slide.facts?.length ? (
+            <ul className="flex flex-wrap items-center justify-center gap-y-2 text-base font-semibold text-white sm:text-xl">
+              {slide.facts.map((fact, position) => (
+                <li
+                  key={fact.label}
+                  className={`px-4 ${
+                    position > 0 ? "border-l-2 border-accent" : ""
+                  }`}
+                >
+                  {fact.value}
+                </li>
+              ))}
+            </ul>
+          ) : null}
+
+          <p className="mx-auto max-w-2xl text-base leading-7 text-white/85 sm:text-lg sm:leading-8">
             {slide.summary}
           </p>
-        </div>
 
-        {slide.facts?.length ? (
-          <dl className="relative z-10 mx-auto grid max-w-2xl gap-4 border-t border-white/20 pt-5 sm:grid-cols-3">
-            {slide.facts.map((fact) => (
-              <div key={fact.label}>
-                <dt className="text-[11px] font-semibold uppercase tracking-[0.1em] text-white/60">
-                  {fact.label}
-                </dt>
-                <dd className="mt-1 text-sm font-medium text-white sm:text-base">
-                  {fact.value}
-                </dd>
-              </div>
-            ))}
-          </dl>
-        ) : null}
-
-        <div className="relative z-10 flex flex-wrap items-center justify-center gap-x-5 gap-y-3">
-          <SlideCta href={slide.href} label={slide.cta} />
+          <SlideCta href={slide.href} label={slide.cta} lime />
         </div>
       </>
     );
@@ -285,49 +288,24 @@ function SlideBody({ slide }: { slide: Slide }) {
         </div>
 
         {slide.speakers?.length ? (
-          <ul className="relative z-10 mx-auto grid max-w-2xl gap-3 text-left sm:grid-cols-2">
+          <ul className="relative z-10 mx-auto grid w-full max-w-5xl grid-cols-3 gap-x-4 gap-y-6 sm:grid-cols-5">
             {slide.speakers.map((speaker) => (
               <li
                 key={speaker.name}
-                className={`flex items-center gap-3 rounded-xl border p-3 ${
-                  hasImage
-                    ? "border-white/15 bg-black/50 backdrop-blur-md shadow-sm"
-                    : "border-line bg-background/60"
-                }`}
+                className="flex flex-col items-center gap-3"
               >
                 <span
                   aria-hidden
-                  className={`grid h-11 w-11 shrink-0 place-items-center rounded-full text-sm font-semibold ${
-                    hasImage
-                      ? "bg-brand text-white ring-1 ring-white/20"
-                      : "bg-brand-soft text-brand"
-                  }`}
+                  className="grid aspect-square w-full max-w-[9rem] place-items-center overflow-hidden rounded-full bg-white/15 text-white/60 ring-2 ring-white/30 backdrop-blur-md sm:max-w-[10.5rem]"
                 >
-                  {initials(speaker.name)}
+                  <svg viewBox="0 0 24 24" className="h-3/5 w-3/5" fill="currentColor">
+                    <circle cx="12" cy="8.5" r="4" />
+                    <path d="M4 21c0-4.4 3.6-7.5 8-7.5s8 3.1 8 7.5H4Z" />
+                  </svg>
                 </span>
-                <div className="min-w-0">
-                  <p
-                    className={`truncate text-sm font-semibold ${
-                      hasImage ? "text-white" : ""
-                    }`}
-                  >
-                    {speaker.name}
-                  </p>
-                  <p
-                    className={`truncate text-xs ${
-                      hasImage ? "text-white/70" : "text-muted"
-                    }`}
-                  >
-                    {speaker.role}
-                  </p>
-                  <p
-                    className={`truncate text-xs font-medium ${
-                      hasImage ? "text-accent" : "text-brand"
-                    }`}
-                  >
-                    {speaker.topic}
-                  </p>
-                </div>
+                <p className="text-sm font-semibold leading-tight text-white sm:text-base">
+                  {speaker.name}
+                </p>
               </li>
             ))}
           </ul>
@@ -418,19 +396,18 @@ function SlideBody({ slide }: { slide: Slide }) {
   );
 }
 
-function initials(name: string) {
-  return name
-    .replace(/^(Dr\.|Mr\.|Mrs\.|Engr\.|Prof\.)\s*/i, "")
-    .split(" ")
-    .filter(Boolean)
-    .slice(0, 2)
-    .map((part) => part[0])
-    .join("");
-}
-
-function SlideCta({ href, label }: { href: string; label: string }) {
-  const className =
-    "inline-flex items-center gap-2 rounded-lg bg-brand-deep px-5 py-3 text-sm font-semibold text-white transition-opacity hover:opacity-90";
+function SlideCta({
+  href,
+  label,
+  lime = false,
+}: {
+  href: string;
+  label: string;
+  lime?: boolean;
+}) {
+  const className = `inline-flex items-center gap-2 rounded-lg px-5 py-3 text-sm font-semibold transition-opacity hover:opacity-90 ${
+    lime ? "bg-accent text-[#10241a]" : "bg-brand-deep text-white"
+  }`;
   const arrow = (
     <svg aria-hidden viewBox="0 0 16 16" className="h-3.5 w-3.5">
       <path

@@ -38,10 +38,10 @@ export const slides: Slide[] = [
       height: 528,
     },
     summary:
-      "Connecting research, innovation, enterprise and technology for regional development.",
+      "Theme: Technology-Enhanced Development in the Era of Artificial Intelligence: The Pros and the Cons. Connecting research, innovation, enterprise and technology for regional development.",
     meta: "12–14 November 2026",
-    href: "/events/innovation-summit",
-    cta: "Register your interest",
+    href: "https://forms.gle/TWBUjnNynFT8KojN9",
+    cta: "Register for the Hackathon",
     tone: "lime",
     image: {
       src: "/images/icc-awka-venue.jpg",
@@ -53,17 +53,25 @@ export const slides: Slide[] = [
       title: "NCS SouthEast Innovation Summit & Awards",
     },
     facts: [
-      {
-        label: "Theme",
-        value:
-          "Technology-Enhanced Development in the Era of Artificial Intelligence: The Pros and the Cons",
-      },
-      { label: "Date", value: "12–14 November 2026" },
-      {
-        label: "Venue",
-        value: "International Conference Centre, Awka, Anambra State",
-      },
+      { label: "Venue", value: "International Conference Centre, Awka" },
+      { label: "Date", value: "12th to 14th November 2026" },
     ],
+  },
+  {
+    id: "summit-experience",
+    kind: "event",
+    eyebrow: "Summit Experience",
+    title: "What to expect at the Summit",
+    summary:
+      "Opening keynotes, AI and digital transformation sessions, the Innovation Hackathon, government–industry–academia engagement, research presentations, a technology showcase and the Leadership & Innovation Awards — over three days in Awka.",
+    meta: "12–14 November 2026 · Awka",
+    href: "/about",
+    cta: "See the full experience",
+    tone: "red",
+    image: {
+      src: "/images/summit-experience.jpg",
+      alt: "Large crowd at a packed hall for the NCS SouthEast Innovation Summit experience",
+    },
   },
   {
     id: "innovation-summit-speakers",
@@ -78,8 +86,8 @@ export const slides: Slide[] = [
     cta: "See the full agenda",
     tone: "green",
     image: {
-      src: "/images/summit-speakers.jpg",
-      alt: "Keynote speaker presenting on stage at the tech innovation conference in Awka",
+      src: "/images/stock-speaker-stage.jpg",
+      alt: "A speaker addressing a large audience from a stage at a technology conference",
     },
     speakers: [
       {
@@ -102,23 +110,12 @@ export const slides: Slide[] = [
         role: "Sub Section representative",
         topic: "Peer review and research standards",
       },
+      {
+        name: "Gov. Charles Soludo",
+        role: "Governor, Anambra State",
+        topic: "Special guest",
+      },
     ],
-  },
-  {
-    id: "summit-experience",
-    kind: "event",
-    eyebrow: "Summit Experience",
-    title: "What to expect at the Summit",
-    summary:
-      "Opening keynotes, AI and digital transformation sessions, the Innovation Hackathon, government–industry–academia engagement, research presentations, a technology showcase and the Leadership & Innovation Awards — over three days in Awka.",
-    meta: "12–14 November 2026 · Awka",
-    href: "/about",
-    cta: "See the full experience",
-    tone: "red",
-    image: {
-      src: "/images/summit-experience.jpg",
-      alt: "Large crowd at a packed hall for the NCS SouthEast Innovation Summit experience",
-    },
   },
   {
     id: "innovation-hackathon",
@@ -128,12 +125,12 @@ export const slides: Slide[] = [
     summary:
       "Young innovators, developers, researchers and entrepreneurs create technology solutions for challenges facing people, businesses, communities and government.",
     meta: "12–14 November 2026 · Awka",
-    href: "/events/innovation-summit",
-    cta: "Take part in the hackathon",
+    href: "https://forms.gle/TWBUjnNynFT8KojN9",
+    cta: "Register for the Hackathon",
     tone: "blue",
     image: {
-      src: "/images/zonal-assembly.jpg",
-      alt: "Delegates and tech leaders attending the Innovation Hackathon in Awka",
+      src: "/images/stock-hackathon.jpg",
+      alt: "A developer writing code on a laptop at a hackathon",
     },
   },
   {
@@ -148,8 +145,8 @@ export const slides: Slide[] = [
     cta: "Nominate a leader",
     tone: "yellow",
     image: {
-      src: "/images/membership-drive.jpg",
-      alt: "Distinguished leaders being recognized on stage at the Innovation Summit & Awards",
+      src: "/images/stock-awards.jpg",
+      alt: "Glass award trophies lined up on stage ahead of an awards ceremony",
     },
   },
   {
@@ -164,8 +161,8 @@ export const slides: Slide[] = [
     cta: "See partnership opportunities",
     tone: "green",
     image: {
-      src: "/images/elders-forum.jpg",
-      alt: "Government, academia and industry leaders meeting ahead of the Innovation Summit",
+      src: "/images/stock-partnership.jpg",
+      alt: "Government and industry partners in a meeting",
     },
   },
 ];
@@ -434,3 +431,20 @@ export const contact = {
   address: "SouthEast Zone, Nigeria Computer Society, Nigeria",
   website: "www.southeastncs.org.ng",
 };
+
+export const sponsors = [
+  { name: "Zinox", src: "/images/zinox.png", width: 512, height: 288 },
+  {
+    name: "Anambra State Government — Solution Innovation District (SID)",
+    src: "/images/solutioninnovationdistrict.png",
+    width: 1474,
+    height: 462,
+  },
+  {
+    name: "Nigeria Computer Society",
+    src: "/images/nationalncslogo.jpg",
+    width: 738,
+    height: 305,
+  },
+  { name: "IEEE", src: "/images/IEEE.jpg", width: 738, height: 405 },
+];

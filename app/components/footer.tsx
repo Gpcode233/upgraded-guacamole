@@ -1,9 +1,6 @@
+import Image from "next/image";
 import Link from "next/link";
-
-const sponsors = [
-  "Anambra State Government — Solution Innovation District (SID)",
-  "IEEE",
-];
+import { sponsors } from "../lib/content";
 
 const socials = [
   {
@@ -46,19 +43,25 @@ const socials = [
 
 export function Footer() {
   return (
-    <footer className="bg-brand-deep">
+    <footer className="relative z-30 rounded-t-3xl bg-brand-deep">
       <div className="mx-auto flex w-full max-w-6xl flex-col gap-6 px-4 py-8 sm:flex-row sm:items-center sm:justify-between sm:px-6">
         <div>
           <p className="text-[11px] font-semibold uppercase tracking-[0.1em] text-white/60">
             Sponsors &amp; partners
           </p>
-          <ul className="mt-3 flex flex-wrap items-center gap-x-6 gap-y-2">
+          <ul className="mt-3 flex flex-wrap items-center gap-3">
             {sponsors.map((sponsor) => (
               <li
-                key={sponsor}
-                className="text-sm font-medium text-white/90"
+                key={sponsor.name}
+                className="flex h-14 items-center rounded-lg bg-white px-3"
               >
-                {sponsor}
+                <Image
+                  src={sponsor.src}
+                  alt={sponsor.name}
+                  width={sponsor.width}
+                  height={sponsor.height}
+                  className="h-10 w-auto"
+                />
               </li>
             ))}
           </ul>
