@@ -1,7 +1,13 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import { Card, PageShell } from "../components/page-shell";
+import {
+  Card,
+  PageShell,
+  Section,
+  SectionHeading,
+  buttonStyles,
+} from "../components/page-shell";
 import { sponsors } from "../lib/content";
 
 export const metadata: Metadata = {
@@ -55,12 +61,46 @@ export default function SponsorshipPage() {
       eyebrow="Sponsorship"
       title="Partner with the Summit & Awards"
       intro="The Anambra State Government, through the Solution Innovation District (SID), is supporting the Summit as a key strategic partner. We welcome additional institutional, corporate, technology, academic and development partners to contribute to the Summit's vision."
+      image={{ src: "/images/stock-partnership.jpg" }}
     >
-      <section className="mb-12 text-center">
-        <h2 className="text-2xl font-semibold tracking-tight">
-          Our Sponsors &amp; Partners
-        </h2>
-        <ul className="mt-6 grid grid-cols-2 gap-4 lg:grid-cols-4">
+      <Section tone="dark">
+        <SectionHeading eyebrow="Packages" title="Sponsorship tiers" />
+        <div className="mt-10 grid gap-6 lg:grid-cols-3">
+          {tiers.map((tier) => (
+            <Card
+              key={tier.name}
+              className={`flex flex-col border-t-4 ${tier.tone}`}
+            >
+              <h3 className="text-lg font-semibold">{tier.name}</h3>
+              <p className="mt-1 text-2xl font-semibold text-brand">
+                {tier.price}
+              </p>
+              <ul className="mt-5 flex-1 space-y-2.5 text-sm text-muted">
+                {tier.perks.map((perk) => (
+                  <li key={perk} className="flex gap-2">
+                    <span aria-hidden className="text-brand">
+                      ✓
+                    </span>
+                    {perk}
+                  </li>
+                ))}
+              </ul>
+              <a
+                href={SPONSOR_FORM}
+                target="_blank"
+                rel="noreferrer noopener"
+                className={`${buttonStyles.green} mt-6 w-full`}
+              >
+                Become a {tier.name} sponsor
+              </a>
+            </Card>
+          ))}
+        </div>
+      </Section>
+
+      <Section tone="light">
+        <SectionHeading eyebrow="Partners" title="Our sponsors & partners" />
+        <ul className="mt-8 grid grid-cols-2 gap-4 lg:grid-cols-4">
           {sponsors.map((sponsor) => (
             <li
               key={sponsor.name}
@@ -76,39 +116,8 @@ export default function SponsorshipPage() {
             </li>
           ))}
         </ul>
-      </section>
 
-      <section className="grid gap-6 lg:grid-cols-3">
-        {tiers.map((tier) => (
-          <Card key={tier.name} className={`border-t-4 ${tier.tone}`}>
-            <h2 className="text-lg font-semibold">{tier.name}</h2>
-            <p className="mt-1 text-2xl font-semibold text-brand">
-              {tier.price}
-            </p>
-            <ul className="mt-5 space-y-2.5 text-sm text-muted">
-              {tier.perks.map((perk) => (
-                <li key={perk} className="flex gap-2">
-                  <span aria-hidden className="text-brand">
-                    ✓
-                  </span>
-                  {perk}
-                </li>
-              ))}
-            </ul>
-            <a
-              href={SPONSOR_FORM}
-              target="_blank"
-              rel="noreferrer noopener"
-              className="mt-6 inline-block rounded-lg bg-brand-deep px-5 py-3 text-sm font-semibold text-white hover:opacity-90"
-            >
-              Become a {tier.name} sponsor
-            </a>
-          </Card>
-        ))}
-      </section>
-
-      <section className="mt-12">
-        <h2 className="text-xl font-semibold tracking-tight">
+        <h2 className="mt-16 text-xl font-semibold tracking-tight">
           Partnership opportunities
         </h2>
         <ul className="mt-5 grid gap-3 sm:grid-cols-2">
@@ -123,30 +132,27 @@ export default function SponsorshipPage() {
           ].map((reason) => (
             <li
               key={reason}
-              className="rounded-xl border border-line px-4 py-5 text-sm"
+              className="rounded-xl border border-line bg-surface px-4 py-5 text-sm"
             >
               {reason}
             </li>
           ))}
         </ul>
-      </section>
 
-      <div className="mt-12 flex flex-wrap items-center gap-3">
-        <a
-          href={SPONSOR_FORM}
-          target="_blank"
-          rel="noreferrer noopener"
-          className="rounded-lg bg-brand-deep px-5 py-3 text-sm font-semibold text-white hover:opacity-90"
-        >
-          Talk to us about sponsoring
-        </a>
-        <Link
-          href="/register"
-          className="rounded-lg border border-line px-5 py-3 text-sm font-medium hover:bg-surface"
-        >
-          Register for the summit
-        </Link>
-      </div>
+        <div className="mt-12 flex flex-wrap items-center gap-3">
+          <a
+            href={SPONSOR_FORM}
+            target="_blank"
+            rel="noreferrer noopener"
+            className={buttonStyles.green}
+          >
+            Talk to us about sponsoring
+          </a>
+          <Link href="/register" className={buttonStyles.outlineDark}>
+            Register for the summit
+          </Link>
+        </div>
+      </Section>
     </PageShell>
   );
 }

@@ -6,6 +6,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import type { Slide } from "../lib/content";
 
 const AUTOPLAY_MS = 15000;
+export const CAROUSEL_RESET_EVENT = "carousel:reset";
 
 const tones: Record<Slide["tone"], { chip: string; glow: string }> = {
   green: {
@@ -70,6 +71,12 @@ export function Carousel({
       go(index - 1);
     }
   };
+
+  useEffect(() => {
+    const reset = () => setIndex(0);
+    window.addEventListener(CAROUSEL_RESET_EVENT, reset);
+    return () => window.removeEventListener(CAROUSEL_RESET_EVENT, reset);
+  }, []);
 
   const current = slides[index];
 
@@ -242,7 +249,16 @@ function SlideBody({ slide }: { slide: Slide }) {
             {slide.summary}
           </p>
 
-          <SlideCta href={slide.href} label={slide.cta} lime />
+          <div className="flex flex-wrap items-center justify-center gap-3">
+            <SlideCta href={slide.href} label={slide.cta} lime />
+            {slide.secondaryCta ? (
+              <SlideCta
+                href={slide.secondaryCta.href}
+                label={slide.secondaryCta.label}
+                outline
+              />
+            ) : null}
+          </div>
         </div>
       </>
     );
@@ -279,7 +295,7 @@ function SlideBody({ slide }: { slide: Slide }) {
             {slide.title}
           </h2>
           <p
-            className={`mt-3 text-base leading-7 ${
+            className={`mt-3 hidden text-base leading-7 sm:block ${
               hasImage ? "text-white/80" : "text-muted"
             }`}
           >
@@ -288,44 +304,41 @@ function SlideBody({ slide }: { slide: Slide }) {
         </div>
 
         {slide.speakers?.length ? (
-          <ul className="relative z-10 mx-auto grid w-full max-w-5xl grid-cols-3 gap-x-4 gap-y-6 sm:grid-cols-5">
+          <ul className="relative z-10 mx-auto grid w-full max-w-4xl grid-cols-2 gap-x-3 gap-y-4 sm:grid-cols-4 sm:gap-x-5">
             {slide.speakers.map((speaker) => (
-              <li
-                key={speaker.name}
-                className="flex flex-col items-center gap-3"
-              >
-                <span
-                  aria-hidden={speaker.photo ? undefined : true}
-                  className="relative grid aspect-square w-full max-w-[9rem] place-items-center overflow-hidden rounded-full bg-white/15 text-white/60 ring-2 ring-white/30 backdrop-blur-md sm:max-w-[10.5rem]"
-                >
+              <li key={speaker.name} className="relative">
+                <div className="relative aspect-[5/4] w-full overflow-hidden rounded-2xl bg-[#e9ece9] text-[#b3bab5] sm:aspect-[4/5]">
                   {speaker.photo ? (
                     <Image
                       src={speaker.photo}
                       alt={speaker.photoAlt ?? speaker.name}
                       fill
-                      sizes="168px"
+                      sizes="(min-width: 640px) 220px, 45vw"
                       className={
                         speaker.photoFit === "contain"
-                          ? "bg-white object-contain p-2"
+                          ? "object-contain p-3"
                           : "object-cover object-top"
                       }
                     />
                   ) : (
-                    <svg viewBox="0 0 24 24" className="h-3/5 w-3/5" fill="currentColor">
+                    <svg
+                      aria-hidden
+                      viewBox="0 0 24 24"
+                      className="absolute inset-x-0 top-[8%] mx-auto h-3/4 w-3/4"
+                      fill="currentColor"
+                    >
                       <circle cx="12" cy="8.5" r="4" />
                       <path d="M4 21c0-4.4 3.6-7.5 8-7.5s8 3.1 8 7.5H4Z" />
                     </svg>
                   )}
-                </span>
-                <div>
-                  <p className="text-sm font-semibold leading-tight text-white sm:text-base">
+                </div>
+                <div className="absolute inset-x-2 bottom-2 rounded-xl bg-brand-deep px-3 py-2 text-left shadow-lg ring-1 ring-white/15">
+                  <p className="text-sm font-bold leading-tight text-white sm:text-[15px]">
                     {speaker.name}
                   </p>
-                  {speaker.note ? (
-                    <p className="mt-1 text-xs font-semibold uppercase tracking-wide text-accent">
-                      {speaker.note}
-                    </p>
-                  ) : null}
+                  <p className="mt-0.5 line-clamp-2 text-[10px] leading-snug text-white/80 sm:text-[11px]">
+                    {speaker.role}
+                  </p>
                 </div>
               </li>
             ))}
@@ -420,13 +433,19 @@ function SlideCta({
   href,
   label,
   lime = false,
+  outline = false,
 }: {
   href: string;
   label: string;
   lime?: boolean;
+  outline?: boolean;
 }) {
   const className = `inline-flex items-center gap-2 rounded-lg px-5 py-3 text-sm font-semibold transition-opacity hover:opacity-90 ${
-    lime ? "bg-accent text-[#10241a]" : "bg-brand-deep text-white"
+    outline
+      ? "border border-white/60 bg-white/10 text-white backdrop-blur-sm"
+      : lime
+        ? "bg-accent text-[#10241a]"
+        : "bg-brand-deep text-white"
   }`;
   const arrow = (
     <svg aria-hidden viewBox="0 0 16 16" className="h-3.5 w-3.5">

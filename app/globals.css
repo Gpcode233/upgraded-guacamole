@@ -78,6 +78,34 @@ h3 {
   font-family: var(--font-display);
 }
 
+/* Page section bands. Each band re-maps the colour variables so shared
+   components (Card, form fields, text-muted, border-line) adapt to it. */
+.tone-dark {
+  background: #000;
+  color: #fff;
+}
+
+.tone-green {
+  --muted: #cfe3d5;
+  --line: rgba(255, 255, 255, 0.22);
+  --surface: rgba(0, 0, 0, 0.22);
+  --background: #003d11;
+  --brand: #a5d014;
+  background: var(--brand-deep);
+  color: #fff;
+}
+
+.tone-light {
+  --muted: #4d5e53;
+  --line: #d9e1db;
+  --surface: #f3f6f4;
+  --background: #ffffff;
+  --foreground: #0b1a12;
+  --brand: #005417;
+  background: #fff;
+  color: #0b1a12;
+}
+
 .font-script {
   font-family: var(--font-script);
   font-weight: 900;

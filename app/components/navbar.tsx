@@ -3,21 +3,19 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
+import { CAROUSEL_RESET_EVENT } from "./carousel";
 import { Logo } from "./logo";
 
 const links = [
   { href: "/about", label: "About" },
+  { href: "/schedule", label: "Schedule" },
   { href: "/sponsorship", label: "Sponsorship" },
   { href: "/contact", label: "Contact" },
 ];
 
 const actions: { href: string; label: string; external?: boolean }[] = [
   { href: "/register", label: "Register" },
-  {
-    href: "https://forms.gle/TWBUjnNynFT8KojN9",
-    label: "Join Hackathon",
-    external: true,
-  },
+  { href: "/hackathon", label: "Join Hackathon" },
 ];
 
 const actionClass =
@@ -81,7 +79,14 @@ export function Navbar() {
           aria-label="Main"
           className="flex h-12 items-center justify-between gap-4 px-4 sm:px-8"
         >
-          <Link href="/" aria-label="Home" className="shrink-0">
+          <Link
+            href="/"
+            aria-label="Home"
+            className="shrink-0"
+            onClick={() => {
+              if (isHome) window.dispatchEvent(new Event(CAROUSEL_RESET_EVENT));
+            }}
+          >
             <Logo tone="dark" />
           </Link>
 
