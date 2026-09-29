@@ -64,6 +64,26 @@ export default function SponsorshipPage() {
       image={{ src: "/images/stock-partnership.jpg" }}
     >
       <Section tone="dark">
+        <SectionHeading eyebrow="Partners" title="Our sponsors & partners" />
+        <ul className="mt-8 grid grid-cols-2 gap-4 lg:grid-cols-4">
+          {sponsors.map((sponsor) => (
+            <li
+              key={sponsor.name}
+              className="flex aspect-[3/2] items-center justify-center rounded-2xl bg-white p-4"
+            >
+              <Image
+                src={sponsor.src}
+                alt={sponsor.name}
+                width={sponsor.width}
+                height={sponsor.height}
+                className="max-h-full w-auto max-w-full object-contain"
+              />
+            </li>
+          ))}
+        </ul>
+      </Section>
+
+      <Section tone="light">
         <SectionHeading eyebrow="Packages" title="Sponsorship tiers" />
         <div className="mt-10 grid gap-6 lg:grid-cols-3">
           {tiers.map((tier) => (
@@ -96,48 +116,6 @@ export default function SponsorshipPage() {
             </Card>
           ))}
         </div>
-      </Section>
-
-      <Section tone="light">
-        <SectionHeading eyebrow="Partners" title="Our sponsors & partners" />
-        <ul className="mt-8 grid grid-cols-2 gap-4 lg:grid-cols-4">
-          {sponsors.map((sponsor) => (
-            <li
-              key={sponsor.name}
-              className="flex aspect-[3/2] items-center justify-center rounded-2xl border border-line bg-white p-4"
-            >
-              <Image
-                src={sponsor.src}
-                alt={sponsor.name}
-                width={sponsor.width}
-                height={sponsor.height}
-                className="max-h-full w-auto max-w-full object-contain"
-              />
-            </li>
-          ))}
-        </ul>
-
-        <h2 className="mt-16 text-xl font-semibold tracking-tight">
-          Partnership opportunities
-        </h2>
-        <ul className="mt-5 grid gap-3 sm:grid-cols-2">
-          {[
-            "Brand visibility and audience engagement",
-            "Thought leadership",
-            "Technology and innovation showcases",
-            "Stakeholder engagement",
-            "Media and digital visibility",
-            "Support for research, innovation and entrepreneurship program",
-            "Association with a high-impact regional technology initiative",
-          ].map((reason) => (
-            <li
-              key={reason}
-              className="rounded-xl border border-line bg-surface px-4 py-5 text-sm"
-            >
-              {reason}
-            </li>
-          ))}
-        </ul>
 
         <div className="mt-12 flex flex-wrap items-center gap-3">
           <a

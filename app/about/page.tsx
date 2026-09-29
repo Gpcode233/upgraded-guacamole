@@ -8,7 +8,7 @@ import {
   SideImage,
   buttonStyles,
 } from "../components/page-shell";
-import { objectives, pillars, summitDetails } from "../lib/content";
+import { objectives, summitDetails } from "../lib/content";
 
 export const metadata: Metadata = {
   title: "About",
@@ -65,27 +65,6 @@ export default function AboutPage() {
               <p className="mt-2 text-base font-medium">{summitDetails.theme}</p>
             </Card>
           </div>
-        </div>
-      </Section>
-
-      <Section tone="green">
-        <SectionHeading
-          eyebrow="Strategic pillars"
-          title="Built around four pillars"
-          intro="Unlike a conventional conference, the Summit is driven by practical outcomes, bold ideas and lasting impact."
-        />
-        <div className="mt-10 grid gap-4 sm:grid-cols-2">
-          {pillars.map((pillar) => (
-            <Card key={pillar.name}>
-              <p className="text-[11px] font-semibold uppercase tracking-[0.1em] text-brand">
-                Pillar {pillar.numeral}
-              </p>
-              <h3 className="mt-1 text-lg font-semibold">{pillar.name}</h3>
-              <p className="mt-2 text-sm leading-6 text-muted">
-                {pillar.detail}
-              </p>
-            </Card>
-          ))}
         </div>
       </Section>
 
