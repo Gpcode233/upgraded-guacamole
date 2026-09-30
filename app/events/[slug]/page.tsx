@@ -65,7 +65,7 @@ export default async function EventPage(props: PageProps<"/events/[slug]">) {
             </p>
             {event.status !== "Concluded" ? (
               <Link
-                href={`/register?event=${event.slug}`}
+                href="/register"
                 className={`${buttonStyles.green} mt-5 w-full`}
               >
                 Register for this event
@@ -90,9 +90,6 @@ export default async function EventPage(props: PageProps<"/events/[slug]">) {
           </Link>
           <Link href="/hackathon" className={buttonStyles.outlineDark}>
             Join the Hackathon
-          </Link>
-          <Link href="/events" className={buttonStyles.outlineDark}>
-            All events
           </Link>
         </div>
       </Section>

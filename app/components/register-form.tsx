@@ -1,217 +1,349 @@
 "use client";
 
-import { useState } from "react";
+import { useActionState, useState } from "react";
 import { events } from "../lib/content";
+import {
+  membershipGrades,
+  type RegisterState,
+  type RegistrationValues,
+} from "../lib/registration";
+import { register } from "../register/actions";
 
-type Errors = Partial<Record<"name" | "email" | "event", string>>;
+const inputClass =
+  "w-full rounded-lg border border-line bg-background px-3.5 py-3 text-sm text-foreground placeholder:text-muted/70 transition-colors focus:border-brand aria-invalid:border-[#d00000]";
 
-export function RegisterForm({ defaultEvent }: { defaultEvent?: string }) {
-  const openEvents = events.filter((event) => event.status !== "Concluded");
-  const initialEvent = openEvents.some((event) => event.slug === defaultEvent)
-    ? (defaultEvent as string)
-    : "";
+export function RegisterForm() {
+  // Remounting the flow is the only way to clear useActionState's result.
+  const [attempt, setAttempt] = useState(0);
+  return (
+    <RegisterFlow
+      key={attempt}
+      onRestart={() => setAttempt((value) => value + 1)}
+    />
+  );
+}
 
-  const [values, setValues] = useState({
-    name: "",
-    email: "",
-    phone: "",
-    organisation: "",
-    event: initialEvent,
-    grade: "Professional member",
-    notes: "",
-  });
-  const [errors, setErrors] = useState<Errors>({});
-  const [submitted, setSubmitted] = useState(false);
+function RegisterFlow({ onRestart }: { onRestart: () => void }) {
+  const [state, formAction, pending] = useActionState<RegisterState, FormData>(
+    register,
+    { status: "idle" },
+  );
 
-  const set = (key: keyof typeof values) => (value: string) =>
-    setValues((previous) => ({ ...previous, [key]: value }));
-
-  function onSubmit(formEvent: React.FormEvent) {
-    formEvent.preventDefault();
-    const next: Errors = {};
-    if (!values.name.trim()) next.name = "Enter your full name.";
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(values.email))
-      next.email = "Enter a valid email address.";
-    if (!values.event) next.event = "Choose an event.";
-    setErrors(next);
-    if (Object.keys(next).length === 0) setSubmitted(true);
+  if (state.status === "success") {
+    return <Confirmation state={state} onRestart={onRestart} />;
   }
 
-  if (submitted) {
-    const chosen = events.find((event) => event.slug === values.event);
-    return (
-      <div
-        role="status"
-        className="rounded-xl border border-line bg-surface p-8 text-center"
-      >
-        <h2 className="text-xl font-semibold tracking-tight">
-          Registration recorded
-        </h2>
-        <p className="mx-auto mt-3 max-w-md text-sm leading-6 text-muted">
-          Thanks {values.name.split(" ")[0]} — your place at{" "}
-          <strong className="font-semibold text-foreground">
-            {chosen?.title}
-          </strong>{" "}
-          is pending confirmation. A confirmation will be sent to {values.email}.
+  const errors = state.status === "error" ? state.fieldErrors : {};
+  const values: Partial<RegistrationValues> =
+    state.status === "error" ? state.values : {};
+
+  return (
+    <form
+      action={formAction}
+      className="rounded-2xl border border-line bg-surface p-5 sm:p-8"
+    >
+      {state.status === "error" && state.message ? (
+        <p
+          role="alert"
+          className="mb-6 rounded-lg border border-[#d00000]/30 bg-[#d00000]/5 px-4 py-3 text-sm text-[#a00000]"
+        >
+          {state.message}
+        </p>
+      ) : null}
+
+      <input type="hidden" name="event" value={events[0].slug} />
+
+      <FormStep number={1} title="Your details">
+        <div className="grid gap-5 sm:grid-cols-2">
+          <Field
+            label="Full name"
+            name="name"
+            autoComplete="name"
+            required
+            defaultValue={values.name}
+            error={errors.name}
+          />
+          <Field
+            label="Email"
+            name="email"
+            type="email"
+            autoComplete="email"
+            required
+            defaultValue={values.email}
+            error={errors.email}
+            hint="Your access code is sent here."
+          />
+          <Field
+            label="Phone"
+            name="phone"
+            type="tel"
+            autoComplete="tel"
+            defaultValue={values.phone}
+          />
+          <Field
+            label="Organisation"
+            name="organisation"
+            autoComplete="organization"
+            defaultValue={values.organisation}
+          />
+          <div className="flex flex-col gap-1.5 sm:col-span-2">
+            <label htmlFor="grade" className="text-sm font-medium">
+              Membership grade
+            </label>
+            <select
+              id="grade"
+              name="grade"
+              defaultValue={values.grade ?? membershipGrades[0]}
+              aria-invalid={Boolean(errors.grade)}
+              className={inputClass}
+            >
+              {membershipGrades.map((grade) => (
+                <option key={grade}>{grade}</option>
+              ))}
+            </select>
+            <FieldError id="grade-error" message={errors.grade} />
+          </div>
+        </div>
+      </FormStep>
+
+      <FormStep number={2} title="Anything we should know?" last>
+        <label htmlFor="notes" className="sr-only">
+          Notes
+        </label>
+        <textarea
+          id="notes"
+          name="notes"
+          rows={4}
+          maxLength={2000}
+          defaultValue={values.notes}
+          placeholder="Accessibility needs, dietary requirements, or questions for the organisers."
+          className={inputClass}
+        />
+      </FormStep>
+
+      {/* Honeypot for bots; hidden from people and assistive tech. */}
+      <div aria-hidden className="absolute -left-[9999px] h-px w-px overflow-hidden">
+        <label>
+          Website
+          <input type="text" name="website" tabIndex={-1} autoComplete="off" />
+        </label>
+      </div>
+
+      <div className="mt-8 flex flex-col gap-4 border-t border-line pt-6 sm:flex-row sm:items-center sm:justify-between">
+        <p className="text-xs leading-5 text-muted">
+          Fields marked <span className="text-foreground">*</span> are required.
+          We only use your details to manage your registration.
         </p>
         <button
-          type="button"
-          onClick={() => {
-            setSubmitted(false);
-            setValues((previous) => ({ ...previous, name: "", email: "" }));
-          }}
-          className="mt-6 rounded-lg border border-line px-4 py-2.5 text-sm font-medium hover:bg-background"
+          type="submit"
+          disabled={pending}
+          className="inline-flex shrink-0 items-center justify-center gap-2 rounded-lg bg-brand-deep px-6 py-3 text-sm font-semibold text-white transition-opacity hover:opacity-90 disabled:cursor-wait disabled:opacity-70"
         >
-          Register someone else
+          {pending ? (
+            <>
+              <span
+                aria-hidden
+                className="h-4 w-4 animate-spin rounded-full border-2 border-white/40 border-t-white"
+              />
+              Registering…
+            </>
+          ) : (
+            "Complete registration"
+          )}
         </button>
       </div>
+    </form>
+  );
+}
+
+function Confirmation({
+  state,
+  onRestart,
+}: {
+  state: Extract<RegisterState, { status: "success" }>;
+  onRestart: () => void;
+}) {
+  const [copied, setCopied] = useState(false);
+
+  let message: React.ReactNode;
+  if (state.alreadyRegistered) {
+    message = state.emailSent ? (
+      <>
+        You were already registered for{" "}
+        <strong className="text-foreground">{state.eventTitle}</strong>. We’ve
+        re-sent your access code to <strong className="text-foreground">{state.email}</strong>.
+      </>
+    ) : (
+      <>
+        You’re already registered for{" "}
+        <strong className="text-foreground">{state.eventTitle}</strong>, but we
+        couldn’t re-send your code just now. Check your inbox for the original
+        email, or contact us.
+      </>
+    );
+  } else {
+    message = (
+      <>
+        Your place at <strong className="text-foreground">{state.eventTitle}</strong>{" "}
+        is confirmed.{" "}
+        {state.emailSent ? (
+          <>
+            We’ve emailed your access code to{" "}
+            <strong className="text-foreground">{state.email}</strong>.
+          </>
+        ) : (
+          <>
+            We couldn’t send the confirmation email just now, so please save the
+            code below.
+          </>
+        )}
+      </>
     );
   }
 
   return (
-    <form
-      onSubmit={onSubmit}
-      noValidate
-      className="rounded-xl border border-line bg-surface p-6 sm:p-8"
+    <div
+      role="status"
+      className="rounded-2xl border border-line bg-surface p-6 text-center sm:p-10"
     >
-      <div className="grid gap-5 sm:grid-cols-2">
-        <Field
-          label="Full name"
-          id="name"
-          required
-          value={values.name}
-          onChange={set("name")}
-          error={errors.name}
-        />
-        <Field
-          label="Email"
-          id="email"
-          type="email"
-          required
-          value={values.email}
-          onChange={set("email")}
-          error={errors.email}
-        />
-        <Field
-          label="Phone"
-          id="phone"
-          type="tel"
-          value={values.phone}
-          onChange={set("phone")}
-        />
-        <Field
-          label="Organisation"
-          id="organisation"
-          value={values.organisation}
-          onChange={set("organisation")}
-        />
-
-        <div className="flex flex-col gap-1.5">
-          <label htmlFor="event" className="text-sm font-medium">
-            Event <span className="text-muted">*</span>
-          </label>
-          <select
-            id="event"
-            value={values.event}
-            aria-invalid={Boolean(errors.event)}
-            onChange={(element) => set("event")(element.target.value)}
-            className="rounded-lg border border-line bg-background px-3 py-2.5 text-sm"
-          >
-            <option value="">Select an event</option>
-            {openEvents.map((event) => (
-              <option key={event.slug} value={event.slug}>
-                {event.title} — {event.date}
-              </option>
-            ))}
-          </select>
-          {errors.event ? (
-            <p className="text-xs text-[#d00000] dark:text-[#ff9c9c]">
-              {errors.event}
-            </p>
-          ) : null}
-        </div>
-
-        <div className="flex flex-col gap-1.5">
-          <label htmlFor="grade" className="text-sm font-medium">
-            Membership grade
-          </label>
-          <select
-            id="grade"
-            value={values.grade}
-            onChange={(element) => set("grade")(element.target.value)}
-            className="rounded-lg border border-line bg-background px-3 py-2.5 text-sm"
-          >
-            {[
-              "Professional member",
-              "Student member",
-              "Corporate representative",
-              "Not yet a member",
-            ].map((grade) => (
-              <option key={grade}>{grade}</option>
-            ))}
-          </select>
-        </div>
-
-        <div className="flex flex-col gap-1.5 sm:col-span-2">
-          <label htmlFor="notes" className="text-sm font-medium">
-            Anything we should know?
-          </label>
-          <textarea
-            id="notes"
-            rows={4}
-            value={values.notes}
-            onChange={(element) => set("notes")(element.target.value)}
-            className="rounded-lg border border-line bg-background px-3 py-2.5 text-sm"
+      <span className="mx-auto grid h-12 w-12 place-items-center rounded-full bg-brand text-white">
+        <svg aria-hidden viewBox="0 0 16 16" className="h-5 w-5">
+          <path
+            d="M3.5 8.5 6.5 11.5 12.5 4.5"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
           />
+        </svg>
+      </span>
+      <h2 className="mt-5 text-2xl font-semibold tracking-tight">
+        {state.alreadyRegistered
+          ? `Welcome back, ${state.firstName}`
+          : `You're in, ${state.firstName}`}
+      </h2>
+      <p className="mx-auto mt-3 max-w-md text-sm leading-6 text-muted">
+        {message}
+      </p>
+
+      {state.accessCode ? (
+        <div className="mx-auto mt-7 max-w-sm rounded-xl bg-brand-soft px-6 py-5 text-white">
+          <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-white/70">
+            Your access code
+          </p>
+          <p className="mt-2 font-mono text-2xl font-bold tracking-[0.12em] text-accent">
+            {state.accessCode}
+          </p>
+          <button
+            type="button"
+            onClick={async () => {
+              try {
+                await navigator.clipboard.writeText(state.accessCode ?? "");
+                setCopied(true);
+              } catch {
+                setCopied(false);
+              }
+            }}
+            className="mt-3 text-xs font-medium text-white/80 underline-offset-4 hover:underline"
+          >
+            {copied ? "Copied" : "Copy code"}
+          </button>
         </div>
-      </div>
+      ) : null}
+
+      <p className="mx-auto mt-6 max-w-md text-xs leading-5 text-muted">
+        Show your access code at the accreditation desk on arrival. Didn’t get
+        the email? Check your spam folder.
+      </p>
 
       <button
-        type="submit"
-        className="mt-7 w-full rounded-lg bg-brand-deep px-5 py-3 text-sm font-semibold text-white hover:opacity-90 sm:w-auto"
+        type="button"
+        onClick={onRestart}
+        className="mt-6 rounded-lg border border-line px-4 py-2.5 text-sm font-medium transition-colors hover:bg-background"
       >
-        Submit registration
+        Register someone else
       </button>
-    </form>
+    </div>
+  );
+}
+
+function FormStep({
+  number,
+  title,
+  last = false,
+  children,
+}: {
+  number: number;
+  title: string;
+  last?: boolean;
+  children: React.ReactNode;
+}) {
+  return (
+    <section className={last ? "" : "mb-8 border-b border-line pb-8"}>
+      <h2 className="mb-5 flex items-center gap-3 text-base font-semibold [word-spacing:0.2em]">
+        <span className="grid h-7 w-7 place-items-center rounded-full bg-brand-deep font-sans text-xs text-white">
+          {number}
+        </span>
+        {title}
+      </h2>
+      {children}
+    </section>
   );
 }
 
 function Field({
   label,
-  id,
-  value,
-  onChange,
+  name,
   type = "text",
   required = false,
+  autoComplete,
+  defaultValue,
   error,
+  hint,
 }: {
   label: string;
-  id: string;
-  value: string;
-  onChange: (value: string) => void;
+  name: string;
   type?: string;
   required?: boolean;
+  autoComplete?: string;
+  defaultValue?: string;
   error?: string;
+  hint?: string;
 }) {
+  const describedBy = error ? `${name}-error` : hint ? `${name}-hint` : undefined;
   return (
     <div className="flex flex-col gap-1.5">
-      <label htmlFor={id} className="text-sm font-medium">
-        {label} {required ? <span className="text-muted">*</span> : null}
+      <label htmlFor={name} className="text-sm font-medium">
+        {label} {required ? <span aria-hidden>*</span> : null}
       </label>
       <input
-        id={id}
+        id={name}
+        name={name}
         type={type}
-        value={value}
+        required={required}
+        autoComplete={autoComplete}
+        defaultValue={defaultValue}
         aria-invalid={Boolean(error)}
-        aria-describedby={error ? `${id}-error` : undefined}
-        onChange={(element) => onChange(element.target.value)}
-        className="rounded-lg border border-line bg-background px-3 py-2.5 text-sm"
+        aria-describedby={describedBy}
+        className={inputClass}
       />
       {error ? (
-        <p id={`${id}-error`} className="text-xs text-[#d00000] dark:text-[#ff9c9c]">
-          {error}
+        <FieldError id={`${name}-error`} message={error} />
+      ) : hint ? (
+        <p id={`${name}-hint`} className="text-xs text-muted">
+          {hint}
         </p>
       ) : null}
     </div>
+  );
+}
+
+function FieldError({ id, message }: { id: string; message?: string }) {
+  if (!message) return null;
+  return (
+    <p id={id} className="mt-1.5 text-xs text-[#b00000]">
+      {message}
+    </p>
   );
 }
