@@ -1,6 +1,12 @@
 import type { Metadata } from "next";
 import Image from "next/image";
-import { PageShell } from "../components/page-shell";
+import Link from "next/link";
+import {
+  PageShell,
+  Section,
+  SectionHeading,
+  buttonStyles,
+} from "../components/page-shell";
 import { team } from "../lib/content";
 
 export const metadata: Metadata = {
@@ -70,26 +76,45 @@ export default function TeamPage() {
       eyebrow="Team"
       title="Zonal Working Committee"
       intro="The people running the zone, chapter by chapter."
+      image={{ src: "/images/zonal-assembly.jpg" }}
     >
-      <div className="mx-auto w-full max-w-[220px]">
-        <MemberCard
-          name={coordinator.name}
-          role={coordinator.role}
-          photo={coordinator.photo}
-        />
-      </div>
+      <Section tone="dark">
+        <div className="mx-auto w-full max-w-[220px]">
+          <MemberCard
+            name={coordinator.name}
+            role={coordinator.role}
+            photo={coordinator.photo}
+          />
+        </div>
 
-      <ul className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-        {rest.map((member) => (
-          <li key={member.name}>
-            <MemberCard
-              name={member.name}
-              role={member.role}
-              photo={member.photo}
-            />
-          </li>
-        ))}
-      </ul>
+        <ul className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+          {rest.map((member) => (
+            <li key={member.name}>
+              <MemberCard
+                name={member.name}
+                role={member.role}
+                photo={member.photo}
+              />
+            </li>
+          ))}
+        </ul>
+      </Section>
+
+      <Section tone="light">
+        <SectionHeading
+          eyebrow="Work with us"
+          title="Have a question for the committee?"
+          intro="Reach the zonal secretariat about the Summit, partnerships or membership."
+        />
+        <div className="mt-8 flex flex-wrap gap-3">
+          <Link href="/contact" className={buttonStyles.green}>
+            Contact the secretariat
+          </Link>
+          <Link href="/sponsorship" className={buttonStyles.outlineDark}>
+            Become a partner
+          </Link>
+        </div>
+      </Section>
     </PageShell>
   );
 }

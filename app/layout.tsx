@@ -1,19 +1,20 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { Navbar } from "./components/navbar";
+import { Footer } from "./components/footer";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://southeastzone.org.ng"),
   title: {
-    default: "Greater SouthEast | Nigeria Computer Society",
-    template: "%s | Greater SouthEast NCS",
+    default: "NCS SouthEast Innovation Summit & Awards",
+    template: "%s | NCS SouthEast Innovation Summit & Awards",
   },
   description:
-    "The SouthEast zone of the Nigeria Computer Society: events, announcements, chapters and membership across Abia, Anambra, Ebonyi, Enugu and Imo.",
+    "13–15 November 2026, International Conference Centre, Awka. Theme: Technology-Enhanced Development in the Era of Artificial Intelligence: The Pros and the Cons. Connecting research, innovation, enterprise and technology for regional development.",
   openGraph: {
-    title: "Greater SouthEast | Nigeria Computer Society",
+    title: "NCS SouthEast Innovation Summit & Awards",
     description:
-      "Events, announcements and membership for the SouthEast zone of the Nigeria Computer Society.",
+      "Connecting Research, Innovation, Enterprise and Technology for Regional Development. 13–15 November 2026, Awka.",
     type: "website",
     locale: "en_NG",
   },
@@ -31,7 +32,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         />
         <link
           rel="stylesheet"
-          href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&display=swap"
+          href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
           precedence="default"
         />
       </head>
@@ -46,6 +47,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         <main id="main" className="flex-1">
           {children}
         </main>
+        <Footer />
       </body>
     </html>
   );

@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
-import { PageShell } from "../components/page-shell";
+import { PageShell, Section } from "../components/page-shell";
 import { RegisterForm } from "../components/register-form";
 
 export const metadata: Metadata = {
-  title: "Event registration",
+  title: "Registration",
   description:
-    "Register for Greater SouthEast NCS assemblies, conferences and summits.",
+    "Register for the NCS SouthEast Innovation Summit & Awards, 13–15 November 2026, International Conference Centre, Awka.",
 };
 
 export default async function RegisterPage(props: PageProps<"/register">) {
@@ -15,12 +15,15 @@ export default async function RegisterPage(props: PageProps<"/register">) {
   return (
     <PageShell
       eyebrow="Registration"
-      title="Register for an event"
-      intro="One form for every zonal and national date. Confirmation arrives by email."
+      title="Register for the Summit & Awards"
+      intro="13–15 November 2026, International Conference Centre, Awka, Anambra State. Confirmation arrives by email."
+      image={{ src: "/images/stock-speaker-stage.jpg" }}
     >
-      <div className="max-w-3xl">
-        <RegisterForm defaultEvent={defaultEvent} />
-      </div>
+      <Section tone="light">
+        <div className="max-w-3xl">
+          <RegisterForm defaultEvent={defaultEvent} />
+        </div>
+      </Section>
     </PageShell>
   );
 }

@@ -7,6 +7,7 @@ import type { Slide } from "../lib/content";
 
 const AUTOPLAY_MS = 10000;
 const TRANSITION_MS = 700;
+export const CAROUSEL_RESET_EVENT = "carousel:reset";
 
 const tones: Record<Slide["tone"], { chip: string; glow: string }> = {
   green: {
@@ -133,6 +134,16 @@ export function Carousel({
     }
   };
 
+  // Jump straight back to the first slide, without scrolling past the others.
+  useEffect(() => {
+    const reset = () => {
+      setAnimated(false);
+      setPosition(looped ? 1 : 0);
+    };
+    window.addEventListener(CAROUSEL_RESET_EVENT, reset);
+    return () => window.removeEventListener(CAROUSEL_RESET_EVENT, reset);
+  }, [looped]);
+
   // A full-bleed hero fills the viewport, so the pointer sits on it almost all
   // the time; hover-pausing there would stop the scroll for good.
   return (
@@ -180,7 +191,7 @@ export function Carousel({
               aria-label={`${looped ? wrap(slot) : slot + 1} of ${count}`}
               inert={slot !== position}
               className={`relative isolate flex h-full w-full shrink-0 flex-col items-center justify-center gap-8 overflow-hidden p-6 py-20 text-center sm:px-16 sm:py-20 ${
-                fullBleed ? "" : "min-h-[340px] sm:min-h-[360px]"
+                fullBleed ? "pb-28 sm:pb-32" : "min-h-[340px] sm:min-h-[360px]"
               }`}
             >
               <div
@@ -209,7 +220,11 @@ export function Carousel({
               />
             </div>
 
-            <div className="absolute inset-x-0 bottom-4 z-20 flex flex-col items-center gap-2 sm:bottom-5">
+            <div
+              className={`absolute inset-x-0 z-20 flex flex-col items-center gap-2 ${
+                fullBleed ? "bottom-16 sm:bottom-20" : "bottom-4 sm:bottom-5"
+              }`}
+            >
               <div className="flex items-center gap-3 rounded-full bg-black/45 px-3 py-2 shadow-md ring-1 ring-white/20 backdrop-blur-sm">
                 <div
                   className="flex items-center gap-2"
@@ -253,12 +268,24 @@ function SlideBody({
   tone: { chip: string; glow: string };
   eager?: boolean;
 }) {
-  const hasImage = Boolean(slide.image);
+  const hasImage = Boolean(slide.image) || Boolean(slide.video);
 
   if (slide.layout === "image-hero") {
     return (
       <>
-        {slide.image ? (
+        {slide.video ? (
+          <div
+            aria-hidden
+            className="absolute inset-0 z-0 overflow-hidden blur-[2px] brightness-75"
+          >
+            <iframe
+              src={slide.video.embedSrc}
+              title={slide.video.title}
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              className="pointer-events-none absolute left-1/2 top-1/2 h-[56.25vw] min-h-full w-[177.78vh] min-w-full -translate-x-1/2 -translate-y-1/2 scale-105"
+            />
+          </div>
+        ) : slide.image ? (
           <Image
             src={slide.image.src}
             alt={slide.image.alt}
@@ -273,40 +300,55 @@ function SlideBody({
           className="absolute inset-0 z-0 bg-gradient-to-t from-black/90 via-black/60 to-black/35"
         />
 
-        <div className="relative z-10 mx-auto max-w-2xl">
-          <span className="inline-flex rounded-full bg-white/15 px-2.5 py-1 text-[11px] font-semibold uppercase tracking-[0.1em] text-white ring-1 ring-white/25 backdrop-blur-sm">
-            {slide.eyebrow}
-          </span>
-          <h2 className="mt-5 text-3xl font-semibold leading-[1.15] tracking-tight text-balance text-white sm:text-4xl md:text-5xl">
-            {slide.title}
-            {slide.titleAccent ? (
-              <span className="font-script ml-2 text-accent">
-                {slide.titleAccent}
-              </span>
-            ) : null}
-          </h2>
-          <p className="mx-auto mt-4 max-w-xl text-base leading-7 text-white/80 sm:text-lg sm:leading-8">
+        <div className="relative z-10 mx-auto flex max-w-4xl flex-col items-center gap-6">
+          {slide.titleImage ? (
+            <Image
+              src={slide.titleImage.src}
+              alt={slide.titleImage.alt}
+              width={slide.titleImage.width}
+              height={slide.titleImage.height}
+              className="mx-auto h-auto w-full max-w-2xl"
+            />
+          ) : (
+            <h2 className="text-3xl font-semibold leading-[1.15] tracking-tight text-balance text-white sm:text-4xl md:text-5xl">
+              {slide.title}
+              {slide.titleAccent ? (
+                <span className="font-script ml-2 text-accent">
+                  {slide.titleAccent}
+                </span>
+              ) : null}
+            </h2>
+          )}
+
+          {slide.facts?.length ? (
+            <ul className="flex flex-wrap items-center justify-center gap-y-2 text-base font-semibold text-white sm:text-xl">
+              {slide.facts.map((fact, position) => (
+                <li
+                  key={fact.label}
+                  className={`px-4 ${
+                    position > 0 ? "border-l-2 border-accent" : ""
+                  }`}
+                >
+                  {fact.value}
+                </li>
+              ))}
+            </ul>
+          ) : null}
+
+          <p className="mx-auto max-w-2xl text-base leading-7 text-white/85 sm:text-lg sm:leading-8">
             {slide.summary}
           </p>
-        </div>
 
-        {slide.facts?.length ? (
-          <dl className="relative z-10 mx-auto grid max-w-2xl gap-4 border-t border-white/20 pt-5 sm:grid-cols-3">
-            {slide.facts.map((fact) => (
-              <div key={fact.label}>
-                <dt className="text-[11px] font-semibold uppercase tracking-[0.1em] text-white/60">
-                  {fact.label}
-                </dt>
-                <dd className="mt-1 text-sm font-medium text-white sm:text-base">
-                  {fact.value}
-                </dd>
-              </div>
-            ))}
-          </dl>
-        ) : null}
-
-        <div className="relative z-10 flex flex-wrap items-center justify-center gap-x-5 gap-y-3">
-          <SlideCta href={slide.href} label={slide.cta} />
+          <div className="flex flex-wrap items-center justify-center gap-3">
+            <SlideCta href={slide.href} label={slide.cta} lime />
+            {slide.secondaryCta ? (
+              <SlideCta
+                href={slide.secondaryCta.href}
+                label={slide.secondaryCta.label}
+                outline
+              />
+            ) : null}
+          </div>
         </div>
       </>
     );
@@ -335,24 +377,15 @@ function SlideBody({
         />
 
         <div className="relative z-10 mx-auto max-w-2xl">
-          <span
-            className={`inline-flex rounded-full px-2.5 py-1 text-[11px] font-semibold uppercase tracking-[0.1em] ${
-              hasImage
-                ? "bg-white/15 text-white ring-1 ring-white/25 backdrop-blur-sm"
-                : tone.chip
-            }`}
-          >
-            {slide.eyebrow}
-          </span>
           <h2
-            className={`mt-5 text-3xl font-semibold leading-[1.15] tracking-tight text-balance sm:text-4xl ${
+            className={`text-3xl font-semibold leading-[1.15] tracking-tight text-balance sm:text-4xl ${
               hasImage ? "text-white" : ""
             }`}
           >
             {slide.title}
           </h2>
           <p
-            className={`mt-3 text-base leading-7 ${
+            className={`mt-3 hidden text-base leading-7 sm:block ${
               hasImage ? "text-white/80" : "text-muted"
             }`}
           >
@@ -361,54 +394,46 @@ function SlideBody({
         </div>
 
         {slide.speakers?.length ? (
-          <ul className="relative z-10 mx-auto grid max-w-2xl gap-3 text-left sm:grid-cols-2">
+          <ul className="relative z-10 mx-auto grid w-full max-w-4xl grid-cols-2 gap-x-3 gap-y-4 sm:grid-cols-4 sm:gap-x-5">
             {slide.speakers.map((speaker) => (
-              <li
-                key={speaker.name}
-                className={`flex items-center gap-3 rounded-xl border p-3 ${
-                  hasImage
-                    ? "border-white/15 bg-black/50 backdrop-blur-md shadow-sm"
-                    : "border-line bg-background/60"
-                }`}
-              >
-                <span
-                  aria-hidden
-                  className={`grid h-11 w-11 shrink-0 place-items-center rounded-full text-sm font-semibold ${
-                    hasImage
-                      ? "bg-brand text-white ring-1 ring-white/20"
-                      : "bg-brand-soft text-brand"
-                  }`}
-                >
-                  {initials(speaker.name)}
-                </span>
-                <div className="min-w-0">
-                  <p
-                    className={`truncate text-sm font-semibold ${
-                      hasImage ? "text-white" : ""
-                    }`}
-                  >
+              <li key={speaker.name} className="relative">
+                <div className="relative aspect-[5/4] w-full overflow-hidden rounded-2xl bg-[#e9ece9] text-[#b3bab5] sm:aspect-[4/5]">
+                  {speaker.photo ? (
+                    <Image
+                      src={speaker.photo}
+                      alt={speaker.photoAlt ?? speaker.name}
+                      fill
+                      sizes="(min-width: 640px) 220px, 45vw"
+                      className={
+                        speaker.photoFit === "contain"
+                          ? "object-contain p-3"
+                          : "object-cover object-top"
+                      }
+                    />
+                  ) : (
+                    <svg
+                      aria-hidden
+                      viewBox="0 0 24 24"
+                      className="absolute inset-x-0 top-[8%] mx-auto h-3/4 w-3/4"
+                      fill="currentColor"
+                    >
+                      <circle cx="12" cy="8.5" r="4" />
+                      <path d="M4 21c0-4.4 3.6-7.5 8-7.5s8 3.1 8 7.5H4Z" />
+                    </svg>
+                  )}
+                </div>
+                <div className="absolute inset-x-2 bottom-2 rounded-xl bg-brand-deep px-3 py-2 text-left shadow-lg ring-1 ring-white/15">
+                  <p className="text-sm font-bold leading-tight text-white sm:text-[15px]">
                     {speaker.name}
                   </p>
-                  <p
-                    className={`truncate text-xs ${
-                      hasImage ? "text-white/70" : "text-muted"
-                    }`}
-                  >
+                  <p className="mt-0.5 line-clamp-2 text-[10px] leading-snug text-white/80 sm:text-[11px]">
                     {speaker.role}
-                  </p>
-                  <p
-                    className={`truncate text-xs font-medium ${
-                      hasImage ? "text-accent" : "text-brand"
-                    }`}
-                  >
-                    {speaker.topic}
                   </p>
                 </div>
               </li>
             ))}
           </ul>
         ) : null}
-
         <div className="relative z-10 flex flex-wrap items-center justify-center gap-x-5 gap-y-3">
           <SlideCta href={slide.href} label={slide.cta} />
           <p
@@ -425,7 +450,19 @@ function SlideBody({
 
   return (
     <>
-      {slide.image ? (
+      {slide.video ? (
+        <div
+          aria-hidden
+          className="absolute inset-0 z-0 overflow-hidden blur-xs brightness-75"
+        >
+          <iframe
+            src={slide.video.embedSrc}
+            title={slide.video.title}
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            className="pointer-events-none absolute left-1/2 top-1/2 h-[56.25vw] min-h-full w-[177.78vh] min-w-full -translate-x-1/2 -translate-y-1/2 scale-105"
+          />
+        </div>
+      ) : slide.image ? (
         <Image
           src={slide.image.src}
           alt={slide.image.alt}
@@ -445,17 +482,8 @@ function SlideBody({
       />
 
       <div className="relative z-10 mx-auto max-w-2xl">
-        <span
-          className={`inline-flex rounded-full px-2.5 py-1 text-[11px] font-semibold uppercase tracking-[0.1em] ${
-            hasImage
-              ? "bg-white/15 text-white ring-1 ring-white/25 backdrop-blur-sm"
-              : tone.chip
-          }`}
-        >
-          {slide.eyebrow}
-        </span>
         <h2
-          className={`mt-5 text-3xl font-semibold leading-[1.15] tracking-tight text-balance sm:text-4xl md:text-5xl ${
+          className={`text-3xl font-semibold leading-[1.15] tracking-tight text-balance sm:text-4xl md:text-5xl ${
             hasImage ? "text-white" : ""
           }`}
         >
@@ -491,19 +519,24 @@ function SlideBody({
   );
 }
 
-function initials(name: string) {
-  return name
-    .replace(/^(Dr\.|Mr\.|Mrs\.|Engr\.|Prof\.)\s*/i, "")
-    .split(" ")
-    .filter(Boolean)
-    .slice(0, 2)
-    .map((part) => part[0])
-    .join("");
-}
-
-function SlideCta({ href, label }: { href: string; label: string }) {
-  const className =
-    "inline-flex items-center gap-2 rounded-lg bg-brand px-5 py-3 text-sm font-semibold text-white transition-opacity hover:opacity-90";
+function SlideCta({
+  href,
+  label,
+  lime = false,
+  outline = false,
+}: {
+  href: string;
+  label: string;
+  lime?: boolean;
+  outline?: boolean;
+}) {
+  const className = `inline-flex items-center gap-2 rounded-lg px-5 py-3 text-sm font-semibold transition-opacity hover:opacity-90 ${
+    outline
+      ? "border border-white/60 bg-white/10 text-white backdrop-blur-sm"
+      : lime
+        ? "bg-accent text-[#10241a]"
+        : "bg-brand-deep text-white"
+  }`;
   const arrow = (
     <svg aria-hidden viewBox="0 0 16 16" className="h-3.5 w-3.5">
       <path
