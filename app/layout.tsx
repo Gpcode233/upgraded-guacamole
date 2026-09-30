@@ -9,12 +9,17 @@ export const metadata: Metadata = {
     default: "NCS SouthEast Innovation Summit & Awards",
     template: "%s | NCS SouthEast Innovation Summit & Awards",
   },
+  icons: {
+    icon: "/images/ncs_logo.png",
+    shortcut: "/images/ncs_logo.png",
+    apple: "/images/ncs_logo.png",
+  },
   description:
-    "13–15 November 2026, International Conference Centre, Awka. Theme: Technology-Enhanced Development in the Era of Artificial Intelligence: The Pros and the Cons. Connecting research, innovation, enterprise and technology for regional development.",
+    "12–14 November 2026, International Conference Centre, Awka. Theme: Technology-Enhanced Development in the Era of Artificial Intelligence: The Pros and the Cons. Connecting research, innovation, enterprise and technology for regional development.",
   openGraph: {
     title: "NCS SouthEast Innovation Summit & Awards",
     description:
-      "Connecting Research, Innovation, Enterprise and Technology for Regional Development. 13–15 November 2026, Awka.",
+      "Connecting Research, Innovation, Enterprise and Technology for Regional Development. 12–14 November 2026, Awka.",
     type: "website",
     locale: "en_NG",
   },

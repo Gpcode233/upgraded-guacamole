@@ -5,7 +5,7 @@ import { RegisterForm } from "../components/register-form";
 export const metadata: Metadata = {
   title: "Registration",
   description:
-    "Register for the NCS SouthEast Innovation Summit & Awards, 13–15 November 2026, International Conference Centre, Awka.",
+    "Register for the NCS SouthEast Innovation Summit & Awards, 12–14 November 2026, International Conference Centre, Awka.",
 };
 
 export default async function RegisterPage(props: PageProps<"/register">) {
@@ -16,7 +16,7 @@ export default async function RegisterPage(props: PageProps<"/register">) {
     <PageShell
       eyebrow="Registration"
       title="Register for the Summit & Awards"
-      intro="13–15 November 2026, International Conference Centre, Awka, Anambra State. Confirmation arrives by email."
+      intro="12–14 November 2026, International Conference Centre, Awka, Anambra State. Confirmation arrives by email."
       image={{ src: "/images/stock-speaker-stage.jpg" }}
     >
       <Section tone="light">
