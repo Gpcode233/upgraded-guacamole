@@ -176,35 +176,10 @@ export type EventItem = {
   details: string[];
 };
 
+// The Summit is the zone's one event (the concept note calls it the SouthEast
+// Zonal IT Assembly & Workshop). Registration, /events and the confirmation
+// email all read from here.
 export const events: EventItem[] = [
-  {
-    slug: "zonal-it-assembly",
-    title: "Zonal IT Assembly 2026",
-    date: "November 2026",
-    location: "Enugu",
-    status: "Registration open",
-    blurb:
-      "The zone's flagship assembly. Chapter reports, elections, technical tracks and the annual zonal address.",
-    details: [
-      "Two days of plenary and parallel technical tracks",
-      "Chapter delegate accreditation on day one",
-      "Awards for outstanding chapters and student branches",
-    ],
-  },
-  {
-    slug: "rise-conference",
-    title: "NCS RISE Conference",
-    date: "July 2026",
-    location: "Jos, Plateau State",
-    status: "Concluded",
-    blurb:
-      "The national NCS conference. The zone travelled as a delegation — the event has now held.",
-    details: [
-      "National keynote and policy sessions",
-      "Zonal delegation represented the SouthEast",
-      "Recap available in the news feed",
-    ],
-  },
   {
     slug: "innovation-summit",
     title: "NCS SouthEast Innovation Summit & Awards",

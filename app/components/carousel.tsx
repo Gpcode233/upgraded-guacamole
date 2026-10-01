@@ -5,7 +5,8 @@ import Link from "next/link";
 import { useCallback, useEffect, useRef, useState } from "react";
 import type { Slide } from "../lib/content";
 
-const AUTOPLAY_MS = 15000;
+const AUTOPLAY_MS = 10000;
+const TRANSITION_MS = 700;
 export const CAROUSEL_RESET_EVENT = "carousel:reset";
 
 const tones: Record<Slide["tone"], { chip: string; glow: string }> = {
@@ -38,48 +39,113 @@ export function Carousel({
   slides: Slide[];
   fullBleed?: boolean;
 }) {
-  const [index, setIndex] = useState(0);
-  const [paused, setPaused] = useState(false);
-  const touchStart = useRef<number | null>(null);
   const count = slides.length;
+  // The track holds a clone of the last slide before the first and a clone of
+  // the first slide after the last, so the horizontal scroll can keep going in
+  // one direction and snap back invisibly at the seams.
+  const looped = count > 1;
+  const track = looped
+    ? [slides[count - 1], ...slides, slides[0]]
+    : slides;
 
-  const go = useCallback(
-    (next: number) => setIndex(((next % count) + count) % count),
+  // Position within `track`; the real slides start at 1 when looping.
+  const [position, setPosition] = useState(looped ? 1 : 0);
+  const [animated, setAnimated] = useState(true);
+  const [paused, setPaused] = useState(false);
+  const [reduced, setReduced] = useState(false);
+  const reducedRef = useRef(false);
+  const touchStart = useRef<number | null>(null);
+
+  const index = looped ? (((position - 1) % count) + count) % count : 0;
+  const wrap = useCallback(
+    (slot: number) => ((((slot - 1) % count) + count) % count) + 1,
     [count],
   );
 
   useEffect(() => {
-    if (paused || count < 2) return;
-    const reduced =
-      typeof window !== "undefined" &&
-      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (reduced) return;
-    const timer = window.setInterval(
-      () => setIndex((value) => (value + 1) % count),
-      AUTOPLAY_MS,
+    const query = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const sync = () => {
+      reducedRef.current = query.matches;
+      setReduced(query.matches);
+    };
+    sync();
+    query.addEventListener("change", sync);
+    return () => query.removeEventListener("change", sync);
+  }, []);
+
+  // Reduced motion gets an instant swap, so it never parks on a clone.
+  const go = useCallback(
+    (delta: number) => {
+      if (!looped) return;
+      setAnimated(true);
+      setPosition((value) =>
+        reducedRef.current ? wrap(value + delta) : value + delta,
+      );
+    },
+    [looped, wrap],
+  );
+
+  const jumpTo = useCallback(
+    (target: number) => {
+      if (!looped) return;
+      setAnimated(true);
+      setPosition(target + 1);
+    },
+    [looped],
+  );
+
+  // Once the scroll has landed on a clone, snap back to its real twin with the
+  // transition off so the jump is invisible.
+  useEffect(() => {
+    if (!looped || (position >= 1 && position <= count)) return;
+    const timer = window.setTimeout(
+      () => {
+        setAnimated(false);
+        setPosition(wrap(position));
+      },
+      animated && !reduced ? TRANSITION_MS : 0,
     );
+    return () => window.clearTimeout(timer);
+  }, [position, count, looped, animated, reduced, wrap]);
+
+  // Re-enable the transition once the browser has painted the seam jump.
+  useEffect(() => {
+    if (animated) return;
+    const frame = window.requestAnimationFrame(() =>
+      window.requestAnimationFrame(() => setAnimated(true)),
+    );
+    return () => window.cancelAnimationFrame(frame);
+  }, [animated]);
+
+  useEffect(() => {
+    if (paused || reduced || !looped) return;
+    const timer = window.setInterval(() => go(1), AUTOPLAY_MS);
     return () => window.clearInterval(timer);
-  }, [paused, count]);
+  }, [paused, reduced, looped, go]);
 
   const onKeyDown = (event: React.KeyboardEvent) => {
     if (event.key === "ArrowRight") {
       event.preventDefault();
-      go(index + 1);
+      go(1);
     }
     if (event.key === "ArrowLeft") {
       event.preventDefault();
-      go(index - 1);
+      go(-1);
     }
   };
 
+  // Jump straight back to the first slide, without scrolling past the others.
   useEffect(() => {
-    const reset = () => setIndex(0);
+    const reset = () => {
+      setAnimated(false);
+      setPosition(looped ? 1 : 0);
+    };
     window.addEventListener(CAROUSEL_RESET_EVENT, reset);
     return () => window.removeEventListener(CAROUSEL_RESET_EVENT, reset);
-  }, []);
+  }, [looped]);
 
-  const current = slides[index];
-
+  // A full-bleed hero fills the viewport, so the pointer sits on it almost all
+  // the time; hover-pausing there would stop the scroll for good.
   return (
     <div
       role="region"
@@ -87,8 +153,8 @@ export function Carousel({
       aria-label="Upcoming events and announcements"
       tabIndex={0}
       onKeyDown={onKeyDown}
-      onMouseEnter={() => setPaused(true)}
-      onMouseLeave={() => setPaused(false)}
+      onMouseEnter={fullBleed ? undefined : () => setPaused(true)}
+      onMouseLeave={fullBleed ? undefined : () => setPaused(false)}
       onFocus={() => setPaused(true)}
       onBlur={() => setPaused(false)}
       onTouchStart={(event) => {
@@ -98,7 +164,7 @@ export function Carousel({
         const start = touchStart.current;
         if (start === null) return;
         const delta = event.changedTouches[0].clientX - start;
-        if (Math.abs(delta) > 48) go(index + (delta < 0 ? 1 : -1));
+        if (Math.abs(delta) > 48) go(delta < 0 ? 1 : -1);
         touchStart.current = null;
       }}
       className={`relative w-full ${fullBleed ? "h-full" : ""}`}
@@ -109,32 +175,48 @@ export function Carousel({
         }`}
       >
         <div
-          aria-hidden
-          className={`pointer-events-none absolute inset-0 bg-gradient-to-br ${tones[current.tone].glow}`}
-        />
-
-        <article
-          key={current.id}
-          role="group"
-          aria-roledescription="slide"
-          aria-label={`${index + 1} of ${count}`}
-          className={`relative isolate flex h-full flex-col items-center justify-center gap-8 overflow-hidden p-6 py-20 text-center motion-safe:animate-[slide-in_0.4s_ease-out] sm:px-16 sm:py-20 ${
-            fullBleed ? "pb-28 sm:pb-32" : "min-h-[340px] sm:min-h-[360px]"
+          className={`flex h-full ${
+            animated && !reduced ? "transition-transform ease-out" : ""
           }`}
+          style={{
+            transform: `translate3d(-${position * 100}%, 0, 0)`,
+            transitionDuration: `${TRANSITION_MS}ms`,
+          }}
         >
-          <SlideBody slide={current} />
-        </article>
+          {track.map((slide, slot) => (
+            <article
+              key={`${slide.id}-${slot}`}
+              role="group"
+              aria-roledescription="slide"
+              aria-label={`${looped ? wrap(slot) : slot + 1} of ${count}`}
+              inert={slot !== position}
+              className={`relative isolate flex h-full w-full shrink-0 flex-col items-center justify-center gap-8 overflow-hidden p-6 py-20 text-center sm:px-16 sm:py-20 ${
+                fullBleed ? "pb-28 sm:pb-32" : "min-h-[340px] sm:min-h-[360px]"
+              }`}
+            >
+              <div
+                aria-hidden
+                className={`pointer-events-none absolute inset-0 z-0 bg-gradient-to-br ${tones[slide.tone].glow}`}
+              />
+              <SlideBody
+                slide={slide}
+                tone={tones[slide.tone]}
+                eager={slot <= 1}
+              />
+            </article>
+          ))}
+        </div>
 
         {count > 1 ? (
           <>
             <div className="absolute inset-y-0 left-2 z-20 flex items-center sm:left-4">
-              <ArrowButton label="Previous slide" onClick={() => go(index - 1)} />
+              <ArrowButton label="Previous slide" onClick={() => go(-1)} />
             </div>
             <div className="absolute inset-y-0 right-2 z-20 flex items-center sm:right-4">
               <ArrowButton
                 label="Next slide"
                 flipped
-                onClick={() => go(index + 1)}
+                onClick={() => go(1)}
               />
             </div>
 
@@ -149,16 +231,16 @@ export function Carousel({
                   role="tablist"
                   aria-label="Slides"
                 >
-                  {slides.map((slide, position) => (
+                  {slides.map((slide, dot) => (
                     <button
                       key={slide.id}
                       type="button"
                       role="tab"
-                      aria-selected={position === index}
+                      aria-selected={dot === index}
                       aria-label={slide.title}
-                      onClick={() => go(position)}
+                      onClick={() => jumpTo(dot)}
                       className={`h-2 rounded-full transition-all ${
-                        position === index
+                        dot === index
                           ? "w-8 bg-white"
                           : "w-2 bg-white/45 hover:bg-white/70"
                       }`}
@@ -177,7 +259,15 @@ export function Carousel({
   );
 }
 
-function SlideBody({ slide }: { slide: Slide }) {
+function SlideBody({
+  slide,
+  tone,
+  eager = false,
+}: {
+  slide: Slide;
+  tone: { chip: string; glow: string };
+  eager?: boolean;
+}) {
   const hasImage = Boolean(slide.image) || Boolean(slide.video);
 
   if (slide.layout === "image-hero") {
@@ -200,7 +290,7 @@ function SlideBody({ slide }: { slide: Slide }) {
             src={slide.image.src}
             alt={slide.image.alt}
             fill
-            priority
+            priority={eager}
             sizes="100vw"
             className="absolute inset-0 z-0 object-cover"
           />
@@ -272,7 +362,7 @@ function SlideBody({ slide }: { slide: Slide }) {
             src={slide.image.src}
             alt={slide.image.alt}
             fill
-            priority
+            priority={eager}
             sizes="100vw"
             className="absolute inset-0 z-0 object-cover"
           />
@@ -377,7 +467,7 @@ function SlideBody({ slide }: { slide: Slide }) {
           src={slide.image.src}
           alt={slide.image.alt}
           fill
-          priority
+          priority={eager}
           sizes="100vw"
           className="absolute inset-0 z-0 object-cover"
         />
