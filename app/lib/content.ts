@@ -37,7 +37,7 @@ export const slides: Slide[] = [
     id: "innovation-summit-hero",
     kind: "event",
     layout: "image-hero",
-    eyebrow: "Registration open · 13–14 November 2026",
+    eyebrow: "Registration open · 12–14 November 2026",
     title: "NCS SouthEast",
     titleAccent: "Innovation Summit & Awards",
     titleImage: {
@@ -48,7 +48,7 @@ export const slides: Slide[] = [
     },
     summary:
       "Connecting Research, Innovation, Enterprise and Technology for Regional Development",
-    meta: "13–14 November 2026",
+    meta: "12–14 November 2026",
     href: "/register",
     cta: "Register for the Event",
     secondaryCta: { href: "/hackathon", label: "Join the Hackathon" },
@@ -64,7 +64,7 @@ export const slides: Slide[] = [
     },
     facts: [
       { label: "Venue", value: "International Conference Centre, Awka" },
-      { label: "Date", value: "13th to 14th November 2026" },
+      { label: "Date", value: "12th to 14th November 2026" },
     ],
   },
   {
@@ -73,8 +73,8 @@ export const slides: Slide[] = [
     eyebrow: "Summit Experience",
     title: "What to expect at the Summit",
     summary:
-      "Opening keynotes, AI and digital transformation sessions, the Innovation Hackathon, government–industry–academia engagement, research presentations, a technology showcase and the Leadership & Innovation Awards — over two days in Awka.",
-    meta: "13–14 November 2026 · Awka",
+      "Opening keynotes, AI and digital transformation sessions, the Innovation Hackathon, government–industry–academia engagement, research presentations, a technology showcase and the Leadership & Innovation Awards — over three days in Awka.",
+    meta: "12–14 November 2026 · Awka",
     href: "/about",
     cta: "See the full experience",
     tone: "red",
@@ -91,7 +91,7 @@ export const slides: Slide[] = [
     title: "Featured speakers",
     summary:
       "Government, academia, industry, researchers and innovators taking the stage in Awka.",
-    meta: "13–14 November 2026 · Awka",
+    meta: "12–14 November 2026 · Awka",
     href: "/schedule",
     cta: "See the full schedule",
     tone: "green",
@@ -123,7 +123,7 @@ export const slides: Slide[] = [
     title: "Build real solutions to real challenges",
     summary:
       "Young innovators, developers, researchers and entrepreneurs create technology solutions for challenges facing people, businesses, communities and government.",
-    meta: "13–14 November 2026 · Awka",
+    meta: "12–14 November 2026 · Awka",
     href: "/hackathon",
     cta: "Join the Hackathon",
     tone: "blue",
@@ -139,7 +139,7 @@ export const slides: Slide[] = [
     title: "Leadership & Innovation Awards",
     summary:
       "Recognizing government officials, industry leaders, researchers, entrepreneurs and innovators who have advanced technology, governance, enterprise and economic development.",
-    meta: "13–14 November 2026 · Awka",
+    meta: "12–14 November 2026 · Awka",
     href: "/events/innovation-summit",
     cta: "Nominate a leader",
     tone: "yellow",
@@ -183,7 +183,7 @@ export const events: EventItem[] = [
   {
     slug: "innovation-summit",
     title: "NCS SouthEast Innovation Summit & Awards",
-    date: "13–14 November 2026",
+    date: "12–14 November 2026",
     location: "International Conference Centre, Awka, Anambra State",
     status: "Registration open",
     blurb:
@@ -394,7 +394,7 @@ export const summitDetails = {
     "Connecting Research, Innovation, Enterprise and Technology for Regional Development.",
   theme:
     "Technology-Enhanced Development in the Era of Artificial Intelligence: The Pros and the Cons",
-  date: "13–14 November 2026",
+  date: "12–14 November 2026",
   venue: "International Conference Centre, Awka, Anambra State",
   organizer: "Nigeria Computer Society (NCS), SouthEast Zone",
 };

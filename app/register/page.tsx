@@ -6,7 +6,7 @@ import { contact, summitDetails } from "../lib/content";
 export const metadata: Metadata = {
   title: "Registration",
   description:
-    "Register for the NCS SouthEast Innovation Summit & Awards, 13–14 November 2026, International Conference Centre, Awka.",
+    "Register for the NCS SouthEast Innovation Summit & Awards, 12–14 November 2026, International Conference Centre, Awka.",
 };
 
 const steps = [
@@ -29,7 +29,7 @@ export default function RegisterPage() {
     <PageShell
       eyebrow="Registration"
       title="Register for the Summit & Awards"
-      intro="13–14 November 2026, International Conference Centre, Awka, Anambra State. Your access code arrives by email."
+      intro="12–14 November 2026, International Conference Centre, Awka, Anambra State. Your access code arrives by email."
       image={{ src: "/images/stock-speaker-stage.jpg" }}
     >
       <Section tone="light">
