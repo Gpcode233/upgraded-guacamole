@@ -4,7 +4,7 @@ import { randomBytes } from "node:crypto";
 import { contact, events } from "../lib/content";
 import { sendConfirmationEmail } from "../lib/registration-email";
 import {
-  membershipGrades,
+  attendanceCategories,
   type RegisterState,
   type RegistrationField,
   type RegistrationValues,
@@ -45,8 +45,8 @@ export async function register(
   if (!EMAIL_PATTERN.test(values.email))
     fieldErrors.email = "Enter a valid email address.";
   if (!event) fieldErrors.event = "Choose an event.";
-  if (!membershipGrades.includes(values.grade as never))
-    fieldErrors.grade = "Choose a membership grade.";
+  if (!attendanceCategories.includes(values.grade as never))
+    fieldErrors.grade = "Choose an attendance category.";
   if (!event || Object.keys(fieldErrors).length > 0) {
     return fail(values, fieldErrors);
   }

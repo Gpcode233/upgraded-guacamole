@@ -1,11 +1,13 @@
 // Shared between the register form (client) and its server action.
 
-export const membershipGrades = [
-  "Professional member",
-  "Student member",
-  "Corporate representative",
-  "Not yet a member",
+export const attendanceCategories = [
+  "Exhibitor",
+  "Sponsor",
+  "Student",
+  "Speaker",
 ] as const;
+
+export const membershipGrades = [...attendanceCategories];
 
 export type RegistrationValues = {
   name: string;

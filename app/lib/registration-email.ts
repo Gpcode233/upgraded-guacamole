@@ -61,7 +61,7 @@ export function renderConfirmationText({
     `Date:        ${event.date}`,
     `Venue:       ${event.location}`,
     `Attendee:    ${fullName}`,
-    `Membership:  ${grade}`,
+    `Category:    ${grade}`,
     "",
     "Before you arrive",
     "- Keep this email handy, on your phone or printed.",
@@ -236,7 +236,7 @@ export function renderConfirmationHtml({
                   <td class="px" style="padding:28px 40px 10px;">
                     <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border-top:1px solid #e3e9e5;padding-top:24px;">
                       <tr>${detail("Date", event.date)}${detail("Venue", event.location)}</tr>
-                      <tr>${detail("Attendee", fullName)}${detail("Membership", grade)}</tr>
+                      <tr>${detail("Attendee", fullName)}${detail("Attendance category", grade)}</tr>
                     </table>
                   </td>
                 </tr>
