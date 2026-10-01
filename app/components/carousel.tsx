@@ -255,12 +255,16 @@ function SlideBody({
             aria-hidden
             className="absolute inset-0 z-0 overflow-hidden blur-[2px] brightness-75"
           >
-            <iframe
-              src={slide.video.embedSrc}
-              title={slide.video.title}
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-              className="pointer-events-none absolute left-1/2 top-1/2 h-[56.25vw] min-h-full w-[177.78vh] min-w-full -translate-x-1/2 -translate-y-1/2 scale-105"
-            />
+            <video
+              autoPlay
+              loop
+              muted
+              playsInline
+              preload="auto"
+              className="pointer-events-none absolute inset-0 h-full w-full scale-105 object-cover"
+            >
+              <source src={slide.video.embedSrc} type="video/mp4" />
+            </video>
           </div>
         ) : slide.image ? (
           <Image

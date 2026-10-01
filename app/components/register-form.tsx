@@ -88,17 +88,22 @@ function RegisterFlow({ onRestart }: { onRestart: () => void }) {
           />
           <div className="flex flex-col gap-1.5 sm:col-span-2">
             <label htmlFor="grade" className="text-sm font-medium">
-              Attendance category
+              Attendee
             </label>
             <select
               id="grade"
               name="grade"
-              defaultValue={values.grade ?? attendanceCategories[0]}
+              defaultValue={values.grade ?? ""}
               aria-invalid={Boolean(errors.grade)}
               className={inputClass}
             >
+              <option value="" disabled>
+                Select a category
+              </option>
               {attendanceCategories.map((grade) => (
-                <option key={grade}>{grade}</option>
+                <option key={grade} value={grade}>
+                  {grade}
+                </option>
               ))}
             </select>
             <FieldError id="grade-error" message={errors.grade} />
