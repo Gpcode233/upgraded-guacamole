@@ -40,27 +40,21 @@ export function Carousel({
   fullBleed?: boolean;
 }) {
   const count = slides.length;
-  // The track holds a clone of the last slide before the first and a clone of
-  // the first slide after the last, so the horizontal scroll can keep going in
-  // one direction and snap back invisibly at the seams.
   const looped = count > 1;
   const track = looped
-    ? [slides[count - 1], ...slides, slides[0]]
+    ? [...slides, ...slides, ...slides]
     : slides;
 
-  // Position within `track`; the real slides start at 1 when looping.
-  const [position, setPosition] = useState(looped ? 1 : 0);
+  // Start in the middle copy so the track can move continuously in one
+  // direction without any visible jump back to the first slide.
+  const [position, setPosition] = useState(looped ? count : 0);
   const [animated, setAnimated] = useState(true);
   const [paused, setPaused] = useState(false);
   const [reduced, setReduced] = useState(false);
   const reducedRef = useRef(false);
   const touchStart = useRef<number | null>(null);
 
-  const index = looped ? (((position - 1) % count) + count) % count : 0;
-  const wrap = useCallback(
-    (slot: number) => ((((slot - 1) % count) + count) % count) + 1,
-    [count],
-  );
+  const index = looped ? position % count : 0;
 
   useEffect(() => {
     const query = window.matchMedia("(prefers-reduced-motion: reduce)");
@@ -78,44 +72,27 @@ export function Carousel({
     (delta: number) => {
       if (!looped) return;
       setAnimated(true);
-      setPosition((value) =>
-        reducedRef.current ? wrap(value + delta) : value + delta,
-      );
+      setPosition((value) => {
+        const next = value + delta;
+        if (reducedRef.current) {
+          return (next + count) % count + count;
+        }
+        if (next >= count * 2) return next - count;
+        if (next < count) return next + count;
+        return next;
+      });
     },
-    [looped, wrap],
+    [count, looped],
   );
 
   const jumpTo = useCallback(
     (target: number) => {
       if (!looped) return;
       setAnimated(true);
-      setPosition(target + 1);
+      setPosition(count + target);
     },
-    [looped],
+    [count, looped],
   );
-
-  // Once the scroll has landed on a clone, snap back to its real twin with the
-  // transition off so the jump is invisible.
-  useEffect(() => {
-    if (!looped || (position >= 1 && position <= count)) return;
-    const timer = window.setTimeout(
-      () => {
-        setAnimated(false);
-        setPosition(wrap(position));
-      },
-      animated && !reduced ? TRANSITION_MS : 0,
-    );
-    return () => window.clearTimeout(timer);
-  }, [position, count, looped, animated, reduced, wrap]);
-
-  // Re-enable the transition once the browser has painted the seam jump.
-  useEffect(() => {
-    if (animated) return;
-    const frame = window.requestAnimationFrame(() =>
-      window.requestAnimationFrame(() => setAnimated(true)),
-    );
-    return () => window.cancelAnimationFrame(frame);
-  }, [animated]);
 
   useEffect(() => {
     if (paused || reduced || !looped) return;
@@ -138,11 +115,11 @@ export function Carousel({
   useEffect(() => {
     const reset = () => {
       setAnimated(false);
-      setPosition(looped ? 1 : 0);
+      setPosition(looped ? count : 0);
     };
     window.addEventListener(CAROUSEL_RESET_EVENT, reset);
     return () => window.removeEventListener(CAROUSEL_RESET_EVENT, reset);
-  }, [looped]);
+  }, [count, looped]);
 
   // A full-bleed hero fills the viewport, so the pointer sits on it almost all
   // the time; hover-pausing there would stop the scroll for good.
@@ -188,7 +165,7 @@ export function Carousel({
               key={`${slide.id}-${slot}`}
               role="group"
               aria-roledescription="slide"
-              aria-label={`${looped ? wrap(slot) : slot + 1} of ${count}`}
+              aria-label={`${(slot % count) + 1} of ${count}`}
               inert={slot !== position}
               className={`relative isolate flex h-full w-full shrink-0 flex-col items-center justify-center gap-8 overflow-hidden p-6 py-20 text-center sm:px-16 sm:py-20 ${
                 fullBleed ? "pb-28 sm:pb-32" : "min-h-[340px] sm:min-h-[360px]"
