@@ -107,7 +107,7 @@ export default function SponsorshipPage() {
               </ul>
               <a
                 href={SPONSOR_FORM}
-                target="_blank"+
+                target="_blank"
                 rel="noreferrer noopener"
                 className={`${buttonStyles.green} mt-6 w-full`}
               >
