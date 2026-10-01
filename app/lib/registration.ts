@@ -5,6 +5,9 @@ export const attendanceCategories = [
   "Sponsor",
   "Student",
   "Speaker",
+  "Professional member",
+  "Corporate representative",
+  "Nacos member",
 ] as const;
 
 export const membershipGrades = [...attendanceCategories];
