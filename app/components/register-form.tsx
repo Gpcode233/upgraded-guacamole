@@ -3,7 +3,7 @@
 import { useActionState, useState } from "react";
 import { events } from "../lib/content";
 import {
-  membershipGrades,
+  attendanceCategories,
   type RegisterState,
   type RegistrationValues,
 } from "../lib/registration";
@@ -71,7 +71,7 @@ function RegisterFlow({ onRestart }: { onRestart: () => void }) {
             required
             defaultValue={values.email}
             error={errors.email}
-            hint="Your access code is sent here."
+            hint="Your confirmation email is sent here."
           />
           <Field
             label="Phone"
@@ -88,17 +88,22 @@ function RegisterFlow({ onRestart }: { onRestart: () => void }) {
           />
           <div className="flex flex-col gap-1.5 sm:col-span-2">
             <label htmlFor="grade" className="text-sm font-medium">
-              Membership grade
+              Attendee
             </label>
             <select
               id="grade"
               name="grade"
-              defaultValue={values.grade ?? membershipGrades[0]}
+              defaultValue={values.grade ?? ""}
               aria-invalid={Boolean(errors.grade)}
               className={inputClass}
             >
-              {membershipGrades.map((grade) => (
-                <option key={grade}>{grade}</option>
+              <option value="" disabled>
+                Select a category
+              </option>
+              {attendanceCategories.map((grade) => (
+                <option key={grade} value={grade}>
+                  {grade}
+                </option>
               ))}
             </select>
             <FieldError id="grade-error" message={errors.grade} />
@@ -163,7 +168,33 @@ function Confirmation({
   state: Extract<RegisterState, { status: "success" }>;
   onRestart: () => void;
 }) {
-  const [copied, setCopied] = useState(false);
+  const socialLinks = [
+    {
+      label: "Facebook",
+      href: "https://facebook.com/ncssoutheast",
+      icon: (
+        <path d="M13.5 9H11V7.5c0-.62.5-.75.9-.75H13.5V4.02L11.2 4C8.7 4 8 5.9 8 7.3V9H6v3h2v8h3v-8h2.2L13.5 9Z" />
+      ),
+    },
+    {
+      label: "X / Twitter",
+      href: "https://x.com/ncssoutheast",
+      icon: (
+        <path d="M4 4h3.4l3.2 4.4L14.2 4H17l-4.8 6.3L17.3 20h-3.4l-3.5-4.8L6.4 20H4l5.1-6.8L4 4Z" />
+      ),
+    },
+    {
+      label: "Instagram",
+      href: "https://instagram.com/ncssoutheast",
+      icon: (
+        <>
+          <rect x="4" y="4" width="16" height="16" rx="4" fill="none" stroke="currentColor" strokeWidth="1.6" />
+          <circle cx="12" cy="12" r="3.6" fill="none" stroke="currentColor" strokeWidth="1.6" />
+          <circle cx="16.6" cy="7.4" r="1" />
+        </>
+      ),
+    },
+  ];
 
   let message: React.ReactNode;
   if (state.alreadyRegistered) {
@@ -171,30 +202,30 @@ function Confirmation({
       <>
         You were already registered for{" "}
         <strong className="text-foreground">{state.eventTitle}</strong>. We’ve
-        re-sent your access code to <strong className="text-foreground">{state.email}</strong>.
+        re-sent your confirmation email to{" "}
+        <strong className="text-foreground">{state.email}</strong>.
       </>
     ) : (
       <>
         You’re already registered for{" "}
         <strong className="text-foreground">{state.eventTitle}</strong>, but we
-        couldn’t re-send your code just now. Check your inbox for the original
-        email, or contact us.
+        couldn’t re-send the confirmation email just now. Check your inbox for
+        the original message, or contact us.
       </>
     );
   } else {
     message = (
       <>
         Your place at <strong className="text-foreground">{state.eventTitle}</strong>{" "}
-        is confirmed.{" "}
-        {state.emailSent ? (
+        is confirmed. {state.emailSent ? (
           <>
-            We’ve emailed your access code to{" "}
+            We’ve emailed your confirmation to{" "}
             <strong className="text-foreground">{state.email}</strong>.
           </>
         ) : (
           <>
-            We couldn’t send the confirmation email just now, so please save the
-            code below.
+            We couldn’t send the confirmation email just now, so please check
+            your inbox and contact us if you don’t receive it.
           </>
         )}
       </>
@@ -227,34 +258,26 @@ function Confirmation({
         {message}
       </p>
 
-      {state.accessCode ? (
-        <div className="mx-auto mt-7 max-w-sm rounded-xl bg-brand-soft px-6 py-5 text-white">
-          <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-white/70">
-            Your access code
-          </p>
-          <p className="mt-2 font-mono text-2xl font-bold tracking-[0.12em] text-accent">
-            {state.accessCode}
-          </p>
-          <button
-            type="button"
-            onClick={async () => {
-              try {
-                await navigator.clipboard.writeText(state.accessCode ?? "");
-                setCopied(true);
-              } catch {
-                setCopied(false);
-              }
-            }}
-            className="mt-3 text-xs font-medium text-white/80 underline-offset-4 hover:underline"
+      <div className="mt-8 flex items-center justify-center gap-3">
+        {socialLinks.map((social) => (
+          <a
+            key={social.label}
+            href={social.href}
+            target="_blank"
+            rel="noreferrer noopener"
+            aria-label={social.label}
+            className="grid h-10 w-10 place-items-center rounded-full border border-line bg-background text-foreground transition-colors hover:border-brand hover:text-brand"
           >
-            {copied ? "Copied" : "Copy code"}
-          </button>
-        </div>
-      ) : null}
+            <svg aria-hidden viewBox="0 0 24 24" className="h-5 w-5" fill="currentColor">
+              {social.icon}
+            </svg>
+          </a>
+        ))}
+      </div>
 
       <p className="mx-auto mt-6 max-w-md text-xs leading-5 text-muted">
-        Show your access code at the accreditation desk on arrival. Didn’t get
-        the email? Check your spam folder.
+        Didn’t get the email? Check your spam folder and keep an eye on our
+        socials for updates.
       </p>
 
       <button

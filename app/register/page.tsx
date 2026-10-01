@@ -15,8 +15,8 @@ const steps = [
     detail: "Tell us who you are. It takes about a minute.",
   },
   {
-    title: "Get your access code",
-    detail: "A confirmation email with your personal access code lands in your inbox.",
+    title: "Get your confirmation email",
+    detail: "A confirmation email with your event details lands in your inbox.",
   },
   {
     title: "Show it on arrival",
