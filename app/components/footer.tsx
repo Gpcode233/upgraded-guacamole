@@ -27,7 +27,7 @@ const socials = [
         <circle cx="16.6" cy="7.4" r="1" />
       </>
     ),
-  // },
+  },
   // {
   //   label: "LinkedIn",
   //   href: "https://linkedin.com/company/ncssoutheast",
