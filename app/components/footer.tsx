@@ -3,13 +3,13 @@ import Link from "next/link";
 import { sponsors } from "../lib/content";
 
 const socials = [
-  {
-    label: "Facebook",
-    href: "https://facebook.com/ncssoutheast",
-    icon: (
-      <path d="M13.5 9H11V7.5c0-.62.5-.75.9-.75H13.5V4.02L11.2 4C8.7 4 8 5.9 8 7.3V9H6v3h2v8h3v-8h2.2L13.5 9Z" />
-    ),
-  },
+  // {
+  //   label: "Facebook",
+  //   href: "https://facebook.com/ncssoutheast",
+  //   icon: (
+  //     <path d="M13.5 9H11V7.5c0-.62.5-.75.9-.75H13.5V4.02L11.2 4C8.7 4 8 5.9 8 7.3V9H6v3h2v8h3v-8h2.2L13.5 9Z" />
+  //   ),
+  // },
   {
     label: "X / Twitter",
     href: "https://x.com/ncssoutheast",
@@ -27,18 +27,18 @@ const socials = [
         <circle cx="16.6" cy="7.4" r="1" />
       </>
     ),
-  },
-  {
-    label: "LinkedIn",
-    href: "https://linkedin.com/company/ncssoutheast",
-    icon: (
-      <>
-        <rect x="4" y="9" width="3" height="10" />
-        <circle cx="5.5" cy="5.5" r="1.7" />
-        <path d="M11 9h3v1.7c.6-1 1.7-1.9 3.3-1.9 2.6 0 3.7 1.7 3.7 4.6V19h-3v-4.9c0-1.3-.5-2.3-1.8-2.3-1 0-1.6.7-1.9 1.3-.1.2-.1.6-.1 1V19h-3V9Z" />
-      </>
-    ),
-  },
+  // },
+  // {
+  //   label: "LinkedIn",
+  //   href: "https://linkedin.com/company/ncssoutheast",
+  //   icon: (
+  //     <>
+  //       <rect x="4" y="9" width="3" height="10" />
+  //       <circle cx="5.5" cy="5.5" r="1.7" />
+  //       <path d="M11 9h3v1.7c.6-1 1.7-1.9 3.3-1.9 2.6 0 3.7 1.7 3.7 4.6V19h-3v-4.9c0-1.3-.5-2.3-1.8-2.3-1 0-1.6.7-1.9 1.3-.1.2-.1.6-.1 1V19h-3V9Z" />
+  //     </>
+  //   ),
+  // },
 ];
 
 export function Footer() {

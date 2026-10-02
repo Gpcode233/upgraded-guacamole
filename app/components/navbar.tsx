@@ -74,10 +74,10 @@ export function Navbar() {
         isHome ? "fixed inset-x-0 top-0" : "sticky top-0"
       }`}
     >
-      <div className="mx-auto w-full max-w-6xl rounded-b-2xl bg-white text-[#10241a] shadow-lg">
+      <div className="w-full rounded-b-2xl bg-white text-[#10241a] shadow-lg">
         <nav
           aria-label="Main"
-          className="flex h-12 items-center justify-between gap-4 px-4 sm:px-6"
+          className="mx-auto flex h-12 w-full max-w-6xl items-center justify-between gap-4 px-4 sm:px-6"
         >
           <Link
             href="/"
@@ -146,7 +146,7 @@ export function Navbar() {
         {open ? (
           <div
             id="mobile-menu"
-            className="border-t border-black/10 px-4 pb-4 pt-2 lg:hidden"
+            className="mx-auto w-full max-w-6xl border-t border-black/10 px-4 pb-4 pt-2 lg:hidden"
           >
             <ul className="flex flex-col">
               {links.map((link) => (
