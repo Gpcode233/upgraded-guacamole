@@ -167,7 +167,11 @@ export function Carousel({
               aria-roledescription="slide"
               aria-label={`${(slot % count) + 1} of ${count}`}
               inert={slot !== position}
-              className={`relative isolate flex h-full w-full shrink-0 flex-col items-center justify-center gap-8 overflow-hidden p-6 py-20 text-center sm:px-16 sm:py-20 ${
+              className={`relative isolate flex h-full w-full shrink-0 flex-col items-center justify-center overflow-hidden text-center ${
+                slide.layout === "speakers"
+                  ? "gap-5 p-6 py-10 sm:gap-6 sm:px-16 sm:py-12"
+                  : "gap-8 p-6 py-20 sm:px-16 sm:py-20"
+              } ${
                 fullBleed ? "pb-28 sm:pb-32" : "min-h-[340px] sm:min-h-[360px]"
               }`}
             >
@@ -375,19 +379,35 @@ function SlideBody({
         </div>
 
         {slide.speakers?.length ? (
-          <ul className="relative z-10 mx-auto grid w-full max-w-4xl grid-cols-2 gap-x-3 gap-y-4 sm:grid-cols-4 sm:gap-x-5">
-            {slide.speakers.map((speaker) => (
-              <li key={speaker.name} className="relative">
-                <div className="relative aspect-[5/4] w-full overflow-hidden rounded-2xl bg-[#e9ece9] text-[#b3bab5] sm:aspect-[4/5]">
+          <ul
+            className="relative z-10 mx-auto grid w-full max-w-4xl grid-cols-[repeat(2,minmax(0,9rem))] items-end justify-center gap-3 lg:flex lg:flex-nowrap lg:gap-4"
+          >
+            {slide.speakers.map((speaker, index) => (
+              <li
+                key={`${speaker.name}-${index}`}
+                className={`relative ${
+                  speaker.photoSize === "featured"
+                    ? "col-span-2 h-[10.5rem] w-32 justify-self-center lg:col-span-1 lg:h-[18rem] lg:w-56 lg:shrink-0"
+                    : "h-32 w-full lg:h-52 lg:w-[9.5rem] lg:shrink-0"
+                }`}
+              >
+                <div
+                  className="relative h-full w-full overflow-hidden rounded-2xl bg-[#e9ece9] text-[#b3bab5] shadow-[0_18px_45px_rgba(0,0,0,0.24)]"
+                >
                   {speaker.photo ? (
                     <Image
                       src={speaker.photo}
                       alt={speaker.photoAlt ?? speaker.name}
                       fill
-                      sizes="(min-width: 640px) 220px, 45vw"
+                      sizes={
+                        speaker.photoSize === "featured"
+                          ? "(min-width: 640px) 224px, 176px"
+                          : "(min-width: 1024px) 152px, 144px"
+                      }
                       className={
+                        speaker.photoSize === "featured" ||
                         speaker.photoFit === "contain"
-                          ? "object-contain p-3"
+                          ? "object-contain object-bottom"
                           : "object-cover object-top"
                       }
                     />
@@ -403,8 +423,8 @@ function SlideBody({
                     </svg>
                   )}
                 </div>
-                <div className="absolute inset-x-2 bottom-2 rounded-xl bg-brand-deep px-3 py-2 text-left shadow-lg ring-1 ring-white/15">
-                  <p className="text-sm font-bold leading-tight text-white sm:text-[15px]">
+                <div className="absolute inset-x-2 bottom-2 rounded-xl bg-brand-deep/95 px-2.5 py-2 text-left shadow-lg ring-1 ring-white/15 backdrop-blur-sm sm:px-3">
+                  <p className="text-xs font-bold leading-tight text-white sm:text-sm">
                     {speaker.name}
                   </p>
                   <p className="mt-0.5 line-clamp-2 text-[10px] leading-snug text-white/80 sm:text-[11px]">

@@ -27,6 +27,7 @@ export type Slide = {
     topic?: string;
     photo?: string;
     photoFit?: "cover" | "contain";
+    photoSize?: "featured";
     note?: string;
     photoAlt?: string;
   }[];
@@ -104,15 +105,21 @@ export const slides: Slide[] = [
         name: "Gov. Charles Soludo",
         role: "Governor, Anambra State",
         photo: "/images/team/charles-soludo.jpg",
+        photoSize: "featured",
         photoAlt:
           "Gov. Charles Soludo. Photo by Chinedueri, CC BY 4.0, via Wikimedia Commons",
       },
-      { name: "Prof. Chinedu Nebo", role: "Keynote Speaker" },
+      {
+        name: "Prof. Chinedu Nebo",
+        role: "Keynote Speaker",
+        photo: "/images/team/chinedu-nebo.jpg",
+      },
       {
         name: "Dr. Chinwe Okoli",
         role: "SA to Anambra State Governor on Innovation & CEO, SID",
         photo: "/images/team/chinwe-okoli.png",
       },
+      { name: "Unveiling Soon", role: "More speakers to be announced" },
       { name: "Unveiling Soon", role: "More speakers to be announced" },
     ],
   },
