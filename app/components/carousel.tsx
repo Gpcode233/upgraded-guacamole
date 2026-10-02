@@ -77,8 +77,6 @@ export function Carousel({
         if (reducedRef.current) {
           return (next + count) % count + count;
         }
-        if (next >= count * 2) return next - count;
-        if (next < count) return next + count;
         return next;
       });
     },
@@ -152,6 +150,17 @@ export function Carousel({
         }`}
       >
         <div
+          onTransitionEnd={(event) => {
+            if (event.target !== event.currentTarget || reduced) return;
+
+            if (position >= count * 2) {
+              setAnimated(false);
+              setPosition((value) => value - count);
+            } else if (position < count) {
+              setAnimated(false);
+              setPosition((value) => value + count);
+            }
+          }}
           className={`flex h-full ${
             animated && !reduced ? "transition-transform ease-out" : ""
           }`}
@@ -393,8 +402,8 @@ function SlideBody({
                 key={`${speaker.name}-${index}`}
                 className={`relative ${
                   speaker.photoSize === "featured"
-                    ? "col-span-2 h-[10.5rem] w-32 justify-self-center lg:col-span-1 lg:h-[18rem] lg:w-56 lg:shrink-0"
-                    : "h-32 w-full lg:h-52 lg:w-[9.5rem] lg:shrink-0"
+                    ? "col-span-2 h-44 w-32 justify-self-center lg:col-span-1 lg:h-[18rem] lg:w-56 lg:shrink-0"
+                    : "h-36 w-full lg:h-52 lg:w-[9.5rem] lg:shrink-0"
                 }`}
               >
                 <div
@@ -429,11 +438,11 @@ function SlideBody({
                     </svg>
                   )}
                 </div>
-                <div className="absolute inset-x-2 bottom-2 rounded-xl bg-accent px-3 py-2 text-left shadow-lg ring-1 ring-white/15">
-                  <p className="text-sm font-bold leading-tight text-brand-deep sm:text-[15px]">
+                <div className="absolute inset-x-1.5 bottom-1.5 rounded-xl bg-accent/95 px-2 py-1.5 text-left shadow-lg ring-1 ring-white/15 backdrop-blur-sm lg:inset-x-2 lg:bottom-2 lg:px-3 lg:py-2">
+                  <p className="text-[11px] font-bold leading-[1.15] text-brand-deep lg:text-sm lg:leading-tight">
                     {speaker.name}
                   </p>
-                  <p className="mt-0.5 line-clamp-2 text-[10px] leading-snug text-brand-deep/80 sm:text-[11px]">
+                  <p className="mt-0.5 line-clamp-2 text-[9px] leading-[1.2] text-brand-deep/80 lg:text-[11px] lg:leading-snug">
                     {speaker.role}
                   </p>
                 </div>
