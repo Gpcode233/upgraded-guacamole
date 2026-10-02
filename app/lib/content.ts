@@ -6,6 +6,7 @@ export type Slide = {
   title: string;
   titleAccent?: string;
   titleImage?: { src: string; alt: string; width: number; height: number };
+  audienceStatement?: string;
   summary: string;
   meta: string;
   href: string;
@@ -46,6 +47,8 @@ export const slides: Slide[] = [
       width: 2507,
       height: 528,
     },
+    audienceStatement:
+      "Bringing together 1,500+ technology professionals, entrepreneurs, researchers, investors, government leaders, academics and innovators from across the SouthEast and beyond.",
     summary:
       "Connecting Research, Innovation, Enterprise and Technology for Regional Development",
     meta: "12–14 November 2026",
@@ -107,7 +110,7 @@ export const slides: Slide[] = [
         photoAlt:
           "Gov. Charles Soludo. Photo by Chinedueri, CC BY 4.0, via Wikimedia Commons",
       },
-      { name: "Prof. Chinedu Nebo", role: "Keynote Speaker" },
+      { name: "Prof. Chinedu Nebo", role: "Keynote Speaker", photo: "/images/team/chinedu-nebo.jpg", },
       {
         name: "Dr. Chinwe Okoli",
         role: "SA to Anambra State Governor on Innovation & CEO, SID",
