@@ -8,6 +8,7 @@ import type { Slide } from "../lib/content";
 const AUTOPLAY_MS = 10000;
 const TRANSITION_MS = 700;
 export const CAROUSEL_RESET_EVENT = "carousel:reset";
+export const CAROUSEL_NAVIGATE_EVENT = "carousel:navigate";
 
 const tones: Record<Slide["tone"], { chip: string; glow: string }> = {
   green: {
@@ -91,6 +92,39 @@ export function Carousel({
     },
     [count, looped],
   );
+
+  const selectSlide = useCallback(
+    (slideId: string) => {
+      const target = slides.findIndex((slide) => slide.id === slideId);
+      if (target < 0) return;
+      setAnimated(true);
+      setPosition(looped ? count + target : 0);
+    },
+    [count, looped, slides],
+  );
+
+  useEffect(() => {
+    const selectSlideFromHash = () => {
+      const slideId = window.location.hash.slice(1);
+      if (slideId) selectSlide(slideId);
+    };
+    const onNavigate = (event: Event) => {
+      if (event instanceof CustomEvent && typeof event.detail === "string") {
+        selectSlide(event.detail);
+      }
+    };
+
+    window.addEventListener(CAROUSEL_NAVIGATE_EVENT, onNavigate);
+    window.addEventListener("hashchange", selectSlideFromHash);
+    window.addEventListener("popstate", selectSlideFromHash);
+    selectSlideFromHash();
+
+    return () => {
+      window.removeEventListener(CAROUSEL_NAVIGATE_EVENT, onNavigate);
+      window.removeEventListener("hashchange", selectSlideFromHash);
+      window.removeEventListener("popstate", selectSlideFromHash);
+    };
+  }, [selectSlide]);
 
   useEffect(() => {
     if (paused || reduced || !looped) return;

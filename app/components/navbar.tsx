@@ -3,11 +3,16 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
-import { CAROUSEL_RESET_EVENT } from "./carousel";
+import { CAROUSEL_NAVIGATE_EVENT, CAROUSEL_RESET_EVENT } from "./carousel";
 import { Logo } from "./logo";
 
-const links = [
+const links: { href: string; label: string; slideId?: string }[] = [
   { href: "/schedule", label: "Schedule" },
+  {
+    href: "/#innovation-summit-speakers",
+    label: "Speakers",
+    slideId: "innovation-summit-speakers",
+  },
   { href: "/sponsorship", label: "Sponsorship" },
   { href: "/about", label: "About" },
   { href: "/contact", label: "Contact" },
@@ -67,6 +72,16 @@ export function Navbar() {
     pathname === href || pathname.startsWith(`${href}/`);
 
   const isHome = pathname === "/";
+  const handleSlideLinkClick = (
+    event: React.MouseEvent<HTMLAnchorElement>,
+    slideId: string,
+  ) => {
+    if (!isHome) return;
+    event.preventDefault();
+    window.dispatchEvent(
+      new CustomEvent(CAROUSEL_NAVIGATE_EVENT, { detail: slideId }),
+    );
+  };
 
   return (
     <header
@@ -95,6 +110,11 @@ export function Navbar() {
               <li key={link.href}>
                 <Link
                   href={link.href}
+                  onClick={
+                    link.slideId
+                      ? (event) => handleSlideLinkClick(event, link.slideId!)
+                      : undefined
+                  }
                   aria-current={isActive(link.href) ? "page" : undefined}
                   className={`text-[13px] font-medium transition-colors hover:text-brand-deep ${
                     isActive(link.href) ? "text-brand-deep" : ""
@@ -152,6 +172,11 @@ export function Navbar() {
                 <li key={link.href}>
                   <Link
                     href={link.href}
+                    onClick={
+                      link.slideId
+                        ? (event) => handleSlideLinkClick(event, link.slideId!)
+                        : undefined
+                    }
                     className={`block py-2.5 text-sm font-medium ${
                       isActive(link.href) ? "text-brand-deep" : ""
                     }`}
