@@ -9,8 +9,8 @@ import { Logo } from "./logo";
 const links = [
   { href: "/schedule", label: "Schedule" },
   { href: "/sponsorship", label: "Sponsorship" },
-  { href: "/contact", label: "Contact" },
   { href: "/about", label: "About" },
+  { href: "/contact", label: "Contact" },
 ];
 
 const actions: { href: string; label: string; external?: boolean }[] = [
@@ -77,7 +77,7 @@ export function Navbar() {
       <div className="w-full rounded-b-2xl bg-white text-[#10241a] shadow-lg">
         <nav
           aria-label="Main"
-          className="mx-auto flex h-12 w-full max-w-6xl items-center justify-between gap-4 px-4 sm:px-6"
+          className="relative mx-auto flex h-12 w-full max-w-6xl items-center justify-between gap-4 px-4 sm:px-6"
         >
           <Link
             href="/"
@@ -90,30 +90,29 @@ export function Navbar() {
             <Logo tone="dark" />
           </Link>
 
-          <div className="hidden items-center gap-6 lg:flex">
-            <ul className="hidden items-center gap-6 lg:flex">
-              {links.map((link) => (
-                <li key={link.href}>
-                  <Link
-                    href={link.href}
-                    aria-current={isActive(link.href) ? "page" : undefined}
-                    className={`text-[13px] font-medium transition-colors hover:text-brand-deep ${
-                      isActive(link.href) ? "text-brand-deep" : ""
-                    }`}
-                  >
-                    {link.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-            <ul className="hidden items-center gap-3 lg:flex">
-              {actions.map((action) => (
-                <li key={action.href}>
-                  <ActionLink action={action} className={actionClass} />
-                </li>
-              ))}
-            </ul>
-          </div>
+          <ul className="absolute left-1/2 top-1/2 hidden -translate-x-1/2 -translate-y-1/2 items-center gap-6 lg:flex">
+            {links.map((link) => (
+              <li key={link.href}>
+                <Link
+                  href={link.href}
+                  aria-current={isActive(link.href) ? "page" : undefined}
+                  className={`text-[13px] font-medium transition-colors hover:text-brand-deep ${
+                    isActive(link.href) ? "text-brand-deep" : ""
+                  }`}
+                >
+                  {link.label}
+                </Link>
+              </li>
+            ))}
+          </ul>
+
+          <ul className="hidden items-center gap-3 lg:flex">
+            {actions.map((action) => (
+              <li key={action.href}>
+                <ActionLink action={action} className={actionClass} />
+              </li>
+            ))}
+          </ul>
 
           <button
             type="button"

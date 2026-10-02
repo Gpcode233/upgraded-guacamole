@@ -329,11 +329,17 @@ function SlideBody({
             </ul>
           ) : null}
 
+          {slide.audienceStatement ? (
+            <p className="mx-auto max-w-3xl text-sm font-medium leading-6 text-white sm:text-base sm:leading-7">
+              {slide.audienceStatement}
+            </p>
+          ) : null}
+
           <p className="mx-auto max-w-2xl text-base leading-7 text-white/85 sm:text-lg sm:leading-8">
             {slide.summary}
           </p>
 
-          <div className="flex flex-wrap items-center justify-center gap-3">
+          <div className="mt-3 flex flex-wrap items-center justify-center gap-3">
             <SlideCta href={slide.href} label={slide.cta} lime />
             {slide.secondaryCta ? (
               <SlideCta
@@ -432,11 +438,11 @@ function SlideBody({
                     </svg>
                   )}
                 </div>
-                <div className="absolute inset-x-1.5 bottom-1.5 rounded-xl bg-brand-deep/95 px-2 py-1.5 text-left shadow-lg ring-1 ring-white/15 backdrop-blur-sm lg:inset-x-2 lg:bottom-2 lg:px-3 lg:py-2">
-                  <p className="text-[11px] font-bold leading-[1.15] text-white lg:text-sm lg:leading-tight">
+                <div className="absolute inset-x-1.5 bottom-1.5 rounded-xl bg-accent/95 px-2 py-1.5 text-left shadow-lg ring-1 ring-white/15 backdrop-blur-sm lg:inset-x-2 lg:bottom-2 lg:px-3 lg:py-2">
+                  <p className="text-[11px] font-bold leading-[1.15] text-brand-deep lg:text-sm lg:leading-tight">
                     {speaker.name}
                   </p>
-                  <p className="mt-0.5 line-clamp-2 text-[9px] leading-[1.2] text-white/80 lg:text-[11px] lg:leading-snug">
+                  <p className="mt-0.5 line-clamp-2 text-[9px] leading-[1.2] text-brand-deep/80 lg:text-[11px] lg:leading-snug">
                     {speaker.role}
                   </p>
                 </div>

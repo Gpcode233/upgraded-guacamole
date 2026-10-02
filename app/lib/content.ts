@@ -6,6 +6,7 @@ export type Slide = {
   title: string;
   titleAccent?: string;
   titleImage?: { src: string; alt: string; width: number; height: number };
+  audienceStatement?: string;
   summary: string;
   meta: string;
   href: string;
@@ -47,6 +48,8 @@ export const slides: Slide[] = [
       width: 2507,
       height: 528,
     },
+    audienceStatement:
+      "Bringing together 1,500+ technology professionals, entrepreneurs, researchers, investors, government leaders, academics and innovators from across the SouthEast and beyond.",
     summary:
       "Connecting Research, Innovation, Enterprise and Technology for Regional Development",
     meta: "12–14 November 2026",
