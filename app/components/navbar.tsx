@@ -7,10 +7,10 @@ import { CAROUSEL_RESET_EVENT } from "./carousel";
 import { Logo } from "./logo";
 
 const links = [
-  { href: "/about", label: "About" },
   { href: "/schedule", label: "Schedule" },
   { href: "/sponsorship", label: "Sponsorship" },
   { href: "/contact", label: "Contact" },
+  { href: "/about", label: "About" },
 ];
 
 const actions: { href: string; label: string; external?: boolean }[] = [
@@ -70,14 +70,14 @@ export function Navbar() {
 
   return (
     <header
-      className={`z-50 px-2 sm:px-4 ${
+      className={`z-50 ${
         isHome ? "fixed inset-x-0 top-0" : "sticky top-0"
       }`}
     >
-      <div className="mx-auto w-full max-w-4xl rounded-b-2xl bg-white text-[#10241a] shadow-lg">
+      <div className="mx-auto w-full max-w-6xl rounded-b-2xl bg-white text-[#10241a] shadow-lg">
         <nav
           aria-label="Main"
-          className="flex h-12 items-center justify-between gap-4 px-4 sm:px-8"
+          className="flex h-12 items-center justify-between gap-4 px-4 sm:px-6"
         >
           <Link
             href="/"
