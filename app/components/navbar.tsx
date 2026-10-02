@@ -54,15 +54,19 @@ function ActionLink({
 
 export function Navbar() {
   const pathname = usePathname();
-  const [open, setOpen] = useState(false);
+  const [menuState, setMenuState] = useState({ pathname, open: false });
 
-  useEffect(() => {
-    setOpen(false);
-  }, [pathname]);
+  if (menuState.pathname !== pathname) {
+    setMenuState({ pathname, open: false });
+  }
+
+  const open = menuState.open;
 
   useEffect(() => {
     function onKeyDown(event: KeyboardEvent) {
-      if (event.key === "Escape") setOpen(false);
+      if (event.key === "Escape") {
+        setMenuState((state) => ({ ...state, open: false }));
+      }
     }
     document.addEventListener("keydown", onKeyDown);
     return () => document.removeEventListener("keydown", onKeyDown);
@@ -77,10 +81,21 @@ export function Navbar() {
     slideId: string,
   ) => {
     if (!isHome) return;
+    if (
+      event.button !== 0 ||
+      event.metaKey ||
+      event.ctrlKey ||
+      event.shiftKey ||
+      event.altKey
+    ) {
+      return;
+    }
     event.preventDefault();
+    window.history.pushState(null, "", `/#${slideId}`);
     window.dispatchEvent(
       new CustomEvent(CAROUSEL_NAVIGATE_EVENT, { detail: slideId }),
     );
+    setMenuState((state) => ({ ...state, open: false }));
   };
 
   return (
@@ -139,7 +154,9 @@ export function Navbar() {
             aria-expanded={open}
             aria-controls="mobile-menu"
             aria-label="Toggle menu"
-            onClick={() => setOpen((value) => !value)}
+            onClick={() =>
+              setMenuState((state) => ({ ...state, open: !state.open }))
+            }
             className="grid h-9 w-9 place-items-center rounded-md lg:hidden"
           >
             <svg aria-hidden viewBox="0 0 16 16" className="h-4 w-4">
