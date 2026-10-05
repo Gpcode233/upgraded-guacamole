@@ -125,6 +125,15 @@ h3 {
   display: none;
 }
 
+.schedule-accordion[open] {
+  --accent: #fff;
+  --brand: #fff;
+  --line: rgb(255 255 255 / 32%);
+  --muted: #fff;
+  background-color: #287a4b;
+  color: #fff;
+}
+
 .schedule-chevron {
   transition: transform 180ms ease;
 }

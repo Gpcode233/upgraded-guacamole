@@ -63,7 +63,7 @@ export const slides: Slide[] = [
     },
     video: {
       embedSrc:
-        "https://res.cloudinary.com/ejr7iufx/video/upload/q_auto:good,f_auto,vc_auto,w_1920,h_1080,c_fill/v1790841268/WhatsApp_Video_2026-10-01_at_8.45.43_AM.mp4",
+        "https://res.cloudinary.com/drj2hpt8p/video/upload/v1791206109/VID-20260930-WA0006_fhu8eq.mp4",
       title: "NCS SouthEast Innovation Summit & Awards",
     },
     facts: [
