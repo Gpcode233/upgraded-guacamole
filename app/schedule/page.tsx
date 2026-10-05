@@ -108,7 +108,7 @@ export default function SchedulePage() {
       eyebrow="Programme"
       title="Summit schedule"
       intro="Three days of keynotes, panels, symposia, research sessions and the Leadership & Innovation Awards in Awka."
-      image={{ src: "/images/icc-awka-venue.jpg" }}
+      image={{ src: "/images/stock-conference-pic2.jpg" }}
     >
       <Section tone="dark">
         <SectionHeading
