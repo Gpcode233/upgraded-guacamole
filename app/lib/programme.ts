@@ -27,7 +27,16 @@ export const schedule: ScheduleDay[] = [
     day: "Day 1 · 13 November",
     heading: "Arrival & networking",
     entries: [
-      { title: "Arrival, registration, networking and rest", time: "All day" },
+      {
+        title: "Arrival, registration, networking and rest",
+        time: "All day",
+        sub: [
+          { title: "Arrival", person: "" },
+          { title: "Registration", person: "" },
+          { title: "Networking", person: "" },
+          { title: "Rest", person: "" },
+        ],
+      },
     ],
   },
   {
