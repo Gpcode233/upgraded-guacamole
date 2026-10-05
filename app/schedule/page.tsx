@@ -93,11 +93,13 @@ function Day({ day }: { day: ScheduleDay }) {
           <span aria-hidden="true" className="schedule-chevron text-lg">⌄</span>
         </span>
       </summary>
-      <ul className="pb-6">
-        {day.entries.map((entry, index) => (
-          <Entry key={index} entry={entry} />
-        ))}
-      </ul>
+      <div className="schedule-content">
+        <ul className="schedule-content-inner pb-6">
+          {day.entries.map((entry, index) => (
+            <Entry key={index} entry={entry} />
+          ))}
+        </ul>
+      </div>
     </details>
   );
 }
