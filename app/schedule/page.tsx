@@ -73,20 +73,36 @@ function Entry({ entry }: { entry: ScheduleEntry }) {
 
 function Day({ day }: { day: ScheduleDay }) {
   return (
-    <>
-      <SectionHeading eyebrow={day.day} title={day.heading} />
-      <ul className="mt-8">
+    <details
+      id={day.id}
+      name="schedule"
+      className="schedule-accordion border-b border-line"
+    >
+      <summary className="flex cursor-pointer list-none items-center justify-between gap-5 py-6">
+        <span>
+          <span className="block text-[11px] font-semibold uppercase tracking-[0.14em] text-accent">
+            {day.day}
+          </span>
+          <span className="mt-2 block text-xl font-semibold leading-snug sm:text-2xl">
+            {day.heading}
+          </span>
+        </span>
+        <span className="flex shrink-0 items-center gap-2 text-sm font-semibold text-accent">
+          <span className="schedule-read-more">Read more</span>
+          <span className="schedule-read-less">Show less</span>
+          <span aria-hidden="true" className="schedule-chevron text-lg">⌄</span>
+        </span>
+      </summary>
+      <ul className="pb-6">
         {day.entries.map((entry, index) => (
           <Entry key={index} entry={entry} />
         ))}
       </ul>
-    </>
+    </details>
   );
 }
 
 export default function SchedulePage() {
-  const [day1, day2, day3] = schedule;
-
   return (
     <PageShell
       eyebrow="Programme"
@@ -100,35 +116,11 @@ export default function SchedulePage() {
           title="Three days, one programme"
           intro={scheduleNote}
         />
-        <ul className="mt-8 grid gap-4 sm:grid-cols-3">
+        <div className="mt-8 border-t border-line">
           {schedule.map((day) => (
-            <li key={day.id}>
-              <a
-                href={`#${day.id}`}
-                className="block h-full rounded-xl border border-line bg-surface p-5 transition-colors hover:border-accent"
-              >
-                <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-accent">
-                  {day.day}
-                </p>
-                <p className="mt-2 text-lg font-semibold">{day.heading}</p>
-              </a>
-            </li>
+            <Day key={day.id} day={day} />
           ))}
-        </ul>
-      </Section>
-
-      <Section tone="dark" id={day1.id}>
-        <div className="border-t border-line pt-14">
-          <Day day={day1} />
         </div>
-      </Section>
-
-      <Section tone="green" id={day2.id}>
-        <Day day={day2} />
-      </Section>
-
-      <Section tone="light" id={day3.id}>
-        <Day day={day3} />
         <div className="mt-12 flex flex-wrap gap-3 border-t border-line pt-10">
           <Link href="/register" className={buttonStyles.green}>
             Register for the Summit

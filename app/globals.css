@@ -112,6 +112,27 @@ h3 {
   font-style: italic;
 }
 
+.schedule-accordion summary {
+  list-style: none;
+}
+
+.schedule-accordion summary::-webkit-details-marker {
+  display: none;
+}
+
+.schedule-accordion:not([open]) .schedule-read-less,
+.schedule-accordion[open] .schedule-read-more {
+  display: none;
+}
+
+.schedule-chevron {
+  transition: transform 180ms ease;
+}
+
+.schedule-accordion[open] .schedule-chevron {
+  transform: rotate(180deg);
+}
+
 @keyframes slide-in {
   from {
     opacity: 0;
